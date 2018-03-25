@@ -1,5 +1,3 @@
-using System;
-
 namespace Infozdrav.Web.Models
 {
     public class ErrorViewModel
