@@ -7,8 +7,8 @@ namespace Infozdrav.Web.Helpers
     {
         public static string ToSHA512(this string input)
         {
-            var bytes = System.Text.Encoding.UTF8.GetBytes(input);
-            using (var hash = System.Security.Cryptography.SHA512.Create())
+            var bytes = Encoding.UTF8.GetBytes(input);
+            using (var hash = SHA512.Create())
             {
                 var hashedInputBytes = hash.ComputeHash(bytes);
 

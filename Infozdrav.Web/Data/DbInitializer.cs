@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using System.Security.Policy;
 using Infozdrav.Web.Abstractions;
 using Infozdrav.Web.Helpers;
 using Newtonsoft.Json;
@@ -68,12 +66,12 @@ namespace Infozdrav.Web.Data
 
         private void InitRoles()
         {
-            if (this._appDbContext.Roles.Any())
+            if (_appDbContext.Roles.Any())
                 return;
 
             foreach (var field in typeof(Roles).GetFields(BindingFlags.Static | BindingFlags.Public))
             {
-                this._appDbContext.Roles.Add(new Role
+                _appDbContext.Roles.Add(new Role
                 {
                     Name = field.GetValue(null) as string
                 });
@@ -84,7 +82,7 @@ namespace Infozdrav.Web.Data
 
         private void InitUsers()
         {
-            if (this._appDbContext.Users.Any())
+            if (_appDbContext.Users.Any())
                 return;
 
             var user = new User
@@ -98,11 +96,11 @@ namespace Infozdrav.Web.Data
                 new UserRole
                 {
                     User = user,
-                    Role = this._appDbContext.Roles.First(o => o.Name == Roles.Administrator)
+                    Role = _appDbContext.Roles.First(o => o.Name == Roles.Administrator)
                 },
             };
 
-            this._appDbContext.Add(user);
+            _appDbContext.Add(user);
             _appDbContext.SaveChanges();
         }
     }

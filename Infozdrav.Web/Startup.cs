@@ -1,17 +1,15 @@
-﻿using System.Diagnostics;
-using System.Linq;
+﻿using System.Linq;
 using System.Reflection;
 using AutoMapper;
 using Infozdrav.Web.Abstractions;
 using Infozdrav.Web.Data;
 using Infozdrav.Web.Helpers;
+using Infozdrav.Web.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Razor.Language;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using MySql.Data.EntityFrameworkCore.Extensions;
 
 namespace Infozdrav.Web
 {
@@ -28,7 +26,7 @@ namespace Infozdrav.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
-            services.AddAutoMapper();
+            services.AddAutoMapper(o => o.AddProfile(new MappingProfile()));
             services.AddDbContext<AppDbContext>(o => o.UseMySQL(Configuration["ConnectionString"]));
 
             foreach (var dependecy in Assembly.GetEntryAssembly().GetAllTypesWithBase<IDependency>())
