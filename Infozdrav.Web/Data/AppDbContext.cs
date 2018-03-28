@@ -2,6 +2,7 @@
 using Infozdrav.Web.Abstractions;
 using Infozdrav.Web.Helpers;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 
 namespace Infozdrav.Web.Data
 {

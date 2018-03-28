@@ -1,10 +1,11 @@
-﻿using System.Text;
+﻿using System.Security.Cryptography;
+using System.Text;
 
 namespace Infozdrav.Web.Helpers
 {
     public static class CryptographyHelpers
     {
-        public static string SHA512(this string input)
+        public static string ToSHA512(this string input)
         {
             var bytes = System.Text.Encoding.UTF8.GetBytes(input);
             using (var hash = System.Security.Cryptography.SHA512.Create())
@@ -17,6 +18,20 @@ namespace Infozdrav.Web.Helpers
                     hashedInputStringBuilder.Append(b.ToString("X2"));
 
                 return hashedInputStringBuilder.ToString();
+            }
+        }
+
+        public static string ToSHA1(this string input)
+        {
+            using (var sha1 = new SHA1Managed())
+            {
+                var hash = sha1.ComputeHash(Encoding.UTF8.GetBytes(input));
+                var sb = new StringBuilder(hash.Length * 2);
+
+                foreach (var b in hash)
+                    sb.Append(b.ToString("X2"));
+
+                return sb.ToString();
             }
         }
     }

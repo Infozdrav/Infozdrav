@@ -8,5 +8,10 @@ namespace Infozdrav.Web.Helpers
         {
             return Encoding.UTF8.GetBytes(s);
         }
+
+        public static int Dolzina(this string s)
+        {
+            return s.Length;
+        }
     }
 }
