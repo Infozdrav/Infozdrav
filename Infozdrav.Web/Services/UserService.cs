@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Infozdrav.Web.Abstractions;
 using Infozdrav.Web.Data;
+using Infozdrav.Web.Data.Manage;
 
 namespace Infozdrav.Web.Services
 {

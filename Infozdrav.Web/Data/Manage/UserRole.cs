@@ -1,4 +1,4 @@
-﻿namespace Infozdrav.Web.Data
+﻿namespace Infozdrav.Web.Data.Manage
 {
     public class UserRole : Entity
     {

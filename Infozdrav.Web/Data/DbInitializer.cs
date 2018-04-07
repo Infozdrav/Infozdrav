@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Infozdrav.Web.Abstractions;
+using Infozdrav.Web.Data.Manage;
 using Infozdrav.Web.Helpers;
 using Newtonsoft.Json;
 
@@ -26,7 +27,7 @@ namespace Infozdrav.Web.Data
             var dbModels = GetDbModels();
             var currModels = Assembly.GetEntryAssembly()
                                 .GetAllTypesWithBase<IEntity>()
-                                .Select(e => new ModelHash
+                                .Select(e => new Table
                                 {
                                     Name = e.FullName,
                                     Hash = GetSimpleHash(e)
@@ -39,22 +40,22 @@ namespace Infozdrav.Web.Data
 
 
             _appDbContext.Database.EnsureCreated();
-            var hashTable = _appDbContext.Set<ModelHash>();
+            var hashTable = _appDbContext.Set<Table>();
             hashTable.AddRange(currModels);
 
             _appDbContext.SaveChanges();
         }
 
-        private List<ModelHash> GetDbModels()
+        private List<Table> GetDbModels()
         {
             try
             {
-                var hashTable = _appDbContext.Set<ModelHash>();
+                var hashTable = _appDbContext.Set<Table>();
                 return hashTable.ToList();
             }
             catch (Exception e)
             {
-                return new List<ModelHash>();
+                return new List<Table>();
             }
         }
 
