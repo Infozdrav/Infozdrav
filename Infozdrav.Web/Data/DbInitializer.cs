@@ -19,6 +19,7 @@ namespace Infozdrav.Web.Data
 
             InitRoles();
             InitUsers();
+            InitWorkLocations();
         }
 
         private void UpdateDatabaseOnModelChange()
@@ -101,6 +102,17 @@ namespace Infozdrav.Web.Data
             };
 
             _appDbContext.Add(user);
+            _appDbContext.SaveChanges();
+        }
+
+        private void InitWorkLocations()
+        {
+            if (_appDbContext.WorkLocations.Any())
+                return;
+
+            _appDbContext.Add(new WorkLocation() {Name = "Analizator 1"});
+            _appDbContext.Add(new WorkLocation() {Name = "Analizator 2"});
+            _appDbContext.Add(new WorkLocation() {Name = "Analizator 3"});
             _appDbContext.SaveChanges();
         }
     }
