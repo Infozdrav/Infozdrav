@@ -30,4 +30,8 @@
     <None Include="Views\Users\User.cshtml" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Views\Suppliers\" />
+  </ItemGroup>
+
 </Project>
