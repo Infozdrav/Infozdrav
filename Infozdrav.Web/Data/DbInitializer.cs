@@ -110,9 +110,9 @@ namespace Infozdrav.Web.Data
             if (_appDbContext.WorkLocations.Any())
                 return;
 
-            _appDbContext.Add(new WorkLocation() {Name = "Analizator 1"});
-            _appDbContext.Add(new WorkLocation() {Name = "Analizator 2"});
-            _appDbContext.Add(new WorkLocation() {Name = "Analizator 3"});
+            _appDbContext.Add(new WorkLocation() {Name = "Workplace 1"});
+            _appDbContext.Add(new WorkLocation() {Name = "Workplace 2" });
+            _appDbContext.Add(new WorkLocation() {Name = "Workplace 3" });
             _appDbContext.SaveChanges();
         }
     }
