@@ -8,7 +8,8 @@ namespace Infozdrav.Web.Models
     {
         public MappingProfile()
         {
-            CreateMap<UserViewModel, User>();
+            CreateMap<Manage.UserViewModel, User>();
+            CreateMap<Trbovlje.WorkLocationViewModel, WorkLocation>();
         }
     }
 }

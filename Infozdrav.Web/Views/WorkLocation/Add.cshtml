@@ -1,0 +1,19 @@
+﻿@model Infozdrav.Web.Models.Trbovlje.WorkLocationViewModel
+
+@{
+    ViewBag.Title = "Add work location";
+    Layout = "_Layout";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<form asp-action="Add" method="post">
+    <div class="form-group">
+        <label asp-for="Name">Workplace name</label>
+        <input asp-for="Name" type="text"
+               data-val-required="The Workplace name field is required."
+               class="form-control" id="name" placeholder="Enter workplace name">
+        <span class="form-text text-danger text-muted" asp-validation-for="Name"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>

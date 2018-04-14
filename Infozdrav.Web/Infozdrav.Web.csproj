@@ -7,6 +7,9 @@
 
   <ItemGroup>
     <Content Remove="Views\Users\User.cshtml" />
+    <Content Remove="Views\WorkLocation\Add.cshtml" />
+    <Content Remove="Views\WorkLocation\Remove.cshtml" />
+    <Content Remove="Views\WorkLocation\WorkLocation.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -27,6 +30,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Views\WorkLocation\Remove.cshtml" />
+    <None Include="Views\WorkLocation\Add.cshtml" />
+    <None Include="Views\WorkLocation\WorkLocation.cshtml" />
     <None Include="Views\Users\User.cshtml" />
   </ItemGroup>
 
