@@ -6,6 +6,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Views\Supplier\Add.cshtml" />
+    <Content Remove="Views\Supplier\Remove.cshtml" />
+    <Content Remove="Views\Supplier\Supplier.cshtml" />
     <Content Remove="Views\Users\User.cshtml" />
     <Content Remove="Views\WorkLocation\Add.cshtml" />
     <Content Remove="Views\WorkLocation\Remove.cshtml" />
@@ -30,14 +33,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Views\Supplier\Add.cshtml" />
+    <None Include="Views\Supplier\Remove.cshtml" />
+    <None Include="Views\Supplier\Supplier.cshtml" />
     <None Include="Views\WorkLocation\Remove.cshtml" />
     <None Include="Views\WorkLocation\Add.cshtml" />
     <None Include="Views\WorkLocation\WorkLocation.cshtml" />
     <None Include="Views\Users\User.cshtml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Views\Suppliers\" />
   </ItemGroup>
 
 </Project>

@@ -115,5 +115,21 @@ namespace Infozdrav.Web.Data
             _appDbContext.Add(new WorkLocation() {Name = "Analizator 3"});
             _appDbContext.SaveChanges();
         }
+
+        private void InitSuppliers()
+        {
+            if (_appDbContext.Suppliers.Any())
+                return;
+
+            var supplier = new Supplier
+            {
+                Name = "Dobavitelj 1",
+                Address = "Ljubljana, Slovenija",
+                Contact = "dobavitelj@dobavitelj.com",
+            };
+
+            _appDbContext.Add(supplier);
+            _appDbContext.SaveChanges();
+        }
     }
 }
