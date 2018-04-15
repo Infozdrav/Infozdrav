@@ -127,7 +127,8 @@ namespace Infozdrav.Web.Data
             {
                 Name = "Dobavitelj 1",
                 Address = "Ljubljana, Slovenija",
-                Contact = "dobavitelj@dobavitelj.com",
+                Email = "dobavitelj@dobavitelj.com",
+                Phone = "041234567",
             };
 
             _appDbContext.Add(supplier);
@@ -143,7 +144,8 @@ namespace Infozdrav.Web.Data
             {
                 Name = "Proizvajalec 1",
                 Address = "Ljubljana, Slovenija",
-                Contact = "proizvajalec@proizvajalec.si",
+                Email = "proizvajalec@proizvajalec.si",
+                Phone = "049876543",
             };
 
             _appDbContext.Add(manufacturer);

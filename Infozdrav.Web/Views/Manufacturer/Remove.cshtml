@@ -1,7 +1,7 @@
-﻿@model Infozdrav.Web.Models.Trbovlje.SupplierViewModel
+﻿@model Infozdrav.Web.Models.Trbovlje.ManufacturerViewModel
 
 @{
-    ViewBag.Title = "Remove supplier";
+    ViewBag.Title = "Remove manufacturer";
     Layout = "_Layout";
 }
 
@@ -12,10 +12,10 @@
 <form asp-action="Remove" method="post">
     <div class="form-group">
         <input type="hidden" asp-for="Id" />
-        <label asp-for="Name">Supplier name</label>
+        <label asp-for="Name">Manufacturer name</label>
         <input asp-for="Name" type="text" class="form-control" id="name" disabled>
     </div>
     <button type="submit" class="btn btn-primary">Delete</button>
-    <a href="@Url.Action("Supplier")"
+    <a href="@Url.Action("Manufacturer")"
        class="btn btn-primary">Cancel</a>
 </form>

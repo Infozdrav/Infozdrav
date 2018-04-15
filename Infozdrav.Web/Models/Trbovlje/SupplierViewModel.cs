@@ -15,8 +15,12 @@ namespace Infozdrav.Web.Models.Trbovlje
         [Required]
         public string Address { get; set; }
 
-        [DisplayName("Supplier contact")]
+        [DisplayName("Supplier email")]
         [Required]
-        public string Contact { get; set; }
+        public string Email { get; set; }
+
+        [DisplayName("Supplier phone number")]
+        [Required]
+        public string Phone { get; set; }
     }
 }

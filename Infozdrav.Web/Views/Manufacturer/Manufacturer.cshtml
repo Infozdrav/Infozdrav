@@ -12,7 +12,7 @@
         <input type="hidden" asp-for="Id" />
         <label asp-for="Name">Manufacturer name</label>
         <input asp-for="Name" type="text"
-               data-val-required="The manufacturer name field is required."
+               data-val-required="The Manufacturer name field is required."
                class="form-control" id="name" placeholder="Enter manufacturer name">
         <span class="form-text text-danger text-muted" asp-validation-for="Name"></span>
     </div>
@@ -20,17 +20,26 @@
         <input type="hidden" asp-for="Id" />
         <label asp-for="Address">Manufacturer address</label>
         <input asp-for="Address" type="text"
-               data-val-required="The manufacturer address field is required."
+               data-val-required="The Manufacturer address field is required."
                class="form-control" id="address" placeholder="Enter manufacturer address">
         <span class="form-text text-danger text-muted" asp-validation-for="Address"></span>
     </div>
     <div class="form-group">
         <input type="hidden" asp-for="Id" />
-        <label asp-for="Contact">Manufacturer contact</label>
-        <input asp-for="Contact" type="text"
-               data-val-required="The manufacturer contact field is required."
-               class="form-control" id="contact" placeholder="Enter manufacturer contact">
-        <span class="form-text text-danger text-muted" asp-validation-for="Contact"></span>
+        <label asp-for="Email">Manufacturer email</label>
+        <input asp-for="Email" type="text"
+               data-val-email="The Manufacturer email field is not a valid email address."
+               data-val-required="The Manufacturer email field is required."
+               class="form-control" id="email" placeholder="Enter manufacturer email">
+        <span class="form-text text-danger text-muted" asp-validation-for="Email"></span>
+    </div>
+    <div class="form-group">
+        <input type="hidden" asp-for="Id" />
+        <label asp-for="Phone">Manufacturer phone</label>
+        <input asp-for="Phone" type="text"
+               data-val-required="The Manufacturer phone field is required."
+               class="form-control" id="phone" placeholder="Enter manufacturer phone">
+        <span class="form-text text-danger text-muted" asp-validation-for="Phone"></span>
     </div>
     <button type="submit" class="btn btn-primary">Save</button>
     <a href="@Url.Action("Index")"

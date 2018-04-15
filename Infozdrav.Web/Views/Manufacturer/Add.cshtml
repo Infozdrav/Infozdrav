@@ -23,11 +23,19 @@
         <span class="form-text text-danger text-muted" asp-validation-for="Address"></span>
     </div>
     <div class="form-group">
-        <label asp-for="Contact">Manufacturer contact</label>
-        <input asp-for="Contact" type="text"
-               data-val-required="The Manufacturer contact field is required."
-               class="form-control" id="contact" placeholder="Enter manufacturer contact">
-        <span class="form-text text-danger text-muted" asp-validation-for="Contact"></span>
+        <label asp-for="Email">Manufacturer email</label>
+        <input asp-for="Email" type="text"
+               data-val-email="The Manufacturer email field is not a valid email address."
+               data-val-required="The Manufacturer email field is required."
+               class="form-control" id="email" placeholder="Enter manufacturer email">
+        <span class="form-text text-danger text-muted" asp-validation-for="Email"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Phone">Manufacturer phone</label>
+        <input asp-for="Phone" type="text"
+               data-val-required="The Manufacturer phone field is required."
+               class="form-control" id="phone" placeholder="Enter manufacturer phone">
+        <span class="form-text text-danger text-muted" asp-validation-for="Phone"></span>
     </div>
     <button type="submit" class="btn btn-primary">Save</button>
 </form>
