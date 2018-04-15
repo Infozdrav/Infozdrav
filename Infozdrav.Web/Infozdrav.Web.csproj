@@ -6,6 +6,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Views\CatalogArticle\Add.cshtml" />
+    <Content Remove="Views\CatalogArticle\CatalogArticle.cshtml" />
+    <Content Remove="Views\CatalogArticle\Remove.cshtml" />
     <Content Remove="Views\Manufacturer\Add.cshtml" />
     <Content Remove="Views\Manufacturer\Manufacturer.cshtml" />
     <Content Remove="Views\Manufacturer\Remove.cshtml" />
@@ -36,6 +39,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Views\CatalogArticle\Add.cshtml" />
+    <None Include="Views\CatalogArticle\CatalogArticle.cshtml" />
+    <None Include="Views\CatalogArticle\Remove.cshtml" />
     <None Include="Views\Manufacturer\Add.cshtml" />
     <None Include="Views\Manufacturer\Remove.cshtml" />
     <None Include="Views\Manufacturer\Manufacturer.cshtml" />

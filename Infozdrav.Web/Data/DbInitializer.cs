@@ -22,6 +22,7 @@ namespace Infozdrav.Web.Data
             InitWorkLocations();
             InitSuppliers();
             InitManufacturers();
+            InitCatalogArticles();
         }
 
         private void UpdateDatabaseOnModelChange()
@@ -149,6 +150,25 @@ namespace Infozdrav.Web.Data
             };
 
             _appDbContext.Add(manufacturer);
+            _appDbContext.SaveChanges();
+        }
+
+        private void InitCatalogArticles()
+        {
+            if (_appDbContext.CatalogArticles.Any())
+                return;
+
+            var catalogArticle = new CatalogArticle
+            {
+                Name = "Artikel 1",
+                CatalogNumber = "23942",
+                Price = "14€",
+                Type = "reagent",
+                //Manufacturer = 
+                //Supplier = 
+            };
+
+            _appDbContext.Add(catalogArticle);
             _appDbContext.SaveChanges();
         }
     }
