@@ -1,0 +1,33 @@
+﻿@model Infozdrav.Web.Models.Trbovlje.ManufacturerViewModel
+
+@{
+    ViewBag.Title = "Add manufacturer";
+    Layout = "_Layout";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<form asp-action="Add" method="post">
+    <div class="form-group">
+        <label asp-for="Name">Manufacturer name</label>
+        <input asp-for="Name" type="text"
+               data-val-required="The Manufacturer name field is required."
+               class="form-control" id="name" placeholder="Enter manufacturer name">
+        <span class="form-text text-danger text-muted" asp-validation-for="Name"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Address">Manufacturer address</label>
+        <input asp-for="Address" type="text"
+               data-val-required="The Manufacturer address field is required."
+               class="form-control" id="address" placeholder="Enter manufacturer address">
+        <span class="form-text text-danger text-muted" asp-validation-for="Address"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Contact">Manufacturer contact</label>
+        <input asp-for="Contact" type="text"
+               data-val-required="The Manufacturer contact field is required."
+               class="form-control" id="contact" placeholder="Enter manufacturer contact">
+        <span class="form-text text-danger text-muted" asp-validation-for="Contact"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>

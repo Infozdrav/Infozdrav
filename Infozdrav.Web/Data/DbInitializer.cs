@@ -20,6 +20,8 @@ namespace Infozdrav.Web.Data
             InitRoles();
             InitUsers();
             InitWorkLocations();
+            InitSuppliers();
+            InitManufacturers();
         }
 
         private void UpdateDatabaseOnModelChange()
@@ -129,6 +131,22 @@ namespace Infozdrav.Web.Data
             };
 
             _appDbContext.Add(supplier);
+            _appDbContext.SaveChanges();
+        }
+
+        private void InitManufacturers()
+        {
+            if (_appDbContext.Manufacturers.Any())
+                return;
+
+            var manufacturer = new Manufacturer
+            {
+                Name = "Proizvajalec 1",
+                Address = "Ljubljana, Slovenija",
+                Contact = "proizvajalec@proizvajalec.si",
+            };
+
+            _appDbContext.Add(manufacturer);
             _appDbContext.SaveChanges();
         }
     }

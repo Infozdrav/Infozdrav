@@ -1,0 +1,28 @@
+﻿@model List<Infozdrav.Web.Models.Trbovlje.ManufacturerViewModel>
+
+@{
+    ViewBag.Title = "Manufacturers";
+    Layout = "_Layout";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<a href="@Url.Action("Add")"
+   class="btn btn-primary">Add manufacturer</a>
+<br/>
+
+<script id="actions" type="text/x-template">
+    <a href="@Url.Action("Manufacturer")/${Id}"
+       class="btn btn-primary">Edit</a>
+    <a href="@Url.Action("Remove")/${Id}"
+       class="btn btn-primary">Delete</a>
+</script>
+
+<ejs-grid id="grid" dataSource=@ViewBag.DataSource allowPaging="true">
+    <e-grid-columns>
+        <e-grid-column field="Name" textAlign="Right" width="120"></e-grid-column>
+        <e-grid-column field="Address" textAlign="Right" width="120"></e-grid-column>
+        <e-grid-column field="Contact" textAlign="Right" width="120"></e-grid-column>
+        <e-grid-column field="Id" textAlign="Right" headerText="Actions" template="#actions" width="150"></e-grid-column>
+    </e-grid-columns>
+</ejs-grid>

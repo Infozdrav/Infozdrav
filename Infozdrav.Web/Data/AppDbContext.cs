@@ -12,6 +12,7 @@ namespace Infozdrav.Web.Data
         public DbSet<Role> Roles { get; set; }
         public DbSet<WorkLocation> WorkLocations { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
+        public DbSet<Manufacturer> Manufacturers { get; set; }
 
         public AppDbContext(DbContextOptions options) : base(options)
         {
