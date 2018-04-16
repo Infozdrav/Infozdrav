@@ -2,7 +2,7 @@
 
 namespace Infozdrav.Web.Data
 {
-    public class Location : Entity
+    public class StorageLocation : Entity
     {
         public string Name { get; set; }
     }
