@@ -20,6 +20,9 @@ namespace Infozdrav.Web.Data
             InitRoles();
             InitUsers();
             InitWorkLocations();
+            InitSuppliers();
+            InitManufacturers();
+            InitCatalogArticles();
         }
 
         private void UpdateDatabaseOnModelChange()
@@ -113,6 +116,59 @@ namespace Infozdrav.Web.Data
             _appDbContext.Add(new WorkLocation() {Name = "Workplace 1"});
             _appDbContext.Add(new WorkLocation() {Name = "Workplace 2" });
             _appDbContext.Add(new WorkLocation() {Name = "Workplace 3" });
+            _appDbContext.SaveChanges();
+        }
+
+        private void InitSuppliers()
+        {
+            if (_appDbContext.Suppliers.Any())
+                return;
+
+            var supplier = new Supplier
+            {
+                Name = "Dobavitelj 1",
+                Address = "Ljubljana, Slovenija",
+                Email = "dobavitelj@dobavitelj.com",
+                Phone = "041234567",
+            };
+
+            _appDbContext.Add(supplier);
+            _appDbContext.SaveChanges();
+        }
+
+        private void InitManufacturers()
+        {
+            if (_appDbContext.Manufacturers.Any())
+                return;
+
+            var manufacturer = new Manufacturer
+            {
+                Name = "Proizvajalec 1",
+                Address = "Ljubljana, Slovenija",
+                Email = "proizvajalec@proizvajalec.si",
+                Phone = "049876543",
+            };
+
+            _appDbContext.Add(manufacturer);
+            _appDbContext.SaveChanges();
+        }
+
+        private void InitCatalogArticles()
+        {
+            if (_appDbContext.CatalogArticles.Any())
+                return;
+
+            var catalogArticle = new CatalogArticle
+            {
+                Name = "Artikel 1",
+                CatalogNumber = "23942",
+                Price = "14€",
+                Type = "reagent",
+                //Manufacturer = 
+                //Supplier = 
+            };
+
+            _appDbContext.Add(catalogArticle);
             _appDbContext.SaveChanges();
         }
     }
