@@ -6,16 +6,28 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Views\Article\Add.cshtml" />
+    <Content Remove="Views\Article\Article.cshtml" />
+    <Content Remove="Views\Article\Remove.cshtml" />
+    <Content Remove="Views\Analyser\Analyser.cshtml" />
     <Content Remove="Views\CatalogArticle\Add.cshtml" />
     <Content Remove="Views\CatalogArticle\CatalogArticle.cshtml" />
     <Content Remove="Views\CatalogArticle\Remove.cshtml" />
     <Content Remove="Views\Manufacturer\Add.cshtml" />
     <Content Remove="Views\Manufacturer\Manufacturer.cshtml" />
     <Content Remove="Views\Manufacturer\Remove.cshtml" />
+    <Content Remove="Views\Analyser\Add.cshtml" />
+    <Content Remove="Views\Analyser\Remove.cshtml" />
+    <Content Remove="Views\StorageType\Add.cshtml" />
+    <Content Remove="Views\StorageType\Remove.cshtml" />
+    <Content Remove="Views\StorageLocation\StorageLocation.cshtml" />
+    <Content Remove="Views\StorageType\StorageType.cshtml" />
     <Content Remove="Views\Supplier\Add.cshtml" />
     <Content Remove="Views\Supplier\Remove.cshtml" />
     <Content Remove="Views\Supplier\Supplier.cshtml" />
     <Content Remove="Views\Users\User.cshtml" />
+    <Content Remove="Views\StorageLocation\Add.cshtml" />
+    <Content Remove="Views\StorageLocation\Remove.cshtml" />
     <Content Remove="Views\WorkLocation\Add.cshtml" />
     <Content Remove="Views\WorkLocation\Remove.cshtml" />
     <Content Remove="Views\WorkLocation\WorkLocation.cshtml" />
@@ -39,15 +51,27 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Views\Article\Add.cshtml" />
+    <None Include="Views\Article\Article.cshtml" />
+    <None Include="Views\Article\Remove.cshtml" />
     <None Include="Views\CatalogArticle\Add.cshtml" />
     <None Include="Views\CatalogArticle\CatalogArticle.cshtml" />
     <None Include="Views\CatalogArticle\Remove.cshtml" />
     <None Include="Views\Manufacturer\Add.cshtml" />
     <None Include="Views\Manufacturer\Remove.cshtml" />
     <None Include="Views\Manufacturer\Manufacturer.cshtml" />
+    <None Include="Views\Analyser\Add.cshtml" />
+    <None Include="Views\Analyser\Remove.cshtml" />
+    <None Include="Views\Analyser\Analyser.cshtml" />
+    <None Include="Views\StorageType\Add.cshtml" />
+    <None Include="Views\StorageType\Remove.cshtml" />
+    <None Include="Views\StorageType\StorageType.cshtml" />
     <None Include="Views\Supplier\Add.cshtml" />
     <None Include="Views\Supplier\Remove.cshtml" />
     <None Include="Views\Supplier\Supplier.cshtml" />
+    <None Include="Views\StorageLocation\Add.cshtml" />
+    <None Include="Views\StorageLocation\Remove.cshtml" />
+    <None Include="Views\StorageLocation\StorageLocation.cshtml" />
     <None Include="Views\WorkLocation\Remove.cshtml" />
     <None Include="Views\WorkLocation\Add.cshtml" />
     <None Include="Views\WorkLocation\WorkLocation.cshtml" />
