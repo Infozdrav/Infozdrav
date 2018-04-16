@@ -6,8 +6,8 @@ namespace Infozdrav.Web.Data
 {
     public class Article : Entity
     {
-        // Arcile reception
-        public string CatalogNumber { get; set; } // TODO: Link to actuall catalog number
+        // Article reception
+        public CatalogArticle CatalogArticle { get; set; } // TODO: Link to actuall catalog number
 
         public string Lot { get; set; }
         public DateTime UseByDate { get; set; }
@@ -18,12 +18,15 @@ namespace Infozdrav.Web.Data
         public string Note { get; set; }
 
         public StorageType StorageType { get; set; }
-        public WorkLocation WorkLocation { get; set; }
         public StorageLocation StorageLocation { get; set; }
+        public WorkLocation WorkLocation { get; set; }
         public Analyser Analyser { get; set; }
 
-        public FileStream Certificate { get; set; }
-        public FileStream SafteyList { get; set; }
+        //public FileStream Certificate { get; set; }
+        //public FileStream SafteyList { get; set; } // TODO: Implement files
+
+        public string Certificate { get; set; }
+        public string SafteyList { get; set; }
 
         public DateTime ReceptionTime { get; set; }
         public User ReceptionUser { get; set; }

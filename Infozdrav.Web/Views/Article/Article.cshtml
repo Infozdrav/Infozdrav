@@ -1,19 +1,19 @@
-﻿@model Infozdrav.Web.Models.Trbovlje.WorkLocationViewModel
+﻿@model Infozdrav.Web.Models.Trbovlje.ArticleFullViewModel
 
 @{
-    ViewBag.Title = "Work locations";
+    ViewBag.Title = "Edit article";
     Layout = "_Layout";
 }
 
 <h2>@ViewBag.Title</h2>
 
-<form asp-action="WorkLocation" method="post">
+<form asp-action="Article" method="post">
     <div class="form-group">
         <input type="hidden" asp-for="Id" />
-        <label asp-for="Name">Workplace name</label>
+        <label asp-for="Name">Analyser name</label>
         <input asp-for="Name" type="text"
-               data-val-required="The Workplace name field is required."
-               class="form-control" id="name" placeholder="Enter workplace name">
+               data-val-required="The analyser name field is required."
+               class="form-control" id="name" placeholder="Enter Analyser name">
         <span class="form-text text-danger text-muted" asp-validation-for="Name"></span>
     </div>
     <button type="submit" class="btn btn-primary">Save</button>

@@ -19,10 +19,14 @@ namespace Infozdrav.Web.Data
 
             InitRoles();
             InitUsers();
-            InitWorkLocations();
             InitSuppliers();
             InitManufacturers();
             InitCatalogArticles();
+            InitStorageTypes();
+            InitStorageLocations();
+            InitAnalysers();
+            InitWorkLocations();
+            InitArticle();
         }
 
         private void UpdateDatabaseOnModelChange()
@@ -169,6 +173,67 @@ namespace Infozdrav.Web.Data
             };
 
             _appDbContext.Add(catalogArticle);
+            _appDbContext.SaveChanges();
+        }
+
+        private void InitStorageTypes()
+        {
+            if (_appDbContext.StorageTypes.Any())
+                return;
+
+            _appDbContext.Add(new StorageType() { Name = "-20 °c" });
+            _appDbContext.Add(new StorageType() { Name = "2-8 °c" });
+            _appDbContext.Add(new StorageType() { Name = "18-25 °c" });
+            _appDbContext.SaveChanges();
+        }
+
+        private void InitStorageLocations()
+        {
+            if (_appDbContext.StorageLocations.Any())
+                return;
+
+            _appDbContext.Add(new StorageLocation() { Name = "Storage 1" });
+            _appDbContext.Add(new StorageLocation() { Name = "Storage 2" });
+            _appDbContext.Add(new StorageLocation() { Name = "Storage 3" });
+            _appDbContext.SaveChanges();
+        }
+
+        private void InitAnalysers()
+        {
+            if (_appDbContext.Analysers.Any())
+                return;
+
+            _appDbContext.Add(new Analyser() { Name = "Analyser 1" });
+            _appDbContext.Add(new Analyser() { Name = "Analyser 2" });
+            _appDbContext.Add(new Analyser() { Name = "Analyser 3" });
+            _appDbContext.SaveChanges();
+        }
+
+        private void InitArticle()
+        {
+            if (_appDbContext.Articles.Any())
+                return;
+
+            _appDbContext.Add(new Article()
+            {
+                CatalogArticle = _appDbContext.CatalogArticles.FirstOrDefault(),
+                Lot = "lot:125864862",
+                UseByDate = DateTime.Today,
+                NumberOfUnits = 100,
+                DeliveryCost = 4.9m,
+                Rejected = false,
+                Note = "Article note",
+                StorageType = _appDbContext.StorageTypes.FirstOrDefault(),
+                StorageLocation = _appDbContext.StorageLocations.FirstOrDefault(),
+                WorkLocation = _appDbContext.WorkLocations.FirstOrDefault(),
+                Analyser = _appDbContext.Analysers.FirstOrDefault(),
+                ReceptionTime = DateTime.Today.AddDays(-1),
+                ReceptionUser = _appDbContext.Users.FirstOrDefault(),
+                WriteOffTime = DateTime.Today,
+                WriteOfUser = _appDbContext.Users.FirstOrDefault(),
+                WriteOffReason = WriteOffReason.Expired,
+                WriteOffNote = "Note for writeoff"
+            });
             _appDbContext.SaveChanges();
         }
     }

@@ -10,6 +10,7 @@ namespace Infozdrav.Web.Models
         {
             CreateMap<Manage.UserViewModel, User>();
             CreateMap<Trbovlje.WorkLocationViewModel, WorkLocation>();
+            CreateMap<Trbovlje.StorageLocationViewModel, StorageLocation>();
         }
     }
 }
