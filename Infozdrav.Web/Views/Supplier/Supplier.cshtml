@@ -1,0 +1,47 @@
+﻿@model Infozdrav.Web.Models.Trbovlje.SupplierViewModel
+
+@{
+    ViewBag.Title = "Suppliers";
+    Layout = "_Layout";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<form asp-action="Supplier" method="post">
+    <div class="form-group">
+        <input type="hidden" asp-for="Id" />
+        <label asp-for="Name">Supplier name</label>
+        <input asp-for="Name" type="text"
+               data-val-required="The Supplier name field is required."
+               class="form-control" id="name" placeholder="Enter supplier name">
+        <span class="form-text text-danger text-muted" asp-validation-for="Name"></span>
+    </div>
+    <div class="form-group">
+        <input type="hidden" asp-for="Id" />
+        <label asp-for="Address">Supplier address</label>
+        <input asp-for="Address" type="text"
+               data-val-required="The Supplier address field is required."
+               class="form-control" id="address" placeholder="Enter supplier address">
+        <span class="form-text text-danger text-muted" asp-validation-for="Address"></span>
+    </div>
+    <div class="form-group">
+        <input type="hidden" asp-for="Id" />
+        <label asp-for="Email">Supplier email</label>
+        <input asp-for="Email" type="text"
+               data-val-email="The Supplier email field is not a valid email address."
+               data-val-required="The Supplier email field is required."
+               class="form-control" id="email" placeholder="Enter supplier email">
+        <span class="form-text text-danger text-muted" asp-validation-for="Email"></span>
+    </div>
+    <div class="form-group">
+        <input type="hidden" asp-for="Id" />
+        <label asp-for="Phone">Supplier phone</label>
+        <input asp-for="Phone" type="text"
+               data-val-required="The Supplier phone field is required."
+               class="form-control" id="phone" placeholder="Enter supplier phone">
+        <span class="form-text text-danger text-muted" asp-validation-for="Phone"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a href="@Url.Action("Index")"
+       class="btn btn-primary">Back</a>
+</form>
