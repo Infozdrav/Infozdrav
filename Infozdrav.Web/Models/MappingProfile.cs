@@ -9,6 +9,7 @@ namespace Infozdrav.Web.Models
         public MappingProfile()
         {
             CreateMap<UserViewModel, User>();
+            CreateMap<DataFileViewModel, DataFile>();
         }
     }
 }
