@@ -1,13 +1,17 @@
-﻿using System.Linq;
+﻿  using System.Linq;
 using System.Reflection;
 using AutoMapper;
 using Infozdrav.Web.Abstractions;
 using Infozdrav.Web.Data;
 using Infozdrav.Web.Helpers;
 using Infozdrav.Web.Models;
-using Microsoft.AspNetCore.Builder;
+  using Infozdrav.Web.Settings;
+  using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
+  using Microsoft.AspNetCore.Mvc;
+  using Microsoft.AspNetCore.Mvc.Infrastructure;
+  using Microsoft.AspNetCore.Mvc.Routing;
+  using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -28,6 +32,13 @@ namespace Infozdrav.Web
             services.AddMvc();
             services.AddAutoMapper(o => o.AddProfile(new MappingProfile()));
             services.AddDbContext<AppDbContext>(o => o.UseMySQL(Configuration["ConnectionString"]));
+            services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
+            services.AddScoped<IUrlHelper>(factory =>
+            {
+                var actionContext = factory.GetService<IActionContextAccessor>()
+                    .ActionContext;
+                return new UrlHelper(actionContext);
+            });
 
             foreach (var dependecy in Assembly.GetEntryAssembly().GetAllTypesWithBase<IDependency>())
             {
@@ -39,6 +50,9 @@ namespace Infozdrav.Web
                 else if (interfaces.Contains(typeof(IDependency)))
                     services.AddTransient(dependecy);
             }
+
+            // Settings
+            services.Configure<FileSettings>(Configuration.GetSection("FileSettings"));
 
             var serviceProvider = services.BuildServiceProvider();
             serviceProvider.GetService<DbInitializer>();
