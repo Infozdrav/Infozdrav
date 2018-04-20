@@ -1,14 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Identity;
 
-namespace Infozdrav.Web.Data
+namespace Infozdrav.Web.Data.Manage
 {
-    public class User : Entity
+    public class User : IdentityUser<int>
     {
-        public string Name { get; set; }
-        public string Email { get; set; }
-
-        public string Password { get; set; }
-
-        public List<UserRole> Roles { get; set; }
     }
 }
