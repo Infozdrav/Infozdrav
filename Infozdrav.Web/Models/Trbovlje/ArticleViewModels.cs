@@ -46,7 +46,6 @@ namespace Infozdrav.Web.Models.Trbovlje
     {
         [Required]
         public int CatalogArticleId { get; set; }
-        [IgnoreMap]
         public IEnumerable<SelectListItem> CatalogArticles { get; set; }
 
         [Required]
@@ -59,26 +58,25 @@ namespace Infozdrav.Web.Models.Trbovlje
 
         [Required]
         public bool Rejected { get; set; }
+
+        public bool ShowIgnoreBadLot { get; set; }
+        public bool IgnoreBadLot { get; set; }
         public string Note { get; set; }
 
         [Required]
         public int StorageTypeId { get; set; }
-        [IgnoreMap]
         public IEnumerable<SelectListItem> StorageTypes { get; set; }
 
         [Required]
         public int StorageLocationId { get; set; }
-        [IgnoreMap]
         public IEnumerable<SelectListItem> StorageLocations { get; set; }
 
         [Required]
         public int WorkLocationId { get; set; }
-        [IgnoreMap]
         public IEnumerable<SelectListItem> WorkLocations { get; set; }
 
         [Required]
         public int AnalyserId { get; set; }
-        [IgnoreMap]
         public IEnumerable<SelectListItem> Analysers { get; set; }
 
         public string Certificate { get; set; } // TODO: File

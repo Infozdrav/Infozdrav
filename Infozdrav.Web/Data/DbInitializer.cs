@@ -234,6 +234,16 @@ namespace Infozdrav.Web.Data
                 WriteOffReason = WriteOffReason.Expired,
                 WriteOffNote = "Note for writeoff"
             });
+            _appDbContext.Add(new Article()
+            {
+                CatalogArticle = _appDbContext.CatalogArticles.FirstOrDefault(),
+                Lot = "badLot",
+                NumberOfUnits = 200,
+                DeliveryCost = 120.9m,
+                Rejected = true,
+                Note = "Damaged package",
+                WriteOffReason = WriteOffReason.Other,
+            });
             _appDbContext.SaveChanges();
         }
     }

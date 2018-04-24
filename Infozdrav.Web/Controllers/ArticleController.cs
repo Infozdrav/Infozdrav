@@ -8,6 +8,7 @@ using Infozdrav.Web.Models.Manage;
 using Infozdrav.Web.Models.Trbovlje;
 using Infozdrav.Web.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
@@ -93,37 +94,69 @@ namespace Infozdrav.Web.Controllers
                 return RedirectToAction("Index");
             }
 
-            if (!ModelState.IsValid)
-            {
-                return View(_mapper.Map(GetReceptionViewModel(), article));
-            }
+            // TODO: Set user and stuff
 
-            // TODO: Iz kataloga dobiti koliko dni mora biti artikle vsaj uporaben oz. minimanel rok uporab
-            if (article.UseByDate <= DateTime.Today )
+            if (article.Rejected)
             {
-                if (!article.Rejected)
+                if (ModelState.GetFieldValidationState("CatalogArticleId") == ModelValidationState.Invalid ||
+                    ModelState.GetFieldValidationState("Lot") == ModelValidationState.Invalid ||
+                    ModelState.GetFieldValidationState("NumberOfUnits") == ModelValidationState.Invalid )
                 {
-                    ModelState.AddModelError("UseByDate", "Izdelek ni več uporabne oz. ni v skladu s pogodbo. Prosim te, da ga zavrneš.");
+                    return View(_mapper.Map(GetReceptionViewModel(), article));
+                }
+
+                Article dbArticle = new Article
+                {
+                    CatalogArticleId = article.CatalogArticleId,
+                    Lot = article.Lot,
+                    NumberOfUnits = article.NumberOfUnits,
+                    Rejected = true,
+                };
+                _dbContext.Articles.Add(dbArticle);
+                _dbContext.SaveChanges();
+            }
+            else
+            {
+                if (!ModelState.IsValid)
+                {
+                    return View(_mapper.Map(GetReceptionViewModel(), article));
+                }
+
+                // TODO: Iz kataloga dobiti koliko dni mora biti artikle vsaj uporaben oz. minimanel rok uporab
+
+                if (article.UseByDate <= DateTime.Today)
+                {
+                    if (!article.Rejected)
+                    {
+                        ModelState.AddModelError("UseByDate",
+                            "Izdelek ni več uporabne oz. ni v skladu s pogodbo. Prosim te, da izdelek zavrneš.");
+                    }
+                }
+
+                if (!article.IgnoreBadLot && _dbContext.Articles.Count(queryArticle =>
+                        queryArticle.Rejected && queryArticle.Lot == article.Lot) > 0)
+                {
+                    ModelState.AddModelError("Lot",
+                        "Izdelek s tem lotom je že bil zavrnjen. Prosim te, da izdelek zavrneš.");
+                    article.ShowIgnoreBadLot = true;
+                }
+
+                if (!ModelState.IsValid)
+                {
+                    return View(_mapper.Map(GetReceptionViewModel(), article));
+                }
+
+                Article dbArticle = new Article();
+                _mapper.Map(article, dbArticle);
+                _dbContext.Articles.Add(dbArticle);
+                _dbContext.SaveChanges();
+
+                if (repeat)
+                {
+                    ModelState.Clear();
+                    return View(GetReceptionViewModel());
                 }
             }
-
-            if (!ModelState.IsValid)
-            {
-                return View(_mapper.Map(GetReceptionViewModel(), article));
-            }
-
-            Article dbArticle = new Article();
-            _mapper.Map(article, dbArticle);
-            _dbContext.Articles.Add(dbArticle);
-            _dbContext.SaveChanges();
-
-            if (repeat)
-            {
-                ModelState.Clear();
-                return View(GetReceptionViewModel());
-            }
-
-            // TODO: Set user and stuff
             return RedirectToAction("Index");
         }
 

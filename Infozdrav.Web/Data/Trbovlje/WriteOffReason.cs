@@ -6,8 +6,8 @@ namespace Infozdrav.Web.Data
 {
     public enum WriteOffReason
     {
+        BadLot,
         Expired,
-        [Display(Name = "All units used")]
         AllUnitsUsed,
         Other
     }

@@ -11,11 +11,11 @@
     <div class="form-group">
 
         <label asp-for="CatalogArticleId">Kataloška številka</label>
-        <br/>
+        <br />
         @Html.DropDownListFor(m => m.CatalogArticleId, Model.CatalogArticles, "Izberi kataloško števliko")
         <span class="form-text text-danger text-muted" asp-validation-for="CatalogArticleId"></span>
         @*TODO: Make this autocomplete or something this is not ok*@
-        <br/>
+        <br />
 
         <label asp-for="Lot">Lot</label>
         <input asp-for="Lot" type="text"
@@ -45,34 +45,41 @@
         <label asp-for="Rejected">Zavrnjen artikle</label>
         <input asp-for="Rejected" type="checkbox"
                class="form-control" id="Rejected">
-
+        
+        @if (Model.ShowIgnoreBadLot)
+        {
+            <label asp-for="IgnoreBadLot">Ignoriraj opozorilo o lotu in vnesi</label>
+            <input asp-for="IgnoreBadLot" type="checkbox"
+                   class="form-control" id="IgnoreBadLot">
+        }
+        
         <label asp-for="Note">Opombe</label>
         <input asp-for="Note" type="text"
                class="form-control" id="Note">
 
         <label asp-for="StorageTypeId">Način shranjevanja</label>
-        <br/>
+        <br />
         @Html.DropDownListFor(m => m.StorageTypeId, Model.StorageTypes, "Izberi način shranjevanja")
         <span class="form-text text-danger text-muted" asp-validation-for="StorageTypeId"></span>
-        <br/>
+        <br />
 
         <label asp-for="StorageLocationId">Mesto shranjevanja</label>
-        <br/>
+        <br />
         @Html.DropDownListFor(m => m.StorageLocationId, Model.StorageLocations, "Izberi mesto shranjevanja")
         <span class="form-text text-danger text-muted" asp-validation-for="StorageLocationId"></span>
-        <br/>
+        <br />
 
         <label asp-for="WorkLocationId">Delovna lokacija</label>
-        <br/>
+        <br />
         @Html.DropDownListFor(m => m.WorkLocationId, Model.WorkLocations, "Izberi delovno lokacijo")
         <span class="form-text text-danger text-muted" asp-validation-for="WorkLocationId"></span>
-        <br/>
+        <br />
 
         <label asp-for="AnalyserId">Analizator</label>
-        <br/>
+        <br />
         @Html.DropDownListFor(m => m.AnalyserId, Model.Analysers, "Izberi analizator")
         <span class="form-text text-danger text-muted" asp-validation-for="AnalyserId"></span>
-        <br/>
+        <br />
 
         <label asp-for="Certificate">Certifikat</label>
         <input asp-for="Certificate" type="file"
