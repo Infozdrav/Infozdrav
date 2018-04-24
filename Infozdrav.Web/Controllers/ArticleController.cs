@@ -1,11 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using Google.Protobuf.Collections;
 using Infozdrav.Web.Data;
 using Infozdrav.Web.Models.Manage;
 using Infozdrav.Web.Models.Trbovlje;
 using Infozdrav.Web.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infozdrav.Web.Controllers
 {
@@ -22,9 +26,11 @@ namespace Infozdrav.Web.Controllers
 
         public IActionResult Index()
         {
-            ViewBag.DataSource = _mapper.Map<ICollection<Models.Trbovlje.ArticleFullViewModel>>(_dbContext.Articles);
+            var data = _dbContext.Articles.Include(s => s.WorkLocation).ToList();
 
-            return View();
+            return View(
+                _mapper.Map<List<Models.Trbovlje.ArticleFullViewModel>>(
+                    _dbContext.Articles.Include(s => s.WorkLocation)));
         }
 
         public IActionResult Article(int id)
@@ -34,6 +40,91 @@ namespace Infozdrav.Web.Controllers
                 return RedirectToAction("Index");
 
             return base.View(_mapper.Map<Models.Trbovlje.ArticleFullViewModel>(article));
+        }
+
+        private IEnumerable<SelectListItem> GetStorageTypes()
+        {
+            return new SelectList(_dbContext.StorageTypes, "Id", "Name");
+        }
+
+        private IEnumerable<SelectListItem> GetStorageLocations()
+        {
+            return new SelectList(_dbContext.StorageLocations, "Id", "Name");
+        }
+
+        private IEnumerable<SelectListItem> GetWorkLocations()
+        {
+            return new SelectList(_dbContext.WorkLocations, "Id", "Name");
+        }
+
+        private IEnumerable<SelectListItem> GetAnalysers()
+        {
+            return new SelectList(_dbContext.Analysers, "Id", "Name");
+        }
+
+        private IEnumerable<SelectListItem> GetCatalogArticles()
+        {
+            return new SelectList(_dbContext.CatalogArticles, "Id", "CatalogNumber");
+        }
+
+        private ArticleReceptionViewModel GetReceptionViewModel()
+        {
+            return new ArticleReceptionViewModel
+            {
+                StorageTypes = GetStorageTypes(),
+                StorageLocations = GetStorageLocations(),
+                WorkLocations = GetWorkLocations(),
+                Analysers = GetAnalysers(),
+                CatalogArticles = GetCatalogArticles()
+            };
+        }
+
+        public IActionResult Reception()
+        {
+            return View(GetReceptionViewModel());
+        }
+
+        [HttpPost]
+        public IActionResult Reception([FromForm] Models.Trbovlje.ArticleReceptionViewModel article,
+            bool repeat = false)
+        {
+            if (article == null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View(_mapper.Map(GetReceptionViewModel(), article));
+            }
+
+            // TODO: Iz kataloga dobiti koliko dni mora biti artikle vsaj uporaben oz. minimanel rok uporab
+            if (article.UseByDate <= DateTime.Today )
+            {
+                if (!article.Rejected)
+                {
+                    ModelState.AddModelError("UseByDate", "Izdelek ni več uporabne oz. ni v skladu s pogodbo. Prosim te, da ga zavrneš.");
+                }
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View(_mapper.Map(GetReceptionViewModel(), article));
+            }
+
+            Article dbArticle = new Article();
+            _mapper.Map(article, dbArticle);
+            _dbContext.Articles.Add(dbArticle);
+            _dbContext.SaveChanges();
+
+            if (repeat)
+            {
+                ModelState.Clear();
+                return View(GetReceptionViewModel());
+            }
+
+            // TODO: Set user and stuff
+            return RedirectToAction("Index");
         }
 
         //[HttpPost]
@@ -64,7 +155,7 @@ namespace Infozdrav.Web.Controllers
         //        return View(article);
 
         //    Article dbArticle = new Article();
-            
+
         //    _mapper.Map(article, dbArticle);
         //    _dbContext.Articles.Add(dbArticle);
         //    _dbContext.SaveChanges();

@@ -8,6 +8,7 @@
   <ItemGroup>
     <Content Remove="Views\Article\Add.cshtml" />
     <Content Remove="Views\Article\Article.cshtml" />
+    <Content Remove="Views\Article\Reception.cshtml" />
     <Content Remove="Views\Article\Remove.cshtml" />
     <Content Remove="Views\Analyser\Analyser.cshtml" />
     <Content Remove="Views\CatalogArticle\Add.cshtml" />
@@ -51,6 +52,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Views\Article\Reception.cshtml" />
     <None Include="Views\Article\Add.cshtml" />
     <None Include="Views\Article\Article.cshtml" />
     <None Include="Views\Article\Remove.cshtml" />

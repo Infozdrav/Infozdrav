@@ -7,6 +7,7 @@ namespace Infozdrav.Web.Data
     public class Article : Entity
     {
         // Article reception
+        public int CatalogArticleId { get; set; }
         public CatalogArticle CatalogArticle { get; set; } // TODO: Link to actuall catalog number
 
         public string Lot { get; set; }
@@ -17,9 +18,13 @@ namespace Infozdrav.Web.Data
         public bool Rejected { get; set; }
         public string Note { get; set; }
 
+        public int StorageTypeId { get; set; }
         public StorageType StorageType { get; set; }
+        public int StorageLocationId { get; set; }
         public StorageLocation StorageLocation { get; set; }
+        public int WorkLocationId { get; set; }
         public WorkLocation WorkLocation { get; set; }
+        public int AnalyserId { get; set; }
         public Analyser Analyser { get; set; }
 
         //public FileStream Certificate { get; set; }

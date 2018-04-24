@@ -13,6 +13,7 @@ namespace Infozdrav.Web.Models
             CreateMap<Trbovlje.StorageLocationViewModel, StorageLocation>();
             CreateMap<UserViewModel, User>();
             CreateMap<DataFileViewModel, DataFile>();
+            CreateMap<Trbovlje.ArticleReceptionViewModel, Article>();
         }
     }
 }

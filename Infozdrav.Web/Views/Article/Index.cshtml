@@ -9,7 +9,7 @@
 
 <h2>@ViewBag.Title</h2>
 
-<a href="@Url.Action("Add")"
+<a href="@Url.Action("Reception")"
    class="btn btn-primary">Sprejem artiklov</a>
 <br />
 
@@ -21,19 +21,19 @@
 </script>
 
 
-<ejs-grid id="grid" dataSource="@ViewBag.DataSource" allowPaging="true" showColumnMenu="true" dataBound="dataBound">
+<ejs-grid id="grid" dataSource="@Model" allowPaging="true" showColumnMenu="true" dataBound="dataBound">
     <e-grid-columns>
         <e-grid-column field="Id"></e-grid-column>
         <e-grid-column field="Lot"></e-grid-column>
         <e-grid-column field="UseByDate" headerText="Rok Uporabe" format="@dateFormat"></e-grid-column>
         <e-grid-column field="NumberOfUnits"></e-grid-column>
         <e-grid-column field="DeliveryCost" visible="false"></e-grid-column>
-        <e-grid-column field="Rejected" headerTemplate="rejectedtemplate"width="130"></e-grid-column>
+        <e-grid-column field="Rejected" @*headerTemplate="rejectedtemplate" *@ width="130"></e-grid-column>
         <e-grid-column field="Note"></e-grid-column>
         <e-grid-column field="StorageType"></e-grid-column>
-        @*<e-grid-column field="StorageLocation"></e-grid-column>
-            <e-grid-column field="WorkLocation"></e-grid-column>
-            <e-grid-column field="Analyser"></e-grid-column>*@
+        <e-grid-column field="StorageLocation"></e-grid-column>
+        <e-grid-column field="WorkLocation.Name"></e-grid-column>
+        <e-grid-column field="Analyser"></e-grid-column>
         @* TODO: Files *@
         @*<e-grid-column field="ReceptionTime"></e-grid-column>
             <e-grid-column field="ReceptionUser"></e-grid-column>
