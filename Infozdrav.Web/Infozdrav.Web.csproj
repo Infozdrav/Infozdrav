@@ -11,6 +11,7 @@
     <Content Remove="Views\Article\Reception.cshtml" />
     <Content Remove="Views\Article\Remove.cshtml" />
     <Content Remove="Views\Analyser\Analyser.cshtml" />
+    <Content Remove="Views\Article\WriteOff.cshtml" />
     <Content Remove="Views\CatalogArticle\Add.cshtml" />
     <Content Remove="Views\CatalogArticle\CatalogArticle.cshtml" />
     <Content Remove="Views\CatalogArticle\Remove.cshtml" />
@@ -52,6 +53,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Views\Article\WriteOff.cshtml" />
     <None Include="Views\Article\Reception.cshtml" />
     <None Include="Views\Article\Add.cshtml" />
     <None Include="Views\Article\Article.cshtml" />

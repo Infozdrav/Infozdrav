@@ -9,10 +9,9 @@ namespace Infozdrav.Web.Models
         public MappingProfile()
         {
             CreateMap<Manage.UserViewModel, User>();
-            CreateMap<Trbovlje.WorkLocationViewModel, WorkLocation>();
-            CreateMap<Trbovlje.StorageLocationViewModel, StorageLocation>();
             CreateMap<UserViewModel, User>();
             CreateMap<DataFileViewModel, DataFile>();
+
             CreateMap<Trbovlje.ArticleReceptionViewModel, Article>();
             CreateMap<Trbovlje.ArticleReceptionViewModel, Trbovlje.ArticleReceptionViewModel>()
                 .ForMember( x=> x.ShowIgnoreBadLot, opt => opt.Ignore());

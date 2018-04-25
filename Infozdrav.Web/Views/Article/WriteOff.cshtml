@@ -1,0 +1,45 @@
+﻿@using Infozdrav.Web.Data
+@model Infozdrav.Web.Models.Trbovlje.ArticleWriteOffViewModel
+
+@{
+    ViewBag.Title = "Odpis artikla";
+    Layout = "_Layout";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<form asp-action="WriteOff" method="post">
+    <div class="form-group">
+
+        <input type="hidden" asp-for="Id" />
+
+        <label asp-for="CatalogArticle">Kataloško ime artikla</label>
+        <input asp-for="CatalogArticle.Name" type="text" disabled
+               class="form-control">
+
+        <label asp-for="Lot">Lot</label>
+        <input asp-for="Lot" type="text" readonly
+               class="form-control">
+
+        <label asp-for="UseByDate">Rok uporabe</label>
+        <input asp-for="UseByDate" type="date" disabled
+               class="form-control">
+
+        <label asp-for="NumberOfUnits">Število enot</label>
+        <input asp-for="NumberOfUnits" type="text" disabled
+               class="form-control">
+
+        <label asp-for="WriteOffReason">Razlog za odpis</label>
+        <br/>
+        @Html.DropDownListFor(m => m.WriteOffReason, @Html.GetEnumSelectList(typeof(WriteOffReason)), "Izberi razlog za odpis")
+        <br />
+
+        <label asp-for="WriteOffNote">Opomba</label>
+        <input asp-for="WriteOffNote" type="text"
+               class="form-control">
+    </div>
+
+    <button type="submit" class="btn btn-primary">Shrani</button>
+    <a href="@Url.Action("Index")"
+       class="btn btn-primary">Prekliči</a>
+</form>

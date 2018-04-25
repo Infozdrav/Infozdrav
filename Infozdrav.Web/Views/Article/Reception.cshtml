@@ -45,14 +45,14 @@
         <label asp-for="Rejected">Zavrnjen artikle</label>
         <input asp-for="Rejected" type="checkbox"
                class="form-control" id="Rejected">
-        
+
         @if (Model.ShowIgnoreBadLot)
         {
             <label asp-for="IgnoreBadLot">Ignoriraj opozorilo o lotu in vnesi</label>
             <input asp-for="IgnoreBadLot" type="checkbox"
                    class="form-control" id="IgnoreBadLot">
         }
-        
+
         <label asp-for="Note">Opombe</label>
         <input asp-for="Note" type="text"
                class="form-control" id="Note">
@@ -95,8 +95,8 @@
 
     </div>
 
-    <button formaction="/Article/Reception?repeat=true" type="submit" class="btn btn-primary" >Shrani in ponovi</button>
+    <button formaction="/Article/Reception?repeat=true" type="submit" class="btn btn-primary">Shrani in ponovi</button>
     <button type="submit" class="btn btn-primary">Shrani in končaj</button>
     <a href="@Url.Action("Index")"
-       class="btn btn-primary">Končaj</a>
+       class="btn btn-primary">prekliči in končaj</a>
 </form>

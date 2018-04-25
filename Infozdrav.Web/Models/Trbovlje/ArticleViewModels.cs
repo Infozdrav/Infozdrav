@@ -87,8 +87,14 @@ namespace Infozdrav.Web.Models.Trbovlje
     {
         public int Id { get; set; }
 
+        public CatalogArticle CatalogArticle { get; set; } // TODO: Link to actuall catalog number
+
+        public string Lot { get; set; }
+        public DateTime? UseByDate { get; set; }
+        public int? NumberOfUnits { get; set; }
+        
         [Required]
-        public WriteOffReason WriteOffReason { get; set; }
+        public WriteOffReason? WriteOffReason { get; set; }
         public string WriteOffNote { get; set; }
     }
 

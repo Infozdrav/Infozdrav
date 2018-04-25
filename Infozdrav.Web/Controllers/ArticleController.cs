@@ -27,11 +27,13 @@ namespace Infozdrav.Web.Controllers
 
         public IActionResult Index()
         {
-            var data = _dbContext.Articles.Include(s => s.WorkLocation).ToList();
+            var data = _dbContext.Articles
+                .Where(a => !a.Rejected || a.WriteOffReason == null)
+                .Include(s => s.WorkLocation)
+                .ToList();
 
             return View(
-                _mapper.Map<List<Models.Trbovlje.ArticleFullViewModel>>(
-                    _dbContext.Articles.Include(s => s.WorkLocation)));
+                _mapper.Map<List<Models.Trbovlje.ArticleFullViewModel>>(data));
         }
 
         public IActionResult Article(int id)
@@ -110,6 +112,7 @@ namespace Infozdrav.Web.Controllers
                     CatalogArticleId = article.CatalogArticleId,
                     Lot = article.Lot,
                     NumberOfUnits = article.NumberOfUnits,
+                    ReceptionTime = DateTime.Now,
                     Rejected = true,
                 };
                 _dbContext.Articles.Add(dbArticle);
@@ -146,8 +149,10 @@ namespace Infozdrav.Web.Controllers
                     return View(_mapper.Map(GetReceptionViewModel(), article));
                 }
 
+                // TODO: File upload...
                 Article dbArticle = new Article();
                 _mapper.Map(article, dbArticle);
+                dbArticle.ReceptionTime = DateTime.Now;
                 _dbContext.Articles.Add(dbArticle);
                 _dbContext.SaveChanges();
 
@@ -159,6 +164,50 @@ namespace Infozdrav.Web.Controllers
             }
             return RedirectToAction("Index");
         }
+
+        public IActionResult WriteOff(int id)
+        {
+            var article = _dbContext.Articles.Include( a => a.CatalogArticle ).FirstOrDefault(a => a.Id == id);
+
+            if (article == null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            return View(_mapper.Map<ArticleWriteOffViewModel>(article));
+        }
+
+        [HttpPost]
+        public IActionResult WriteOff([FromForm] Models.Trbovlje.ArticleWriteOffViewModel article)
+        {
+            if (article == null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View(article);
+            }
+
+            // TODO: Set user and stuff
+
+            var dbArticle = _dbContext.Articles.Include(a => a.CatalogArticle).FirstOrDefault(a => a.Id == article.Id);
+            if (dbArticle == null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            dbArticle.WriteOffReason = article.WriteOffReason;
+            dbArticle.WriteOffNote = article.WriteOffNote;
+            dbArticle.WriteOffTime = DateTime.Now;
+
+            _dbContext.Articles.Update(dbArticle);
+            _dbContext.SaveChanges();
+
+            return RedirectToAction("Index");
+        }
+
 
         //[HttpPost]
         //public IActionResult Article([FromForm] Models.Trbovlje.ArticleFullViewModel article)
