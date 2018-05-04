@@ -8,6 +8,8 @@ namespace Infozdrav.Web.Data
         public string CatalogNumber { get; set; }
         public string Price { get; set; }
         public string Type { get; set; }
+        public int ManufacturerId { get; set; }
+        public int SupplierId { get; set; }
         public Manufacturer Manufacturer { get; set; }
         public Supplier Supplier { get; set; }
 

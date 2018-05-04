@@ -7,7 +7,7 @@ namespace Infozdrav.Web.Models.Trbovlje
     public class CatalogArticleViewModel
     {
         public int Id { get; set; }
-    
+
         [DisplayName("Article name")]
         [Required]
         public string Name { get; set; }

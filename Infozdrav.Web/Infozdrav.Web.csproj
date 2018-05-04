@@ -6,6 +6,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Views\Laboratory\Add.cshtml" />
+    <Content Remove="Views\Laboratory\Laboratory.cshtml" />
+    <Content Remove="Views\Laboratory\Remove.cshtml" />
     <Content Remove="Views\Article\Add.cshtml" />
     <Content Remove="Views\Article\Article.cshtml" />
     <Content Remove="Views\Article\Remove.cshtml" />
@@ -51,6 +54,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Views\Laboratory\Add.cshtml" />
+    <None Include="Views\Laboratory\Laboratory.cshtml" />
+    <None Include="Views\Laboratory\Remove.cshtml" />
     <None Include="Views\Article\Add.cshtml" />
     <None Include="Views\Article\Article.cshtml" />
     <None Include="Views\Article\Remove.cshtml" />

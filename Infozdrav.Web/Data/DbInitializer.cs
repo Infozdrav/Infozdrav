@@ -27,6 +27,7 @@ namespace Infozdrav.Web.Data
             InitAnalysers();
             InitWorkLocations();
             InitArticle();
+            InitLaboratories();
         }
 
         private void UpdateDatabaseOnModelChange()
@@ -234,6 +235,16 @@ namespace Infozdrav.Web.Data
                 WriteOffReason = WriteOffReason.Expired,
                 WriteOffNote = "Note for writeoff"
             });
+            _appDbContext.SaveChanges();
+        }
+
+        private void InitLaboratories()
+        {
+            if (_appDbContext.Laboratories.Any())
+                return;
+
+            _appDbContext.Add(new Laboratory() { Name = "Urgenca" });
+            _appDbContext.Add(new Laboratory() { Name = "Bolnišnica Trbovlje" });
             _appDbContext.SaveChanges();
         }
     }
