@@ -1,11 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using Google.Protobuf.Collections;
 using Infozdrav.Web.Data;
 using Infozdrav.Web.Models.Manage;
 using Infozdrav.Web.Models.Trbovlje;
 using Infozdrav.Web.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infozdrav.Web.Controllers
 {
@@ -22,9 +27,13 @@ namespace Infozdrav.Web.Controllers
 
         public IActionResult Index()
         {
-            ViewBag.DataSource = _mapper.Map<ICollection<Models.Trbovlje.ArticleFullViewModel>>(_dbContext.Articles);
+            var data = _dbContext.Articles
+                .Where(a => !a.Rejected || a.WriteOffReason == null)
+                .Include(s => s.WorkLocation)
+                .ToList();
 
-            return View();
+            return View(
+                _mapper.Map<List<Models.Trbovlje.ArticleFullViewModel>>(data));
         }
 
         public IActionResult Article(int id)
@@ -35,6 +44,170 @@ namespace Infozdrav.Web.Controllers
 
             return base.View(_mapper.Map<Models.Trbovlje.ArticleFullViewModel>(article));
         }
+
+        private IEnumerable<SelectListItem> GetStorageTypes()
+        {
+            return new SelectList(_dbContext.StorageTypes, "Id", "Name");
+        }
+
+        private IEnumerable<SelectListItem> GetStorageLocations()
+        {
+            return new SelectList(_dbContext.StorageLocations, "Id", "Name");
+        }
+
+        private IEnumerable<SelectListItem> GetWorkLocations()
+        {
+            return new SelectList(_dbContext.WorkLocations, "Id", "Name");
+        }
+
+        private IEnumerable<SelectListItem> GetAnalysers()
+        {
+            return new SelectList(_dbContext.Analysers, "Id", "Name");
+        }
+
+        private IEnumerable<SelectListItem> GetCatalogArticles()
+        {
+            return new SelectList(_dbContext.CatalogArticles, "Id", "CatalogNumber");
+        }
+
+        private ArticleReceptionViewModel GetReceptionViewModel()
+        {
+            return new ArticleReceptionViewModel
+            {
+                StorageTypes = GetStorageTypes(),
+                StorageLocations = GetStorageLocations(),
+                WorkLocations = GetWorkLocations(),
+                Analysers = GetAnalysers(),
+                CatalogArticles = GetCatalogArticles()
+            };
+        }
+
+        public IActionResult Reception()
+        {
+            return View(GetReceptionViewModel());
+        }
+
+        [HttpPost]
+        public IActionResult Reception([FromForm] Models.Trbovlje.ArticleReceptionViewModel article,
+            bool repeat = false)
+        {
+            if (article == null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            // TODO: Set user and stuff
+
+            if (article.Rejected)
+            {
+                if (ModelState.GetFieldValidationState("CatalogArticleId") == ModelValidationState.Invalid ||
+                    ModelState.GetFieldValidationState("Lot") == ModelValidationState.Invalid ||
+                    ModelState.GetFieldValidationState("NumberOfUnits") == ModelValidationState.Invalid )
+                {
+                    return View(_mapper.Map(GetReceptionViewModel(), article));
+                }
+
+                Article dbArticle = new Article
+                {
+                    CatalogArticleId = article.CatalogArticleId,
+                    Lot = article.Lot,
+                    NumberOfUnits = article.NumberOfUnits,
+                    ReceptionTime = DateTime.Now,
+                    Rejected = true,
+                };
+                _dbContext.Articles.Add(dbArticle);
+                _dbContext.SaveChanges();
+            }
+            else
+            {
+                if (!ModelState.IsValid)
+                {
+                    return View(_mapper.Map(GetReceptionViewModel(), article));
+                }
+
+                // TODO: Iz kataloga dobiti koliko dni mora biti artikle vsaj uporaben oz. minimanel rok uporab
+
+                if (article.UseByDate <= DateTime.Today)
+                {
+                    if (!article.Rejected)
+                    {
+                        ModelState.AddModelError("UseByDate",
+                            "Izdelek ni več uporabne oz. ni v skladu s pogodbo. Prosim te, da izdelek zavrneš.");
+                    }
+                }
+
+                if (!article.IgnoreBadLot && _dbContext.Articles.Count(queryArticle =>
+                        queryArticle.Rejected && queryArticle.Lot == article.Lot) > 0)
+                {
+                    ModelState.AddModelError("Lot",
+                        "Izdelek s tem lotom je že bil zavrnjen. Prosim te, da izdelek zavrneš.");
+                    article.ShowIgnoreBadLot = true;
+                }
+
+                if (!ModelState.IsValid)
+                {
+                    return View(_mapper.Map(GetReceptionViewModel(), article));
+                }
+
+                // TODO: File upload...
+                Article dbArticle = new Article();
+                _mapper.Map(article, dbArticle);
+                dbArticle.ReceptionTime = DateTime.Now;
+                _dbContext.Articles.Add(dbArticle);
+                _dbContext.SaveChanges();
+
+                if (repeat)
+                {
+                    ModelState.Clear();
+                    return View(GetReceptionViewModel());
+                }
+            }
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult WriteOff(int id)
+        {
+            var article = _dbContext.Articles.Include( a => a.CatalogArticle ).FirstOrDefault(a => a.Id == id);
+
+            if (article == null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            return View(_mapper.Map<ArticleWriteOffViewModel>(article));
+        }
+
+        [HttpPost]
+        public IActionResult WriteOff([FromForm] Models.Trbovlje.ArticleWriteOffViewModel article)
+        {
+            if (article == null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View(article);
+            }
+
+            // TODO: Set user and stuff
+
+            var dbArticle = _dbContext.Articles.Include(a => a.CatalogArticle).FirstOrDefault(a => a.Id == article.Id);
+            if (dbArticle == null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            dbArticle.WriteOffReason = article.WriteOffReason;
+            dbArticle.WriteOffNote = article.WriteOffNote;
+            dbArticle.WriteOffTime = DateTime.Now;
+
+            _dbContext.Articles.Update(dbArticle);
+            _dbContext.SaveChanges();
+
+            return RedirectToAction("Index");
+        }
+
 
         //[HttpPost]
         //public IActionResult Article([FromForm] Models.Trbovlje.ArticleFullViewModel article)
@@ -64,7 +237,7 @@ namespace Infozdrav.Web.Controllers
         //        return View(article);
 
         //    Article dbArticle = new Article();
-            
+
         //    _mapper.Map(article, dbArticle);
         //    _dbContext.Articles.Add(dbArticle);
         //    _dbContext.SaveChanges();
