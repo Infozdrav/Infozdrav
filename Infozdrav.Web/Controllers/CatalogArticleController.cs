@@ -6,6 +6,8 @@ using Infozdrav.Web.Models.Manage;
 using Infozdrav.Web.Models.Trbovlje;
 using Infozdrav.Web.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infozdrav.Web.Controllers
 {
@@ -22,9 +24,12 @@ namespace Infozdrav.Web.Controllers
 
         public IActionResult Index()
         {
-            ViewBag.DataSource = _mapper.Map<ICollection<Models.Trbovlje.CatalogArticleViewModel>>(_dbContext.CatalogArticles);
+            var data = _dbContext.CatalogArticles
+                .Include(s => s.Manufacturer)
+                .Include(p => p.Supplier)
+                .ToList();
 
-            return View();
+            return View(_mapper.Map<List<Models.Trbovlje.CatalogArticleViewModel>>(data));
         }
 
         public IActionResult CatalogArticle(int id)
@@ -34,6 +39,30 @@ namespace Infozdrav.Web.Controllers
                 return RedirectToAction("Index");
 
             return base.View(_mapper.Map<Models.Trbovlje.CatalogArticleViewModel>(catalogArticle));
+        }
+
+        private IEnumerable<SelectListItem> GetManufacturers()
+        {
+            return new SelectList(_dbContext.Manufacturers, "Id", "Name");
+        }
+
+        private IEnumerable<SelectListItem> GetSuppliers()
+        {
+            return new SelectList(_dbContext.Suppliers, "Id", "Name");
+        }
+
+        private CatalogArticleViewModel GetCatalogArticleViewModel()
+        {
+            return new CatalogArticleViewModel
+            {
+                Manufacturers = GetManufacturers(),
+                Suppliers = GetSuppliers()
+            };
+        }
+
+        public IActionResult CatalogArticle()
+        {
+            return View(GetCatalogArticleViewModel());
         }
 
         [HttpPost]

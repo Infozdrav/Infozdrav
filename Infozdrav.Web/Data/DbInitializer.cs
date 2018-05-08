@@ -28,6 +28,7 @@ namespace Infozdrav.Web.Data
             InitWorkLocations();
             InitArticle();
             InitLaboratories();
+            InitBuffer();
         }
 
         private void UpdateDatabaseOnModelChange()
@@ -169,8 +170,8 @@ namespace Infozdrav.Web.Data
                 CatalogNumber = "23942",
                 Price = "14€",
                 Type = "reagent",
-                //Manufacturer = 
-                //Supplier = 
+                Manufacturer = _appDbContext.Manufacturers.FirstOrDefault(),
+                Supplier = _appDbContext.Suppliers.FirstOrDefault()
             };
 
             _appDbContext.Add(catalogArticle);
@@ -254,6 +255,26 @@ namespace Infozdrav.Web.Data
 
             _appDbContext.Add(new Laboratory() { Name = "Urgenca" });
             _appDbContext.Add(new Laboratory() { Name = "Bolnišnica Trbovlje" });
+            _appDbContext.SaveChanges();
+        }
+
+        private void InitBuffer()
+        {
+            if (_appDbContext.Buffers.Any())
+                return;
+
+            _appDbContext.Add(new Buffer()
+            {
+                Article = _appDbContext.Articles.FirstOrDefault(),
+                UseByDate = DateTime.Today,
+                Note = "Buffer note",
+                StorageType = _appDbContext.StorageTypes.FirstOrDefault(),
+                StorageLocation = _appDbContext.StorageLocations.FirstOrDefault(),
+                WorkLocation = _appDbContext.WorkLocations.FirstOrDefault(),
+                Analyser = _appDbContext.Analysers.FirstOrDefault(),
+                PreparationTime = DateTime.Today.AddDays(-1),
+                PreparationUser = _appDbContext.Users.FirstOrDefault(),
+            });
             _appDbContext.SaveChanges();
         }
     }

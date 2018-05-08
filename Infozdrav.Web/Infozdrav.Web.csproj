@@ -12,6 +12,9 @@
     <Content Remove="Views\Article\Remove.cshtml" />
     <Content Remove="Views\Analyser\Analyser.cshtml" />
     <Content Remove="Views\Article\WriteOff.cshtml" />
+    <Content Remove="Views\Buffer\Add.cshtml" />
+    <Content Remove="Views\Buffer\Buffer.cshtml" />
+    <Content Remove="Views\Buffer\Remove.cshtml" />
     <Content Remove="Views\CatalogArticle\Add.cshtml" />
     <Content Remove="Views\CatalogArticle\CatalogArticle.cshtml" />
     <Content Remove="Views\CatalogArticle\Remove.cshtml" />
@@ -58,6 +61,9 @@
     <None Include="Views\Article\Add.cshtml" />
     <None Include="Views\Article\Article.cshtml" />
     <None Include="Views\Article\Remove.cshtml" />
+    <None Include="Views\Buffer\Add.cshtml" />
+    <None Include="Views\Buffer\Buffer.cshtml" />
+    <None Include="Views\Buffer\Remove.cshtml" />
     <None Include="Views\CatalogArticle\Add.cshtml" />
     <None Include="Views\CatalogArticle\CatalogArticle.cshtml" />
     <None Include="Views\CatalogArticle\Remove.cshtml" />

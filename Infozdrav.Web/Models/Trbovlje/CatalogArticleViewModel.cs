@@ -1,6 +1,8 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Infozdrav.Web.Data;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Infozdrav.Web.Models.Trbovlje
 {
@@ -24,12 +26,12 @@ namespace Infozdrav.Web.Models.Trbovlje
         [Required]
         public string Type { get; set; }
 
-        [DisplayName("Supplier")]
         [Required]
-        public Supplier Supplier { get; set; }
+        public int ManufacturerId { get; set; }
+        public IEnumerable<SelectListItem> Manufacturers { get; set; }
 
-        [DisplayName("Manufacturer")]
         [Required]
-        public Manufacturer Manufacturer { get; set; }
+        public int SupplierId { get; set; }
+        public IEnumerable<SelectListItem> Suppliers { get; set; }
     }
 }

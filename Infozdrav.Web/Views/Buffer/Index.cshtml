@@ -1,0 +1,33 @@
+﻿@model List<Infozdrav.Web.Models.Trbovlje.BufferViewModel>
+
+@{
+    ViewBag.Title = "Buffers";
+    Layout = "_Layout";
+
+    string dateFormat = "short";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<a href="@Url.Action("Add")"
+   class="btn btn-primary">Add buffer</a>
+<br/>
+
+<script id="actions" type="text/x-template">
+    <a href="@Url.Action("Buffer")/${Id}"
+       class="btn btn-primary">Edit</a>
+    <a href="@Url.Action("Remove")/${Id}"
+       class="btn btn-primary">Delete</a>
+</script>
+
+<ejs-grid id="grid" dataSource=@ViewBag.DataSource allowPaging="true">
+    <e-grid-columns>
+        <e-grid-column field="Name" textAlign="Right" width="120"></e-grid-column>
+        <e-grid-column field="UseByDate" headerText="Rok Uporabe" format="@dateFormat"></e-grid-column>
+        <e-grid-column field="Note"></e-grid-column>
+        <e-grid-column field="StorageType"></e-grid-column>
+        <e-grid-column field="StorageLocation"></e-grid-column>
+        <e-grid-column field="WorkLocation.Name"></e-grid-column>
+        <e-grid-column field="Analyser"></e-grid-column>
+    </e-grid-columns>
+</ejs-grid>

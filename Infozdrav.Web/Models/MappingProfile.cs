@@ -1,4 +1,7 @@
-﻿using AutoMapper;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using AutoMapper;
 using Infozdrav.Web.Data;
 using Infozdrav.Web.Models.Manage;
 
@@ -15,6 +18,10 @@ namespace Infozdrav.Web.Models
             CreateMap<Trbovlje.ArticleReceptionViewModel, Article>();
             CreateMap<Trbovlje.ArticleReceptionViewModel, Trbovlje.ArticleReceptionViewModel>()
                 .ForMember( x=> x.ShowIgnoreBadLot, opt => opt.Ignore());
+
+            CreateMap<Trbovlje.CatalogArticleViewModel, CatalogArticle>();
+            CreateMap<Trbovlje.BufferViewModel, Buffer>();
+
         }
     }
 }
