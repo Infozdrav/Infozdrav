@@ -101,6 +101,9 @@ namespace Infozdrav.Web.Controllers
                 result = await _userManager.UpdateAsync(dbUser);
             }
 
+            if (result.Succeeded && !string.IsNullOrWhiteSpace(user.Password))
+                result = await _userManager.AddPasswordAsync(dbUser, user.Password);
+
             if (!result.Succeeded)
             {
                 foreach (var err in result.Errors)
