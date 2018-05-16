@@ -37,13 +37,15 @@ namespace Infozdrav.Web.Controllers
             {
                 var user = await _userManager.FindByEmailAsync(model.Email);
 
-                if (user != null)
+                if (user != null || !user.Enabled)
                 {
                     await _signInManager.SignOutAsync();
                     var result = await _signInManager.PasswordSignInAsync(user, model.Password, true, false);
 
                     if (result.Succeeded)
                         return Redirect(returnUrl ?? "/"); // Success.
+                    else
+                        ModelState.AddModelError(nameof(LoginViewModel.Email), "Invalid email or password");
                 }
                 else
                     ModelState.AddModelError(nameof(LoginViewModel.Email), "Invalid email or password");
@@ -56,7 +58,7 @@ namespace Infozdrav.Web.Controllers
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
-            return RedirectToAction(nameof(HomeController.Index), "Home");
+            return RedirectToAction(nameof(DashboardController.Index), "Home");
         }
 
         public IActionResult AccessDenied()

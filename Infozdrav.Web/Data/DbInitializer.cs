@@ -75,8 +75,8 @@ namespace Infozdrav.Web.Data
 
         private async Task InitRoles()
         {
-            //if (_appDbContext.Roles.Any())
-            //    return;
+            if (_roleManager.Roles.Any())
+                return;
 
             foreach (var field in typeof(Roles).GetFields(BindingFlags.Static | BindingFlags.Public))
             {
@@ -99,9 +99,10 @@ namespace Infozdrav.Web.Data
                 UserName = "Administrator",
                 Email = "admin@infozdrav.si",
                 EmailConfirmed = true,
+                Enabled = true
             };
 
-            await _userManager.CreateAsync(user, "$Demo1001");
+            await _userManager.CreateAsync(user, "$Admin123");
             await _userManager.AddToRoleAsync(user, Roles.Administrator);
 
             _appDbContext.SaveChanges();

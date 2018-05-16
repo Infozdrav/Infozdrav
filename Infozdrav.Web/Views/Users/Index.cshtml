@@ -12,9 +12,10 @@
        class="btn btn-primary">Edit</a>
 </script>
 
+<a href="@Url.Action("User")" class="btn btn-primary">New user</a>
 <ejs-grid id="grid" dataSource=@ViewBag.DataSource allowPaging="true">
     <e-grid-columns>
-        <e-grid-column field="Name" textAlign="Right" width="120"></e-grid-column>
+        <e-grid-column field="UserName" textAlign="Right" width="120"></e-grid-column>
         <e-grid-column field="Email" textAlign="Right" width="150"></e-grid-column>
         <e-grid-column field="Id" textAlign="Right" headerText="Actions" template="#actions" width="150"></e-grid-column>
     </e-grid-columns>

@@ -1,13 +1,14 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Infozdrav.Web.Abstractions;
+using Microsoft.AspNetCore.Identity;
 
 namespace Infozdrav.Web.Data.Manage
 {
-    public class Role : IdentityRole<int>
+    public class Role : IdentityRole<int>, IEntity
     {
     }
 
     public sealed class Roles
     {
-        public static readonly string Administrator = "Administrator";
+        public const string Administrator = "Administrator";
     }
 }
