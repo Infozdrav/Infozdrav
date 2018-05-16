@@ -15,6 +15,7 @@ namespace Infozdrav.Web.Models
                 .Ignore(o => o.Password);
             CreateMap<User, UserEditViewModel>();
             CreateMap<Role, RoleViewModel>();
+            CreateMap<DataFileViewModel, DataFile>();
         }
     }
 }
