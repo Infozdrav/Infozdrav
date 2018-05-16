@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using Infozdrav.Web.Abstractions;
+using Infozdrav.Web.Data.Manage;
 using Infozdrav.Web.Helpers;
+using Microsoft.AspNetCore.Identity;
 using Newtonsoft.Json;
 
 namespace Infozdrav.Web.Data
@@ -11,14 +14,20 @@ namespace Infozdrav.Web.Data
     public class DbInitializer : ISingletonDependency
     {
         private readonly AppDbContext _appDbContext;
+        private readonly UserManager<User> _userManager;
+        private readonly RoleManager<Role> _roleManager;
 
-        public DbInitializer(AppDbContext appDbContext)
+        public DbInitializer(AppDbContext appDbContext,
+                             UserManager<User> userManager,
+                             RoleManager<Role> roleManager)
         {
             _appDbContext = appDbContext;
+            _userManager = userManager;
+            _roleManager = roleManager;
             UpdateDatabaseOnModelChange();
 
-            InitRoles();
-            InitUsers();
+            InitRoles().Wait();
+            InitUsers().Wait();
         }
 
         private void UpdateDatabaseOnModelChange()
@@ -64,14 +73,14 @@ namespace Infozdrav.Web.Data
             return JsonConvert.SerializeObject(t.GetProperties().Select(prop => (type: prop.PropertyType.Name, name: prop.Name))).ToSHA1();
         }
 
-        private void InitRoles()
+        private async Task InitRoles()
         {
-            if (_appDbContext.Roles.Any())
+            if (_roleManager.Roles.Any())
                 return;
 
             foreach (var field in typeof(Roles).GetFields(BindingFlags.Static | BindingFlags.Public))
             {
-                _appDbContext.Roles.Add(new Role
+                await _roleManager.CreateAsync(new Role
                 {
                     Name = field.GetValue(null) as string
                 });
@@ -80,27 +89,22 @@ namespace Infozdrav.Web.Data
             _appDbContext.SaveChanges();
         }
 
-        private void InitUsers()
+        private async Task InitUsers()
         {
             if (_appDbContext.Users.Any())
                 return;
 
             var user = new User
             {
+                UserName = "Administrator",
                 Email = "admin@infozdrav.si",
-                Name = "Administrator",
-                Password = "infozdrav".ToSHA512(),
+                EmailConfirmed = true,
+                Enabled = true
             };
 
-            user.Roles = new List<UserRole> {
-                new UserRole
-                {
-                    User = user,
-                    Role = _appDbContext.Roles.First(o => o.Name == Roles.Administrator)
-                },
-            };
+            await _userManager.CreateAsync(user, "$Admin123");
+            await _userManager.AddToRoleAsync(user, Roles.Administrator);
 
-            _appDbContext.Add(user);
             _appDbContext.SaveChanges();
         }
     }
