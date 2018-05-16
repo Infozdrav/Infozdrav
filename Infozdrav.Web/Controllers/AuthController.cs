@@ -58,7 +58,7 @@ namespace Infozdrav.Web.Controllers
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
-            return RedirectToAction(nameof(DashboardController.Index), "Home");
+            return RedirectToAction(nameof(DashboardController.Index), "Dashboard");
         }
 
         public IActionResult AccessDenied()
