@@ -1,15 +1,14 @@
 ﻿using System.Reflection;
 using Infozdrav.Web.Abstractions;
+using Infozdrav.Web.Data.Manage;
 using Infozdrav.Web.Helpers;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
 
 namespace Infozdrav.Web.Data
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : IdentityDbContext<User, Role, int>
     {
-        public DbSet<User> Users { get; set; }
-        public DbSet<Role> Roles { get; set; }
         public DbSet<WorkLocation> WorkLocations { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
         public DbSet<Manufacturer> Manufacturers { get; set; }
@@ -22,7 +21,9 @@ namespace Infozdrav.Web.Data
 
         public AppDbContext(DbContextOptions options) : base(options)
         {
+            
         }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

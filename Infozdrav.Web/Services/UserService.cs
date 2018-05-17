@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Infozdrav.Web.Abstractions;
 using Infozdrav.Web.Data;
+using Infozdrav.Web.Data.Manage;
 
 namespace Infozdrav.Web.Services
 {
@@ -13,10 +14,9 @@ namespace Infozdrav.Web.Services
             _dbContext = dbContext;
         }
 
-        public bool UpdateEmail(User user, string newMail, out string error)
+        public bool CheckEmail(User user, string newMail, out string error)
         {
             error = "";
-            // TODO is newMail valid mail?
 
             // Email already in use
             if (_dbContext.Users.Any(u => u.Id != user.Id && u.Email == newMail))
@@ -24,8 +24,6 @@ namespace Infozdrav.Web.Services
                 error = "Email already in use!";
                 return false;
             }
-
-            user.Email = newMail;
 
             return true;
         }

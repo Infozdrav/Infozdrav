@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using Infozdrav.Web.Data;
+using Infozdrav.Web.Data.Manage;
+using Infozdrav.Web.Helpers;
 using Infozdrav.Web.Models.Manage;
 
 namespace Infozdrav.Web.Models
@@ -10,6 +12,10 @@ namespace Infozdrav.Web.Models
         {
             CreateMap<Manage.UserViewModel, User>();
             CreateMap<UserViewModel, User>();
+            CreateMap<User, UserViewModel>()
+                .Ignore(o => o.Password);
+            CreateMap<User, UserEditViewModel>();
+            CreateMap<Role, RoleViewModel>();
             CreateMap<DataFileViewModel, DataFile>();
 
             CreateMap<Trbovlje.ArticleReceptionViewModel, Article>();
