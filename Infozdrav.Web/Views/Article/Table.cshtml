@@ -1,0 +1,56 @@
+﻿@model List<Infozdrav.Web.Models.Trbovlje.ArticleFullViewModel>
+
+@{
+    Layout = "_Layout";
+
+    string dateFormat = "short";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<a href="@Url.Action("Reception")"
+   class="btn btn-primary">Sprejem artiklov</a>
+<br />
+
+<script id="actions" type="text/x-template">
+    <a href="@Url.Action("Article")/${Id}"
+       class="btn btn-primary">Edit</a>
+    <a href="@Url.Action("WriteOff")/${Id}"
+       class="btn btn-primary">Write off</a>
+</script>
+
+
+<ejs-grid id="grid" dataSource="@Model" allowPaging="true" showColumnMenu="true" dataBound="dataBound">
+    <e-grid-columns>
+        <e-grid-column field="Id"></e-grid-column>
+        <e-grid-column field="Lot"></e-grid-column>
+        <e-grid-column field="UseByDate" headerText="Rok Uporabe" format="@dateFormat"></e-grid-column>
+        <e-grid-column field="NumberOfUnits"></e-grid-column>
+        <e-grid-column field="DeliveryCost" visible="false"></e-grid-column>
+        <e-grid-column field="Rejected" @*headerTemplate="rejectedtemplate" *@ width="130"></e-grid-column>
+        <e-grid-column field="Note"></e-grid-column>
+        <e-grid-column field="StorageType"></e-grid-column>
+        <e-grid-column field="StorageLocation"></e-grid-column>
+        <e-grid-column field="WorkLocation.Name"></e-grid-column>
+        <e-grid-column field="Analyser"></e-grid-column>
+        @* TODO: Files *@
+        @*<e-grid-column field="ReceptionTime"></e-grid-column>
+            <e-grid-column field="ReceptionUser"></e-grid-column>
+            <e-grid-column field="WriteOffReason"></e-grid-column>
+            <e-grid-column field="WriteOffTime"></e-grid-column>
+            <e-grid-column field="WriteOfUser"></e-grid-column>
+            <e-grid-column field="WriteOffNote"></e-grid-column>*@
+        <e-grid-column headerText="Actions" template="#actions" width="150"></e-grid-column>
+    </e-grid-columns>
+</ejs-grid>
+
+<script id="rejectedtemplate" type="text/x-template">
+    <span>"No"</span> No
+</script>
+
+
+<script>
+    function dataBound(args) {
+        this.autoFitColumns(['Id', 'Lot', 'UseByDate', 'NumberOfUnits', 'DeliveryCost']);
+    }
+</script>

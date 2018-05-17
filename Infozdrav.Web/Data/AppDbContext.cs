@@ -18,6 +18,7 @@ namespace Infozdrav.Web.Data
         public DbSet<StorageLocation> StorageLocations { get; set; }
         public DbSet<Article> Articles { get; set; }
         public DbSet<Analyser> Analysers { get; set; }
+        public DbSet<ArticleUse> ArticleUses { get; set; }
 
         public AppDbContext(DbContextOptions options) : base(options)
         {

@@ -6,11 +6,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="Views\Article\Add.cshtml" />
     <Content Remove="Views\Article\Article.cshtml" />
     <Content Remove="Views\Article\Reception.cshtml" />
     <Content Remove="Views\Article\Remove.cshtml" />
     <Content Remove="Views\Analyser\Analyser.cshtml" />
+    <Content Remove="Views\Article\UseArticle.cshtml" />
     <Content Remove="Views\Article\WriteOff.cshtml" />
     <Content Remove="Views\CatalogArticle\Add.cshtml" />
     <Content Remove="Views\CatalogArticle\CatalogArticle.cshtml" />
@@ -53,9 +53,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Views\Article\UseArticle.cshtml" />
     <None Include="Views\Article\WriteOff.cshtml" />
     <None Include="Views\Article\Reception.cshtml" />
-    <None Include="Views\Article\Add.cshtml" />
     <None Include="Views\Article\Article.cshtml" />
     <None Include="Views\Article\Remove.cshtml" />
     <None Include="Views\CatalogArticle\Add.cshtml" />

@@ -28,7 +28,7 @@ namespace Infozdrav.Web.Controllers
         public IActionResult Index()
         {
             var data = _dbContext.Articles
-                .Where(a => !a.Rejected || a.WriteOffReason == null)
+                .Where(a => !a.Rejected && a.WriteOffReason == null)
                 .Include(s => s.WorkLocation)
                 .ToList();
 
@@ -150,8 +150,7 @@ namespace Infozdrav.Web.Controllers
                 }
 
                 // TODO: File upload...
-                Article dbArticle = new Article();
-                _mapper.Map(article, dbArticle);
+                Article dbArticle = _mapper.Map<Article>(article);
                 dbArticle.ReceptionTime = DateTime.Now;
                 _dbContext.Articles.Add(dbArticle);
                 _dbContext.SaveChanges();
@@ -165,25 +164,93 @@ namespace Infozdrav.Web.Controllers
             return RedirectToAction("Index");
         }
 
+        public IActionResult UseArticle(int id) // article id
+        {
+            var article = _dbContext.Articles.Include(a => a.CatalogArticle).FirstOrDefault(a => a.Id == id);
+            if (article == null)
+            {
+                var data = _dbContext.Articles
+                    .Where(a => !a.Rejected && a.WriteOffReason == null)
+                    .Include(s => s.WorkLocation)
+                    .ToList();
+                // TODO
+
+                ViewData["Title"] = "Uporaba artikla";
+                return View("Table", _mapper.Map<List<Models.Trbovlje.ArticleFullViewModel>>(data));
+            }
+
+            return View(new ArticleUseViewModel
+            {
+                Article = article,
+                ArticleId = article.Id
+            });
+        }
+
+        [HttpPost]
+        public IActionResult UseArticle([FromForm]  ArticleUseViewModel articleUse)
+        {
+            if (articleUse.NumberOfUnits < 1)
+            {
+                ModelState.AddModelError("NumberOfUnits", "Število uporabljenih enot mora biti več kot 0");
+            }
+
+            var article = _dbContext.Articles.FirstOrDefault(a => a.Id == articleUse.ArticleId);
+            if (article == null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            var articleUses = _dbContext.ArticleUses.Where(use => use.ArticleId == articleUse.ArticleId).Select(use => use.NumberOfUnits).Sum();
+            var articlesLeft = article.NumberOfUnits - articleUses;
+            if (articlesLeft - articleUses < 0)
+            {
+                ModelState.AddModelError("NumberOfUnits", "Na voljo je samo še " + articlesLeft + " enot");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View(articleUse);
+            }
+
+            // TODO: set user
+            ArticleUse dbArticleUse = _mapper.Map<ArticleUse>(articleUse);
+            dbArticleUse.UseTime = DateTime.Now;
+
+            _dbContext.ArticleUses.Add(dbArticleUse);
+            _dbContext.SaveChanges();
+
+            return RedirectToAction("Index");
+        }
+
         public IActionResult WriteOff(int id)
         {
             var article = _dbContext.Articles.Include( a => a.CatalogArticle ).FirstOrDefault(a => a.Id == id);
 
             if (article == null)
             {
-                return RedirectToAction("Index");
+                var data = _dbContext.Articles
+                    .Where(a => !a.Rejected && a.WriteOffReason == null)
+                    .Include(s => s.WorkLocation)
+                    .ToList();
+                // TODO
+
+                ViewData["Title"] = "Odpis artikla";
+                return View("Table", _mapper.Map<List<Models.Trbovlje.ArticleFullViewModel>>(data));
             }
 
             return View(_mapper.Map<ArticleWriteOffViewModel>(article));
         }
 
         [HttpPost]
-        public IActionResult WriteOff([FromForm] Models.Trbovlje.ArticleWriteOffViewModel article)
+        public IActionResult WriteOff([FromForm] ArticleWriteOffViewModel article)
         {
             if (article == null)
             {
                 return RedirectToAction("Index");
             }
+
+            if (article.WriteOffReason == WriteOffReason.Other && (String.IsNullOrEmpty(article.WriteOffNote) || String.IsNullOrWhiteSpace(article.WriteOffNote)))
+                ModelState.AddModelError("WriteOffNote", "Opomba je potrebna");
 
             if (!ModelState.IsValid)
             {
@@ -193,6 +260,7 @@ namespace Infozdrav.Web.Controllers
             // TODO: Set user and stuff
 
             var dbArticle = _dbContext.Articles.Include(a => a.CatalogArticle).FirstOrDefault(a => a.Id == article.Id);
+
             if (dbArticle == null)
             {
                 return RedirectToAction("Index");
@@ -208,62 +276,25 @@ namespace Infozdrav.Web.Controllers
             return RedirectToAction("Index");
         }
 
+        public IActionResult Remove(int id)
+        {
+            var dbArticle = _dbContext.Articles.FirstOrDefault(l => l.Id == id);
+            if (dbArticle == null)
+                RedirectToAction("Index");
 
-        //[HttpPost]
-        //public IActionResult Article([FromForm] Models.Trbovlje.ArticleFullViewModel article)
-        //{
-        //    if (!ModelState.IsValid)
-        //        return View(article);
+            return View(_mapper.Map<ArticleFullViewModel>(dbArticle));
+        }
 
-        //    var dbArticle = _dbContext.Articles.FirstOrDefault(u => u.Id == article.Id);
-        //    if (article == null)
-        //        return RedirectToAction("Index");
-
-        //    _mapper.Map(article, dbArticle);
-        //    _dbContext.Articles.Update(dbArticle);
-        //    _dbContext.SaveChanges();
-        //    return RedirectToAction("Index");
-        //}
-
-        //public IActionResult Add()
-        //{
-        //    return View();
-        //}
-
-        //[HttpPost]
-        //public IActionResult Add([FromForm] Models.Trbovlje.ArticleViewModel article)
-        //{
-        //    if (!ModelState.IsValid)
-        //        return View(article);
-
-        //    Article dbArticle = new Article();
-
-        //    _mapper.Map(article, dbArticle);
-        //    _dbContext.Articles.Add(dbArticle);
-        //    _dbContext.SaveChanges();
-
-        //    return RedirectToAction("Index");
-        //}
-
-        //public IActionResult Remove(int id)
-        //{
-        //    var dbArticle = _dbContext.Articles.FirstOrDefault(l => l.Id == id);
-        //    if (dbArticle == null)
-        //        RedirectToAction("Index");
-
-        //    return View(_mapper.Map<ArticleViewModel>(dbArticle));
-        //}
-
-        //[HttpPost]
-        //public IActionResult Remove([FromForm] ArticleViewModel viewModel)
-        //{
-        //    var dbArticle = _dbContext.Articles.FirstOrDefault(l => l.Id == viewModel.Id);
-        //    if (dbArticle != null)
-        //    {
-        //        _dbContext.Articles.Remove(dbArticle);
-        //        _dbContext.SaveChanges();
-        //    }
-        //    return RedirectToAction("Index");
-        //}
+        [HttpPost]
+        public IActionResult Remove([FromForm] ArticleFullViewModel viewModel)
+        {
+            var dbArticle = _dbContext.Articles.FirstOrDefault(l => l.Id == viewModel.Id);
+            if (dbArticle != null)
+            {
+                _dbContext.Articles.Remove(dbArticle);
+                _dbContext.SaveChanges();
+            }
+            return RedirectToAction("Index");
+        }
     }
 }

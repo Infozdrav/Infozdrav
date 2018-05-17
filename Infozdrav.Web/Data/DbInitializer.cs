@@ -15,7 +15,8 @@ namespace Infozdrav.Web.Data
         public DbInitializer(AppDbContext appDbContext)
         {
             _appDbContext = appDbContext;
-            UpdateDatabaseOnModelChange();
+            if (!UpdateDatabaseOnModelChange())
+                return;
 
             InitRoles();
             InitUsers();
@@ -29,7 +30,7 @@ namespace Infozdrav.Web.Data
             InitArticle();
         }
 
-        private void UpdateDatabaseOnModelChange()
+        private bool UpdateDatabaseOnModelChange()
         {
             var dbModels = GetDbModels();
             var currModels = Assembly.GetEntryAssembly()
@@ -44,13 +45,15 @@ namespace Infozdrav.Web.Data
             // TODO Could be optimized
             if (currModels.Any(m => dbModels.Count(o => o.Name == m.Name && o.Hash == m.Hash) != 1))
                 _appDbContext.Database.EnsureDeleted();
-
+            else
+                return false;
 
             _appDbContext.Database.EnsureCreated();
             var hashTable = _appDbContext.Set<ModelHash>();
             hashTable.AddRange(currModels);
-
             _appDbContext.SaveChanges();
+
+            return true;
         }
 
         private List<ModelHash> GetDbModels()
@@ -214,6 +217,25 @@ namespace Infozdrav.Web.Data
             if (_appDbContext.Articles.Any())
                 return;
 
+            for (int i = 0; i < 5; i++)
+            {
+                _appDbContext.Add(new Article()
+                {
+                    CatalogArticle = _appDbContext.CatalogArticles.FirstOrDefault(),
+                    Lot = "lot:000 " + i,
+                    UseByDate = DateTime.Today,
+                    NumberOfUnits = 1 + i * 10,
+                    DeliveryCost = 4.9m,
+                    Rejected = false,
+                    Note = "Article note " + i,
+                    StorageType = _appDbContext.StorageTypes.FirstOrDefault(),
+                    StorageLocation = _appDbContext.StorageLocations.FirstOrDefault(),
+                    WorkLocation = _appDbContext.WorkLocations.FirstOrDefault(),
+                    Analyser = _appDbContext.Analysers.FirstOrDefault(),
+                    ReceptionTime = DateTime.Today.AddDays(-1),
+                    ReceptionUser = _appDbContext.Users.FirstOrDefault(),
+                });
+            }
             _appDbContext.Add(new Article()
             {
                 CatalogArticle = _appDbContext.CatalogArticles.FirstOrDefault(),
@@ -234,6 +256,7 @@ namespace Infozdrav.Web.Data
                 WriteOffReason = WriteOffReason.Expired,
                 WriteOffNote = "Note for writeoff"
             });
+
             _appDbContext.Add(new Article()
             {
                 CatalogArticle = _appDbContext.CatalogArticles.FirstOrDefault(),

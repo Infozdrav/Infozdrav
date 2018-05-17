@@ -13,6 +13,7 @@ namespace Infozdrav.Web.Models
             CreateMap<DataFileViewModel, DataFile>();
 
             CreateMap<Trbovlje.ArticleReceptionViewModel, Article>();
+            CreateMap<Trbovlje.ArticleUseViewModel, ArticleUse>();
             CreateMap<Trbovlje.ArticleReceptionViewModel, Trbovlje.ArticleReceptionViewModel>()
                 .ForMember( x=> x.ShowIgnoreBadLot, opt => opt.Ignore());
         }
