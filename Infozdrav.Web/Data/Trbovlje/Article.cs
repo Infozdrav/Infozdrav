@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using Infozdrav.Web.Data.Manage;
 
 namespace Infozdrav.Web.Data
 {
@@ -35,6 +36,8 @@ namespace Infozdrav.Web.Data
 
         public DateTime? ReceptionTime { get; set; }
         public User ReceptionUser { get; set; }
+
+        public IEnumerable<ArticleUse> ArticleUses { get; set; }
 
         public DateTime? WriteOffTime { get; set; }
         public User WriteOfUser { get; set; }

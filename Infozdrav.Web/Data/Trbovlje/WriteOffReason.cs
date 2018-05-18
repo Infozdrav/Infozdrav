@@ -13,6 +13,8 @@ namespace Infozdrav.Web.Data
         Expired,
         [Display(Name = "Izdelek je bil uporabljen")]
         AllUnitsUsed,
+        [Display(Name = "Izdelek je bil zavrnjen")]
+        Rejected,
         [Display(Name = "Drug razlog")]
         Other
     }

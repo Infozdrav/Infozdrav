@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using AutoMapper;
 using Infozdrav.Web.Data;
+using Infozdrav.Web.Data.Manage;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Infozdrav.Web.Models.Trbovlje
@@ -96,6 +97,34 @@ namespace Infozdrav.Web.Models.Trbovlje
         [Required]
         public WriteOffReason? WriteOffReason { get; set; }
         public string WriteOffNote { get; set; }
+    }
+
+    public class ArticleTableViewModel
+    {
+        public int Id { get; set; }
+
+        public CatalogArticle CatalogArticle { get; set; } // TODO: Link to actuall catalog number
+
+        public string Lot { get; set; }
+        public DateTime UseByDate { get; set; }
+
+        [Display(Name = "Neuporabljenih enot")]
+        public int NumberOfAvailableUnits { get; set; }
+
+       // public string Note { get; set; }
+
+        public StorageType StorageType { get; set; }
+        public StorageLocation StorageLocation { get; set; }
+        public WorkLocation WorkLocation { get; set; }
+        public Analyser Analyser { get; set; }
+
+        //public FileStream Certificate { get; set; }
+        //public FileStream SafteyList { get; set; } // TODO: Implement files
+
+        public string Certificate { get; set; }
+        public string SafteyList { get; set; }
+
+      //  public DateTime ReceptionTime { get; set; }
     }
 
     public class ArticleEditViewModel

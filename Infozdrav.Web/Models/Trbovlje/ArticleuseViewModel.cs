@@ -12,6 +12,6 @@ namespace Infozdrav.Web.Models.Trbovlje
         public Article Article { get; set; }
 
         [Required]
-        public int? NumberOfUnits { get; set; }
+        public int UnitNumber { get; set; }
     }
 }

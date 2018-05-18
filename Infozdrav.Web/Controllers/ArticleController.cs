@@ -1,12 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
 using AutoMapper;
 using Google.Protobuf.Collections;
 using Infozdrav.Web.Data;
+using Infozdrav.Web.Data.Manage;
 using Infozdrav.Web.Models.Manage;
 using Infozdrav.Web.Models.Trbovlje;
 using Infozdrav.Web.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -14,26 +19,31 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infozdrav.Web.Controllers
 {
+    [Authorize]
     public class ArticleController : Controller
     {
         private readonly AppDbContext _dbContext;
+        private readonly UserManager<User> _userManager;
         private readonly IMapper _mapper;
 
-        public ArticleController(AppDbContext dbContext, IMapper mapper, UserService userService)
+        public ArticleController(AppDbContext dbContext, IMapper mapper, UserService userService,
+            UserManager<User> userManager)
         {
             _dbContext = dbContext;
+            _userManager = userManager;
             _mapper = mapper;
         }
 
         public IActionResult Index()
         {
+            // TODO: Pregled zaloge
             var data = _dbContext.Articles
                 .Where(a => !a.Rejected && a.WriteOffReason == null)
                 .Include(s => s.WorkLocation)
                 .ToList();
 
             return View(
-                _mapper.Map<List<Models.Trbovlje.ArticleFullViewModel>>(data));
+                _mapper.Map<List<Models.Trbovlje.ArticleFullViewModel>>(data)); // TODO: ZA zalogo
         }
 
         public IActionResult Article(int id)
@@ -67,7 +77,8 @@ namespace Infozdrav.Web.Controllers
 
         private IEnumerable<SelectListItem> GetCatalogArticles()
         {
-            return new SelectList(_dbContext.CatalogArticles, "Id", "CatalogNumber");
+            // TOOO: Samo "aktiven" artikle
+            return new SelectList(_dbContext.CatalogArticles, "Id", "Name");
         }
 
         private ArticleReceptionViewModel GetReceptionViewModel()
@@ -88,7 +99,7 @@ namespace Infozdrav.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Reception([FromForm] Models.Trbovlje.ArticleReceptionViewModel article,
+        public async Task<IActionResult> Reception([FromForm] Models.Trbovlje.ArticleReceptionViewModel article,
             bool repeat = false)
         {
             if (article == null)
@@ -96,24 +107,30 @@ namespace Infozdrav.Web.Controllers
                 return RedirectToAction("Index");
             }
 
-            // TODO: Set user and stuff
-
             if (article.Rejected)
             {
                 if (ModelState.GetFieldValidationState("CatalogArticleId") == ModelValidationState.Invalid ||
                     ModelState.GetFieldValidationState("Lot") == ModelValidationState.Invalid ||
-                    ModelState.GetFieldValidationState("NumberOfUnits") == ModelValidationState.Invalid )
+                    ModelState.GetFieldValidationState("NumberOfUnits") == ModelValidationState.Invalid)
                 {
                     return View(_mapper.Map(GetReceptionViewModel(), article));
                 }
 
+                var user = await _userManager.FindByNameAsync(User.Identity.Name);
                 Article dbArticle = new Article
                 {
                     CatalogArticleId = article.CatalogArticleId,
                     Lot = article.Lot,
                     NumberOfUnits = article.NumberOfUnits,
+
                     ReceptionTime = DateTime.Now,
+                    ReceptionUser = user,
+
                     Rejected = true,
+
+                    WriteOfUser = user,
+                    WriteOffTime = DateTime.Now,
+                    WriteOffReason = WriteOffReason.Rejected,
                 };
                 _dbContext.Articles.Add(dbArticle);
                 _dbContext.SaveChanges();
@@ -126,7 +143,6 @@ namespace Infozdrav.Web.Controllers
                 }
 
                 // TODO: Iz kataloga dobiti koliko dni mora biti artikle vsaj uporaben oz. minimanel rok uporab
-
                 if (article.UseByDate <= DateTime.Today)
                 {
                     if (!article.Rejected)
@@ -136,7 +152,8 @@ namespace Infozdrav.Web.Controllers
                     }
                 }
 
-                if (!article.IgnoreBadLot && _dbContext.Articles.Count(queryArticle =>
+                if (!article.IgnoreBadLot &&
+                    _dbContext.Articles.Count(queryArticle =>
                         queryArticle.Rejected && queryArticle.Lot == article.Lot) > 0)
                 {
                     ModelState.AddModelError("Lot",
@@ -150,33 +167,35 @@ namespace Infozdrav.Web.Controllers
                 }
 
                 // TODO: File upload...
+                var user = await _userManager.FindByNameAsync(User.Identity.Name);
                 Article dbArticle = _mapper.Map<Article>(article);
                 dbArticle.ReceptionTime = DateTime.Now;
+                dbArticle.ReceptionUser = user;
                 _dbContext.Articles.Add(dbArticle);
                 _dbContext.SaveChanges();
-
                 if (repeat)
                 {
                     ModelState.Clear();
                     return View(GetReceptionViewModel());
                 }
             }
+
             return RedirectToAction("Index");
+        }
+
+        public IActionResult UseArticleTable()
+        {
+            return GetTableView("Uporaba artikla", "UseArticle", "Uporaba",
+                a => !a.Rejected && a.WriteOffReason == null && a.NumberOfUnits - a.ArticleUses.Count() > 0);
         }
 
         public IActionResult UseArticle(int id) // article id
         {
             var article = _dbContext.Articles.Include(a => a.CatalogArticle).FirstOrDefault(a => a.Id == id);
+
             if (article == null)
             {
-                var data = _dbContext.Articles
-                    .Where(a => !a.Rejected && a.WriteOffReason == null)
-                    .Include(s => s.WorkLocation)
-                    .ToList();
-                // TODO
-
-                ViewData["Title"] = "Uporaba artikla";
-                return View("Table", _mapper.Map<List<Models.Trbovlje.ArticleFullViewModel>>(data));
+                return RedirectToAction("UseArticleTable");
             }
 
             return View(new ArticleUseViewModel
@@ -187,69 +206,70 @@ namespace Infozdrav.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult UseArticle([FromForm]  ArticleUseViewModel articleUse)
+        public async Task<IActionResult> UseArticle([FromForm] ArticleUseViewModel articleUse)
         {
-            if (articleUse.NumberOfUnits < 1)
-            {
-                ModelState.AddModelError("NumberOfUnits", "Število uporabljenih enot mora biti več kot 0");
-            }
-
             var article = _dbContext.Articles.FirstOrDefault(a => a.Id == articleUse.ArticleId);
             if (article == null)
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("UseArticleTable");
             }
 
-            var articleUses = _dbContext.ArticleUses.Where(use => use.ArticleId == articleUse.ArticleId).Select(use => use.NumberOfUnits).Sum();
+            var articleUses = _dbContext.ArticleUses.Count(use => use.ArticleId == articleUse.ArticleId);
             var articlesLeft = article.NumberOfUnits - articleUses;
-            if (articlesLeft - articleUses < 0)
+            if (articlesLeft < 0)
             {
-                ModelState.AddModelError("NumberOfUnits", "Na voljo je samo še " + articlesLeft + " enot");
+                return RedirectToAction("UseArticleTable");
             }
 
-            if (!ModelState.IsValid)
-            {
-                return View(articleUse);
-            }
-
-            // TODO: set user
+            // TODO: test
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
             ArticleUse dbArticleUse = _mapper.Map<ArticleUse>(articleUse);
             dbArticleUse.UseTime = DateTime.Now;
+            dbArticleUse.User = user;
+            if (articleUse.UnitNumber == 0)
+            {
+                var lastUse = _dbContext.ArticleUses.OrderByDescending(use => use.UseTime)
+                    .LastOrDefault(use => use.ArticleId == articleUse.ArticleId);
+                if (lastUse != null)
+                {
+                    dbArticleUse.UnitNumber = lastUse.UnitNumber + 1;
+                }
+            }
 
             _dbContext.ArticleUses.Add(dbArticleUse);
             _dbContext.SaveChanges();
 
-            return RedirectToAction("Index");
+            return RedirectToAction("UseArticleTable");
+        }
+
+        public IActionResult WriteOffTable()
+        {
+            return GetTableView("Odpis artikla", "WriteOff", "Odpis", 
+                a => !a.Rejected && a.WriteOffReason == null && a.NumberOfUnits - a.ArticleUses.Count() < 1);
         }
 
         public IActionResult WriteOff(int id)
         {
-            var article = _dbContext.Articles.Include( a => a.CatalogArticle ).FirstOrDefault(a => a.Id == id);
+            var article = _dbContext.Articles.Include(a => a.CatalogArticle).FirstOrDefault(a => a.Id == id);
 
             if (article == null)
             {
-                var data = _dbContext.Articles
-                    .Where(a => !a.Rejected && a.WriteOffReason == null)
-                    .Include(s => s.WorkLocation)
-                    .ToList();
-                // TODO
-
-                ViewData["Title"] = "Odpis artikla";
-                return View("Table", _mapper.Map<List<Models.Trbovlje.ArticleFullViewModel>>(data));
+                RedirectToAction("WriteOffTable");
             }
 
             return View(_mapper.Map<ArticleWriteOffViewModel>(article));
         }
 
         [HttpPost]
-        public IActionResult WriteOff([FromForm] ArticleWriteOffViewModel article)
+        public async Task<IActionResult> WriteOff([FromForm] ArticleWriteOffViewModel article)
         {
             if (article == null)
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("WriteOffTable");
             }
 
-            if (article.WriteOffReason == WriteOffReason.Other && (String.IsNullOrEmpty(article.WriteOffNote) || String.IsNullOrWhiteSpace(article.WriteOffNote)))
+            if (article.WriteOffReason == WriteOffReason.Other &&
+                (String.IsNullOrEmpty(article.WriteOffNote) || String.IsNullOrWhiteSpace(article.WriteOffNote)))
                 ModelState.AddModelError("WriteOffNote", "Opomba je potrebna");
 
             if (!ModelState.IsValid)
@@ -263,17 +283,20 @@ namespace Infozdrav.Web.Controllers
 
             if (dbArticle == null)
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("WriteOffTable");
             }
+
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
 
             dbArticle.WriteOffReason = article.WriteOffReason;
             dbArticle.WriteOffNote = article.WriteOffNote;
             dbArticle.WriteOffTime = DateTime.Now;
+            dbArticle.WriteOfUser = user;
 
             _dbContext.Articles.Update(dbArticle);
             _dbContext.SaveChanges();
 
-            return RedirectToAction("Index");
+            return RedirectToAction("WriteOffTable");
         }
 
         public IActionResult Remove(int id)
@@ -294,7 +317,28 @@ namespace Infozdrav.Web.Controllers
                 _dbContext.Articles.Remove(dbArticle);
                 _dbContext.SaveChanges();
             }
+
             return RedirectToAction("Index");
+        }
+
+        private IActionResult GetTableView(string title, string action, string actionName, Expression<Func<Article, bool>> predicate)
+        {
+            var data = _dbContext.Articles
+                .Where(predicate)
+                .Include(s => s.CatalogArticle)
+                .Include(s => s.ArticleUses)
+                .Include(s => s.WorkLocation)
+                .Include(s => s.StorageType)
+                .Include(s => s.StorageLocation)
+                .Include(s => s.WorkLocation)
+                .Include(s => s.Analyser)
+                .ToList();
+
+            ViewData["Title"] = title;
+            ViewData["Action"] = action;
+            ViewData["ActionName"] = actionName;
+
+            return View("Table", _mapper.Map<List<Models.Trbovlje.ArticleTableViewModel>>(data));
         }
     }
 }

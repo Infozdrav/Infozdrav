@@ -9,18 +9,19 @@
 
 <h2>@ViewBag.Title</h2>
 
-<a href="@Url.Action("Reception")"
-   class="btn btn-primary">Sprejem artiklov</a>
+<a href="@Url.Action("Trbovlje", "Dashboard")"
+   class="btn btn-primary">Nazaj na nadzorno ploščo</a>
 <br />
 
-<script id="actions" type="text/x-template">
+
+@*<script id="actions" type="text/x-template">
     <a href="@Url.Action("Article")/${Id}"
        class="btn btn-primary">Edit</a>
     <a href="@Url.Action("WriteOff")/${Id}"
        class="btn btn-primary">Write off</a>
-</script>
+</script>*@
 
-
+TODO: Pravilen prikaz
 <ejs-grid id="grid" dataSource="@Model" allowPaging="true" showColumnMenu="true" dataBound="dataBound">
     <e-grid-columns>
         <e-grid-column field="Id"></e-grid-column>
@@ -41,7 +42,7 @@
             <e-grid-column field="WriteOffTime"></e-grid-column>
             <e-grid-column field="WriteOfUser"></e-grid-column>
             <e-grid-column field="WriteOffNote"></e-grid-column>*@
-        <e-grid-column headerText="Actions" template="#actions" width="150"></e-grid-column>
+        @*<e-grid-column headerText="Actions" template="#actions" width="150"></e-grid-column>*@
     </e-grid-columns>
 </ejs-grid>
 

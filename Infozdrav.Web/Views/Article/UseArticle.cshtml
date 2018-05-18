@@ -14,12 +14,12 @@
         <label asp-for="Article.CatalogArticle.Name">Kataloško ime artikla</label>
         <input asp-for="Article.CatalogArticle.Name" class="form-control" type="text" disabled />
 
-        <label asp-for="NumberOfUnits">Število uporabljenih enot</label>
-        <input asp-for="NumberOfUnits" type="number"
+        <label asp-for="UnitNumber">Številka alikvota</label>
+        <input asp-for="UnitNumber" type="number"
                min="0"
                data-val-required="Potrebno je vnesti število uporabljenih enot"
                class="form-control" id="name" placeholder="Vnesi štvilo uporabljenih enot">
-        <span class="form-text text-danger text-muted" asp-validation-for="NumberOfUnits"></span>
+        <span class="form-text text-danger text-muted" asp-validation-for="UnitNumber"></span>
     </div>
     <button type="submit" class="btn btn-primary">Shrani</button>
     <a href="@Url.Action("UseArticle")"

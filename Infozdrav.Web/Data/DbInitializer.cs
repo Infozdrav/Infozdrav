@@ -24,7 +24,9 @@ namespace Infozdrav.Web.Data
             _appDbContext = appDbContext;
             _userManager = userManager;
             _roleManager = roleManager;
-            UpdateDatabaseOnModelChange();
+
+            if (!UpdateDatabaseOnModelChange()) // todo: go back to if
+                return;
 
             InitRoles().Wait();
             InitUsers().Wait();
@@ -54,7 +56,7 @@ namespace Infozdrav.Web.Data
             if (currModels.Any(m => dbModels.Count(o => o.Name == m.Name && o.Hash == m.Hash) != 1))
                 _appDbContext.Database.EnsureDeleted();
             else
-                return false;
+                return false; // TODO: remove this else
 
             _appDbContext.Database.EnsureCreated();
             var hashTable = _appDbContext.Set<ModelHash>();

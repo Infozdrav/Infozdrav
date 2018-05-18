@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Linq;
+using AutoMapper;
 using Infozdrav.Web.Data;
 using Infozdrav.Web.Data.Manage;
 using Infozdrav.Web.Helpers;
@@ -20,8 +21,10 @@ namespace Infozdrav.Web.Models
 
             CreateMap<Trbovlje.ArticleReceptionViewModel, Article>();
             CreateMap<Trbovlje.ArticleUseViewModel, ArticleUse>();
+            CreateMap<Article, Trbovlje.ArticleTableViewModel>()
+                .ForMember( x => x.NumberOfAvailableUnits, opt => opt.MapFrom( s => s.NumberOfUnits - s.ArticleUses.Count()));
             CreateMap<Trbovlje.ArticleReceptionViewModel, Trbovlje.ArticleReceptionViewModel>()
-                .ForMember( x=> x.ShowIgnoreBadLot, opt => opt.Ignore());
+                .ForMember( x => x.ShowIgnoreBadLot, opt => opt.Ignore());
         }
     }
 }
