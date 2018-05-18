@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Infozdrav.Web.Data;
@@ -34,4 +35,27 @@ namespace Infozdrav.Web.Models.Trbovlje
         public int SupplierId { get; set; }
         public IEnumerable<SelectListItem> Suppliers { get; set; }
     }
+
+    /*public class OrderCatalogArticleViewModel
+    {
+        public int Id { get; set; }
+
+        [DisplayName("Article catalog number")]
+        [Required]
+        public string CatalogNumber { get; set; }
+
+        [DisplayName("Article price")]
+        public string Price { get; set; }
+
+        [DisplayName("Quantity")]
+        [Required]
+        public int Quantity { get; set; }
+
+        [Required]
+        public int UrgencyDegreeId { get; set; }
+        public IEnumerable<SelectListItem> UrgencyDegrees { get; set; }
+
+        public DateTime ReceptionTime { get; set; }
+        public User ReceptionUser { get; set; }
+    }*/
 }

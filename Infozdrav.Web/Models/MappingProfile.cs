@@ -4,6 +4,7 @@ using System.IO;
 using AutoMapper;
 using Infozdrav.Web.Data;
 using Infozdrav.Web.Models.Manage;
+using Infozdrav.Web.Models.Trbovlje;
 
 namespace Infozdrav.Web.Models
 {
@@ -19,7 +20,7 @@ namespace Infozdrav.Web.Models
             CreateMap<Trbovlje.ArticleReceptionViewModel, Trbovlje.ArticleReceptionViewModel>()
                 .ForMember( x=> x.ShowIgnoreBadLot, opt => opt.Ignore());
 
-            CreateMap<Trbovlje.CatalogArticleViewModel, CatalogArticle>();
+            CreateMap<CatalogArticle, CatalogArticleViewModel>(MemberList.Source);
             CreateMap<Trbovlje.BufferViewModel, Buffer>();
 
         }
