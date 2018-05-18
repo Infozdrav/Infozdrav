@@ -50,7 +50,7 @@ namespace Infozdrav.Web.Controllers
             _dbContext.WorkLocations.Update(dbWorkLocation);
             _dbContext.SaveChanges();
 
-            return View(workLocation);
+            return RedirectToAction("Index");
         }
 
         public IActionResult Add()

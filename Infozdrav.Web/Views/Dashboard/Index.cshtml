@@ -1,0 +1,15 @@
+﻿@using Infozdrav.Web.Data.Manage
+@model object
+
+@{
+    Layout = "_Layout";
+}
+
+<h2>Dashboard</h2>
+
+@if (User.IsInRole(Roles.Administrator))
+{
+    <a href="@Url.Action("Index", "Users")">Users</a>
+}
+
+<a href="@Url.Action("Trbovlje")">Trbovlje</a>
