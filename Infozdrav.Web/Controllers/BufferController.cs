@@ -25,7 +25,11 @@ namespace Infozdrav.Web.Controllers
         public IActionResult Index()
         {
             var data = _dbContext.Buffers
-                .Include(s => s.WorkLocation)
+                .Include(a => a.Article)
+                .Include(b => b.StorageType)
+                .Include(c => c.StorageLocation)
+                .Include(d => d.WorkLocation)
+                .Include(e => e.Analyser)
                 .ToList();
 
             return View(_mapper.Map<List<BufferViewModel>>(data));
@@ -42,14 +46,38 @@ namespace Infozdrav.Web.Controllers
 
         private IEnumerable<SelectListItem> GetArticles()
         {
-            return new SelectList(_dbContext.Articles, "Id", "Name");
+            return new SelectList(_dbContext.Articles, "Id", "Lot");
+        }
+
+        private IEnumerable<SelectListItem> GetStorageTypes()
+        {
+            return new SelectList(_dbContext.StorageTypes, "Id", "Name");
+        }
+
+        private IEnumerable<SelectListItem> GetStorageLocations()
+        {
+            return new SelectList(_dbContext.StorageLocations, "Id", "Name");
+        }
+
+        private IEnumerable<SelectListItem> GetWorkLocations()
+        {
+            return new SelectList(_dbContext.WorkLocations, "Id", "Name");
+        }
+
+        private IEnumerable<SelectListItem> GetAnalysers()
+        {
+            return new SelectList(_dbContext.Analysers, "Id", "Name");
         }
 
         private BufferViewModel GetBufferViewModel()
         {
             return new BufferViewModel
             {
-                Articles = GetArticles()
+                Articles = GetArticles(), 
+                StorageTypes = GetStorageTypes(),
+                StorageLocations = GetStorageLocations(),
+                WorkLocations = GetWorkLocations(),
+                Analysers = GetAnalysers()
             };
         }
 
@@ -64,7 +92,7 @@ namespace Infozdrav.Web.Controllers
             if (!ModelState.IsValid)
                 return View(buffer);
 
-            var dbBuffer = _dbContext.Buffers.FirstOrDefault(u => u.Id == buffer.Id);
+            var dbBuffer = _dbContext.Buffers.FirstOrDefault(a => a.Id == buffer.Id);
             if (buffer == null)
                 return RedirectToAction("Index");
 
@@ -77,7 +105,7 @@ namespace Infozdrav.Web.Controllers
 
         public IActionResult Add()
         {
-            return View();
+            return View(GetBufferViewModel());
         }
 
         [HttpPost]

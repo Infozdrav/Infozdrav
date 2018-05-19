@@ -7,7 +7,7 @@ namespace Infozdrav.Web.Data
     {
         public string Name { get; set; }
 
-        public int ArticleId { get; set; }
+        public int? ArticleId { get; set; }
         public Article Article { get; set; }
 
         public DateTime UseByDate { get; set; }

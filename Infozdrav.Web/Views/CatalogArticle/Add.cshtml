@@ -46,7 +46,7 @@
 
         <label asp-for="SupplierId">Dobavitelj</label>
         <br />
-        @Html.DropDownListFor(p => p.SupplierId, new SelectList(Model.Suppliers, "SupplierId"))
+        @(Html.DropDownList("SupplierId", Model.Suppliers))
         <span class="form-text text-danger text-muted" asp-validation-for="SupplierId"></span>
         <br />
 

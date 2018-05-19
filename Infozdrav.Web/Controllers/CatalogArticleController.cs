@@ -84,7 +84,7 @@ namespace Infozdrav.Web.Controllers
 
         public IActionResult Add()
         {
-            return View();
+            return View(GetCatalogArticleViewModel());
         }
 
         [HttpPost]

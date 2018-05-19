@@ -20,8 +20,11 @@ namespace Infozdrav.Web.Models
             CreateMap<Trbovlje.ArticleReceptionViewModel, Trbovlje.ArticleReceptionViewModel>()
                 .ForMember( x=> x.ShowIgnoreBadLot, opt => opt.Ignore());
 
-            CreateMap<CatalogArticle, CatalogArticleViewModel>(MemberList.Source);
+            CreateMap<Trbovlje.CatalogArticleViewModel, CatalogArticle>();
+            CreateMap<CatalogArticle, Trbovlje.CatalogArticleViewModel>(MemberList.Source);
+
             CreateMap<Trbovlje.BufferViewModel, Buffer>();
+            CreateMap<Buffer, Trbovlje.BufferViewModel>(MemberList.Source);
 
         }
     }
