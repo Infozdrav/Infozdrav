@@ -1,0 +1,46 @@
+﻿@model Infozdrav.Web.Models.Labena.SkatlaViewModel
+@{
+    ViewData["Title"] = "DodajanjeSkatel";
+}
+
+<h2>DodajanjeSkatel</h2>
+
+
+<form asp-action="Skatle" method="post">
+    <div class="form-group">
+        <label asp-for="Skatla">Ime škatle</label>
+        <input asp-for="Skatla" type="text"
+               data-val-required="Vnos imena škatle je obvezno."
+               class="form-control" id="Skatla" placeholder="Vnesi ime škatle">
+        <span class="form-text text-danger text-muted" asp-validation-for="Skatla"></span>
+
+        <label>Tip centrifugirke</label><br />
+        <div>
+            <label>@Html.RadioButton("Tip", "1.5 ml")1.5 mL</label>
+
+            <label>@Html.RadioButton("Tip", "2 mL")2 mL</label>
+
+            <label>@Html.RadioButton("Tip", "15 m")15 m</label>
+
+            <label>@Html.RadioButton("Tip", "50 m")50 m</label>
+
+            <label>@Html.RadioButton("Tip", "kriovala 2 mL")kriovala 2 mL</label>
+
+            <label>@Html.RadioButton("Tip", "kriovala 5 ml")kriovala 5 mL</label>
+        </div>
+
+        <label>Velikost</label><br />
+        <div>
+            <label>@Html.RadioButton("Velikost", "8x8")8 x 8</label>
+
+            <label>@Html.RadioButton("Velikost", "9x9")9 x 9</label>
+
+            <label>@Html.RadioButton("Velikost", "10x10")10 x 10</label>
+        </div>
+
+
+    </div>
+    <br />
+
+    <button type="submit" class="btn btn-primary">Shrani</button>
+</form>

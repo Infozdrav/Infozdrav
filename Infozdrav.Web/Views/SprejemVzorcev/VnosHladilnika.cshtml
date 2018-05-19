@@ -1,0 +1,18 @@
+﻿@model Infozdrav.Web.Models.Labena.VnosHladilnikaViewModel
+@{
+    ViewData["Title"] = "VnosHladilnika";
+}
+
+<h2>Vnos novega hladilnika</h2>
+
+<form asp-action="DodajanjeVzorca" method="post">
+    <div class="form-group">
+        <label asp-for="Fridge">Vnos hladilnika/skrinje</label>
+        <input asp-for="Fridge" type="text"
+               data-val-required="Vnos hladilnika ali skrinje je obvezno."
+               class="form-control" id="Fridge" placeholder="Vnesi hladilnik ali skrinjo">
+        <span class="form-text text-danger text-muted" asp-validation-for="Fridge"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Shrani</button>
+    <a href = @Url.Action("DodajanjeVzorca") class="btn btn-primary">Prekliči</a>
+</form>

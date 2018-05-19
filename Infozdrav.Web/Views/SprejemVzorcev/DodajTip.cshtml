@@ -1,0 +1,18 @@
+﻿@model Infozdrav.Web.Models.Labena.DodajanjeVzorcaViewModel
+@{
+    ViewData["Title"] = "DodajTip";
+}
+
+<h2>DodajTip</h2>
+
+<form asp-action="DodajanjeVzorca" method="post">
+    <div class="form-group">
+        <label asp-for="Tip">Tip vzorca</label>
+        <input asp-for="Tip" type="text"
+               data-val-required="Vnos tipa vzorca je obvezno."
+               class="form-control" id="Tip" placeholder="Vnesi tip vzorca">
+        <span class="form-text text-danger text-muted" asp-validation-for="Tip"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Shrani</button>
+    <a href="@Url.Action("DodajanjeVzorca")" class="btn btn-primary">Prekliči</a>
+</form>

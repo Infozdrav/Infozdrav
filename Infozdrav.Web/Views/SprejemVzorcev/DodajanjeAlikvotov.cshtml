@@ -1,0 +1,78 @@
+﻿@model Infozdrav.Web.Models.Labena.DodajanjeAlikvotovViewModel
+@{
+    ViewData["Title"] = "DodajanjeAlikvotov";
+}
+
+<h2>DodajanjeAlikvotov</h2>
+
+
+<form asp-action="Index" method="post">
+    <div class="form-group">
+
+        <label asp-for="IdVzorca">Id Vzorca</label>
+        <input asp-for="IdVzorca" type="text" data-val-required="Potreben je vnos Id vzorca" class="form-control" id="idVzorca" placeholder="Vnesi Id vzorca" />
+        <span class="form-text text-danger text-muted" asp-validation-for="IdVzorca"></span>
+
+        <label asp-for="IdAlikvota">Id Alikvota</label>
+        <input asp-for="IdAlikvota" type="text" data-val-required="Potreben je vnos Id alikvota" class="form-control" id="IdAlikvota" placeholder="Vnesi Id alikvota" />
+        <span class="form-text text-danger text-muted" asp-validation-for="IdAlikvota"></span>
+
+        <label asp-for="Date">Datum odvzema</label>
+        <input asp-for="Date" type="date"
+               min="@DateTime.Today.ToString("yyyy-MM-dd")"
+               class="form-control" id="Date">
+        <br /><br />
+
+        <label asp-for="Volume">Volumen</label>
+        <input asp-for="Volume" type="text" class="form-control" id="Volume" placeholder="Vnesi volumen" />
+
+        <label>@Html.RadioButton("VolType", "ml")mL</label>
+        <label>@Html.RadioButton("VolType", "nl")nL</label>
+        <br /><br />
+
+        <label asp-for="Notes">Opombe</label>
+        <input asp-for="Notes" type="text" class="form-control" id="Notes" placeholder="Vnesi opombe" />
+
+        <label asp-for="Project">Projekt</label>
+        <input asp-for="Project" type="text" class="form-control" id="Project" placeholder="Vnesi projekt" />
+
+        <br /><br />
+
+        <h4>Hramba</h4>
+
+        <label asp-for="Room">Prostor</label>
+        <input asp-for="Room" type="text" data-val-required="Potreben je vnos prostora" class="form-control" id="Room" placeholder="Vnesi prostor" />
+        <span class="form-text text-danger text-muted" asp-validation-for="Room"></span>
+
+        <label asp-for="Fridge">Hladilnik</label>
+        <input asp-for="Fridge" type="text" data-val-required="Potreben je hladilnika" class="form-control" id="Fridge" placeholder="Vnesi hladilnik" />
+        <span class="form-text text-danger text-muted" asp-validation-for="Fridge"></span>
+
+        <label>Temperatura: </label>
+
+        <label>@Html.RadioButton("Temp", "sobna")sobna</label>
+        <label>@Html.RadioButton("Temp", "+4")+4 °C</label>
+        <label>@Html.RadioButton("Temp", "-20")-20 °C</label>
+        <label>@Html.RadioButton("Temp", "-80")-80 °C</label>
+        <label>@Html.RadioButton("Temp", "LN2")LN2</label>
+        <br /><br />
+
+        <label asp-for="Razdelek">Razdelek</label>
+        <input asp-for="Razdelek" type="text" class="form-control" id="Razdelek" placeholder="Vnesi razdelek" />
+
+        <label asp-for="Box">Škatla</label>
+        <input asp-for="Box" type="text" data-val-required="Potreben je vnos škatle" class="form-control" id="Box" placeholder="Vnesi škatlo" />
+        <span class="form-text text-danger text-muted" asp-validation-for="Box"></span>
+
+        <label asp-for="Location">Pozicija</label>
+        <input asp-for="Location" type="text" class="form-control" id="Location" placeholder="Vnesi pozicijo" />
+
+        <a href="@Url.Action("VnosHladilnika")" class="btn btn-primary">Vnos novega hladilnika</a><br />
+        <a href="@Url.Action("DodajanjeSkatel")" class="btn btn-primary">Vnos nove škatle</a>
+
+    </div>
+
+    <!-- TODO: Če je dodajanje alikvotov iz Dodajanja vzorca, se vrni tja -->
+    <a href="@Url.Action("Index")" class="btn btn-primary">Shrani alikvot</a>
+
+</form>
