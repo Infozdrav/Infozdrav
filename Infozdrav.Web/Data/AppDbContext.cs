@@ -10,8 +10,18 @@ namespace Infozdrav.Web.Data
     {
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
-
-
+        public DbSet<SampleType> SampleTypes { get; set; }
+        public DbSet<Room> Rooms { get; set; }
+        public DbSet<Fridge> Fridges { get; set; }
+        public DbSet<Subscriber> Subscribers { get; set; }
+        public DbSet<Acceptance> Acceptances { get; set; }
+        public DbSet<Sample> Samples { get; set; }
+        public DbSet<Box> Boxes { get; set; }
+        public DbSet<Results> Results { get; set; }
+        public DbSet<Processing> Processings { get; set; }
+        public DbSet<ContactPerson> ContactPeople { get; set; }
+        public DbSet<Project> Projects { get; set; }
+        
         public AppDbContext(DbContextOptions options) : base(options)
         {
         }

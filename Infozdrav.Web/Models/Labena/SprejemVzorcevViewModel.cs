@@ -11,14 +11,13 @@ namespace Infozdrav.Web.Models.Labena
     public class SprejemVzorcevViewModel
     {
         [Required]
-        public int SupplyerId { get; set; }
+        public int SupplierId { get; set; }
 
         [Required]
         public DateTime? DateOfReception { get; set; }
 
-
         [Required]
-        public string SupplyerName { get; set; }
+        public string SupplierName { get; set; }
 
         [Required]
         public string TaxNumber { get; set; }
@@ -27,7 +26,7 @@ namespace Infozdrav.Web.Models.Labena
         public string StreetNum { get; set; }
 
         [Required]
-        public string ZipNumber { get; set; }
+        public int ZipNumber { get; set; }
 
         [Required]
         public string City { get; set; }
@@ -47,6 +46,12 @@ namespace Infozdrav.Web.Models.Labena
 
     }
 
+    public class DodajTipViewModel
+    {
+        [Required]
+        public string TipVzorca { get; set; }
+    }
+
     public class DodajanjeVzorcaViewModel
     {
         [Required]
@@ -60,7 +65,7 @@ namespace Infozdrav.Web.Models.Labena
         public string Tip { get; set; }
         // TODO: Add radio buttons for sample and volume type
 
-        public string Volume { get; set; }
+        public double Volume { get; set; }
 
         public string Notes { get; set; }
 
@@ -119,10 +124,10 @@ namespace Infozdrav.Web.Models.Labena
     public class SkatlaViewModel
     {
         [Required]
-        public string Skatla { get; set; }
+        public string ImeSkatle { get; set; }
 
         [Required]
-        public string Velikost { get; set; }
+        public int Velikost { get; set; }
 
         [Required]
         public string Tip { get; set; }
@@ -156,6 +161,9 @@ namespace Infozdrav.Web.Models.Labena
     {
         [Required]
         public string Fridge { get; set; }
+        
+        [Required]
+        public string Room { get; set; }
     }
 
 }

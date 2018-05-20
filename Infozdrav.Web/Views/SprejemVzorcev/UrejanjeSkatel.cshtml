@@ -5,15 +5,15 @@
 
 <h2>Urejanje Škatel</h2>
 
-<form asp-action="Skatle" method="post">
+<form asp-action="UrejanjeSkatel" method="post">
     <div class="form-group">
 
         <br />
-        <label asp-for="Skatla">Izbrana škatla</label>
-        <input asp-for="Skatla" type="text"
+        <label asp-for="ImeSkatle">Izbrana škatla</label>
+        <input asp-for="ImeSkatle" type="text"
                data-val-required="Škatlo je potrebno izbrati."
                class="form-control" id="Skatla" placeholder="Izberi škatlo">
-        <span class="form-text text-danger text-muted" asp-validation-for="Skatla"></span>
+        <span class="form-text text-danger text-muted" asp-validation-for="ImeSkatle"></span>
         <br />
         <!-- TODO: Make a dropdown -->
 

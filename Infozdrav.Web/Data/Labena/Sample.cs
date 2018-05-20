@@ -6,7 +6,7 @@ namespace Infozdrav.Web.Data
     {
         public SampleId NewId { get; set; }
         public Acceptance Accepted { get; set; }
-        public Subscriber SubscriberName { get; set; }
+        public string SubscriberName { get; set; }
         public DateTime Time { get; set; }
         public SampleType Type { get; set; }
         public double Volume { get; set; }

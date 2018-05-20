@@ -5,14 +5,15 @@
 
 <h2>Sprejem</h2>
 
-<form asp-action="Index" method="post">
+<form asp-action="Sprejem" method="post">
     <div class="form-group">
 
-        <label asp-for="SupplyerId">Id prejemnika</label>
-        <input asp-for="SupplyerId" type="text" data-val-required="Potreben je vnos Id prejemnika" class="form-control" id="SupplyerId" placeholder="Vnesi Id prejemnika" />
-        <span class="form-text text-danger text-muted" asp-validation-for="SupplyerId"></span>
+        <label asp-for="SupplierId">Id prejemnika</label>
+        <input asp-for="SupplierId" type="text" data-val-required="Potreben je vnos Id prejemnika"
+               class="form-control" id="SupplierId" placeholder="Vnesi Id prejemnika"/>
+        <span class="form-text text-danger text-muted" asp-validation-for="SupplierId"></span>
         <!-- TODO: AutoComplete dropdown using JQuery -->
-        <br />
+        <br/>
 
         <label asp-for="DateOfReception">Datum prejema</label>
         <input asp-for="DateOfReception" type="date"
@@ -20,51 +21,53 @@
                data-val-required="Potreben je vnos datuma prejema."
                class="form-control" id="DateOfReception">
         <span class="form-text text-danger text-muted" asp-validation-for="DateOfReception"></span>
-        <br /><br />
+        <br/><br/>
 
         <h4>Naročnik</h4>
-        <label asp-for="SupplyerName">Naziv</label>
-        <input asp-for="SupplyerName" type="text" data-val-required="Potreben je vnos naziva" class="form-control" id="SupplyerName" placeholder="Vnesi naziv naročnika" />
-        <span class="form-text text-danger text-muted" asp-validation-for="SupplyerName"></span>
+        <label asp-for="SupplierName">Naziv</label>
+        <input asp-for="SupplierName" type="text" data-val-required="Potreben je vnos naziva" class="form-control" id="SupplyerName" placeholder="Vnesi naziv naročnika"/>
+        <span class="form-text text-danger text-muted" asp-validation-for="SupplierName"></span>
 
         <label asp-for="TaxNumber">Davčna številka</label>
-        <input asp-for="TaxNumber" type="text" data-val-required="Potreben je vnos davčne številke" class="form-control" id="TaxNumber" placeholder="Vnesi davčno številko" />
+        <input asp-for="TaxNumber" type="text" data-val-required="Potreben je vnos davčne številke" class="form-control" id="TaxNumber" placeholder="Vnesi davčno številko"/>
         <span class="form-text text-danger text-muted" asp-validation-for="TaxNumber"></span>
 
         <label asp-for="StreetNum">Ulica in hišna številka</label>
-        <input asp-for="StreetNum" type="text" data-val-required="Potreben je vnos ulice in hišne številke" class="form-control" id="StreetNum" placeholder="Vnesi ulico in hišno številko" />
+        <input asp-for="StreetNum" type="text" data-val-required="Potreben je vnos ulice in hišne številke" class="form-control" id="StreetNum" placeholder="Vnesi ulico in hišno številko"/>
         <span class="form-text text-danger text-muted" asp-validation-for="StreetNum"></span>
 
         <label asp-for="ZipNumber">Poštna številka</label>
-        <input asp-for="ZipNumber" type="text" data-val-required="Potreben je vnos poštne številke" class="form-control" id="ZipNumber" placeholder="Vnesi poštno številko" />
+        <input asp-for="ZipNumber" type="text" data-val-required="Potreben je vnos poštne številke" class="form-control" id="ZipNumber" placeholder="Vnesi poštno številko"/>
         <span class="form-text text-danger text-muted" asp-validation-for="ZipNumber"></span>
 
         <label asp-for="City">Kraj</label>
-        <input asp-for="City" type="text" data-val-required="Potreben je vnos kraja" class="form-control" id="City" placeholder="Vnesi kraj" />
+        <input asp-for="City" type="text" data-val-required="Potreben je vnos kraja" class="form-control" id="City" placeholder="Vnesi kraj"/>
         <span class="form-text text-danger text-muted" asp-validation-for="City"></span>
 
         <label asp-for="Country">Država</label>
-        <input asp-for="Country" type="text" data-val-required="Potreben je vnos države" class="form-control" id="" placeholder="Vnesi državo" />
+        <input asp-for="Country" type="text" data-val-required="Potreben je vnos države" class="form-control" id="" placeholder="Vnesi državo"/>
         <span class="form-text text-danger text-muted" asp-validation-for="Country"></span>
 
         <label asp-for="IdDDV">Id DDV</label>
-        <input asp-for="IdDDV" type="text" class="form-control" id="IdDDV" placeholder="Vnesi Id DDV" />
-        <br /><br />
+        <input asp-for="IdDDV" type="text" class="form-control" id="IdDDV" placeholder="Vnesi Id DDV"/>
+        <br/><br/>
         <h4>Kontaktna oseba</h4>
         <label asp-for="ContactName">Naziv</label>
-        <input asp-for="ContactName" type="text" data-val-required="Potreben je vnos naziva" class="form-control" id="ContactName" placeholder="Vnesi naziv kontaktne osebe" />
+        <input asp-for="ContactName" type="text" data-val-required="Potreben je vnos naziva" class="form-control" id="ContactName" placeholder="Vnesi naziv kontaktne osebe"/>
         <span class="form-text text-danger text-muted" asp-validation-for="ContactName"></span>
 
         <label asp-for="Mail">E-mail</label>
-        <input asp-for="Mail" type="text" class="form-control" id="Mail" placeholder="Vnesi e-poštni naslov" />
+        <input asp-for="Mail" type="text" class="form-control" id="Mail" placeholder="Vnesi e-poštni naslov"/>
 
         <label asp-for="TelNumber">Tel. št.</label>
-        <input asp-for="TelNumber" type="text" class="form-control" id="TelNumber" placeholder="Vnesi telefonsko številko" />
+        <input asp-for="TelNumber" type="text" class="form-control" id="TelNumber" placeholder="Vnesi telefonsko številko"/>
 
 
     </div>
 
     <button type="submit" class="btn btn-primary">Shrani sprejem</button>
     <a href="@Url.Action("Index")"
-       class="btn btn-primary">Prekliči</a>
+       class="btn btn-primary">
+        Prekliči
+    </a>
 </form>

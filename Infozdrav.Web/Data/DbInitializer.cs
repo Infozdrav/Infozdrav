@@ -19,19 +19,22 @@ namespace Infozdrav.Web.Data
 
             InitRoles();
             InitUsers();
+            InitSampleType();
+            InitRooms();
+            InitFridges();
         }
 
         private void UpdateDatabaseOnModelChange()
         {
             var dbModels = GetDbModels();
             var currModels = Assembly.GetEntryAssembly()
-                                .GetAllTypesWithBase<IEntity>()
-                                .Select(e => new ModelHash
-                                {
-                                    Name = e.FullName,
-                                    Hash = GetSimpleHash(e)
-                                })
-                                .ToList();
+                .GetAllTypesWithBase<IEntity>()
+                .Select(e => new ModelHash
+                {
+                    Name = e.FullName,
+                    Hash = GetSimpleHash(e)
+                })
+                .ToList();
 
             // TODO Could be optimized
             if (currModels.Any(m => dbModels.Count(o => o.Name == m.Name && o.Hash == m.Hash) != 1))
@@ -61,7 +64,9 @@ namespace Infozdrav.Web.Data
 
         private static string GetSimpleHash(Type t)
         {
-            return JsonConvert.SerializeObject(t.GetProperties().Select(prop => (type: prop.PropertyType.Name, name: prop.Name))).ToSHA1();
+            return JsonConvert
+                .SerializeObject(t.GetProperties().Select(prop => (type: prop.PropertyType.Name, name: prop.Name)))
+                .ToSHA1();
         }
 
         private void InitRoles()
@@ -92,7 +97,8 @@ namespace Infozdrav.Web.Data
                 Password = "infozdrav".ToSHA512(),
             };
 
-            user.Roles = new List<UserRole> {
+            user.Roles = new List<UserRole>
+            {
                 new UserRole
                 {
                     User = user,
@@ -101,6 +107,66 @@ namespace Infozdrav.Web.Data
             };
 
             _appDbContext.Add(user);
+            _appDbContext.SaveChanges();
+        }
+
+        private void InitSampleType()
+        {
+            if (_appDbContext.SampleTypes.Any())
+                return;
+
+            _appDbContext.SampleTypes.Add(new SampleType{ShortName = "WBL",SampleTypeName = "cela kri"});
+            _appDbContext.SampleTypes.Add(new SampleType{ShortName = "PBL",SampleTypeName = "plazma"});
+            _appDbContext.SampleTypes.Add(new SampleType{ShortName = "SBL",SampleTypeName = "serum"});
+            _appDbContext.SampleTypes.Add(new SampleType {ShortName = "DNA", SampleTypeName = "DNA"});
+            _appDbContext.SampleTypes.Add(new SampleType {ShortName = "RNA", SampleTypeName = "RNA"});
+            _appDbContext.SampleTypes.Add(new SampleType {ShortName = "miR", SampleTypeName = "miRNA"});
+            _appDbContext.SampleTypes.Add(new SampleType {ShortName = "cfD", SampleTypeName = "cfDNA"});
+            _appDbContext.SampleTypes.Add(new SampleType {ShortName = "PRT", SampleTypeName = "protein"});
+            _appDbContext.SampleTypes.Add(new SampleType {ShortName = "CLC", SampleTypeName = "celice (kultura)"});
+            _appDbContext.SampleTypes.Add(new SampleType {ShortName = "CLT", SampleTypeName = "celice (tkivo)"});
+            _appDbContext.SampleTypes.Add(new SampleType {ShortName = "BMW", SampleTypeName = "kostni mozeg"});
+            _appDbContext.SampleTypes.Add(new SampleType {ShortName = "ASB", SampleTypeName = "aspiracijska biopsija"});
+            _appDbContext.SampleTypes.Add(new SampleType {ShortName = "LKV", SampleTypeName = "likvor"});
+            _appDbContext.SampleTypes.Add(new SampleType {ShortName = "URN", SampleTypeName = "urin"});
+            _appDbContext.SampleTypes.Add(new SampleType {ShortName = "PLT", SampleTypeName = "rastlinski material"});
+            _appDbContext.SampleTypes.Add(new SampleType {ShortName = "WTR", SampleTypeName = "voda"});
+            _appDbContext.SampleTypes.Add(new SampleType {ShortName = "BCT", SampleTypeName = "bakterije"});
+            _appDbContext.SampleTypes.Add(new SampleType {ShortName = "YST", SampleTypeName = "kvasovke"});
+            _appDbContext.SampleTypes.Add(new SampleType {ShortName = "SWP", SampleTypeName = "bris"});
+            _appDbContext.SampleTypes.Add(new SampleType {ShortName = "SLV", SampleTypeName = "slina"});
+            _appDbContext.SampleTypes.Add(new SampleType {ShortName = "OTH", SampleTypeName = "drugo"});
+            _appDbContext.SaveChanges();
+        }
+
+        private void InitRooms()
+        {
+            if (_appDbContext.Rooms.Any())
+                return;
+
+            _appDbContext.Rooms.Add(new Room {RoomName = "prePCR"});
+            _appDbContext.Rooms.Add(new Room {RoomName = "postPCR"});
+            _appDbContext.SaveChanges();
+        }
+
+        private void InitFridges()
+        {
+            if (_appDbContext.Fridges.Any())
+                return;
+
+            var preFridge = new Fridge
+            {
+                Name = "prePCR 1",
+                Place = _appDbContext.Rooms.First(o => o.RoomName == "prePCR")
+            };
+            _appDbContext.Fridges.Add(preFridge);
+
+            var poFridge = new Fridge
+            {
+                Name = "postPCR 1",
+                Place = _appDbContext.Rooms.First(o => o.RoomName == "postPCR")
+            };
+            _appDbContext.Fridges.Add(poFridge);
             _appDbContext.SaveChanges();
         }
     }
