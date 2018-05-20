@@ -12,6 +12,7 @@ namespace Infozdrav.Web.Models.Trbovlje
     public class ArticleFullViewModel
     {
         public int Id { get; set; }
+        public string Name { get; set; }
 
         public CatalogArticle CatalogArticle { get; set; } // TODO: Link to actuall catalog number
 
