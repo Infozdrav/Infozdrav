@@ -10,5 +10,10 @@ namespace Infozdrav.Web.Controllers
         {
             return View();
         }
+
+        public IActionResult Trbovlje()
+        {
+            return View();
+        }
     }
 }

@@ -9,8 +9,17 @@ namespace Infozdrav.Web.Data
 {
     public class AppDbContext : IdentityDbContext<User, Role, int>
     {
-        public AppDbContext(DbContextOptions options)
-            : base(options)
+        public DbSet<WorkLocation> WorkLocations { get; set; }
+        public DbSet<Supplier> Suppliers { get; set; }
+        public DbSet<Manufacturer> Manufacturers { get; set; }
+        public DbSet<CatalogArticle> CatalogArticles { get; set; }
+        public DbSet<StorageType> StorageTypes { get; set; }
+        public DbSet<StorageLocation> StorageLocations { get; set; }
+        public DbSet<Article> Articles { get; set; }
+        public DbSet<Analyser> Analysers { get; set; }
+        public DbSet<ArticleUse> ArticleUses { get; set; }
+
+        public AppDbContext(DbContextOptions options) : base(options)
         {
             
         }

@@ -1,0 +1,21 @@
+﻿@model Infozdrav.Web.Models.Trbovlje.StorageLocationViewModel
+
+@{
+    ViewBag.Title = "Add storage location";
+    Layout = "_Layout";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<form asp-action="Add" method="post">
+    <div class="form-group">
+        <label asp-for="Name">Storage location</label>
+        <input asp-for="Name" type="text"
+               data-val-required="The Storge name field is required."
+               class="form-control" id="name" placeholder="Enter storage location">
+        <span class="form-text text-danger text-muted" asp-validation-for="Name"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a href="@Url.Action("StorageLocation")/"
+       class="btn btn-primary">Cancel</a>
+</form>
