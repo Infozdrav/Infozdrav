@@ -3,37 +3,8 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <UserSecretsId>54f33edf-ddf7-4904-9c5c-33cebbb6065b</UserSecretsId>
+    <MvcRazorCompileOnPublish>true</MvcRazorCompileOnPublish>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Content Remove="Views\Article\Article.cshtml" />
-    <Content Remove="Views\Article\Reception.cshtml" />
-    <Content Remove="Views\Article\Remove.cshtml" />
-    <Content Remove="Views\Analyser\Analyser.cshtml" />
-    <Content Remove="Views\Article\UseArticle.cshtml" />
-    <Content Remove="Views\Article\WriteOff.cshtml" />
-    <Content Remove="Views\CatalogArticle\Add.cshtml" />
-    <Content Remove="Views\CatalogArticle\CatalogArticle.cshtml" />
-    <Content Remove="Views\CatalogArticle\Remove.cshtml" />
-    <Content Remove="Views\Manufacturer\Add.cshtml" />
-    <Content Remove="Views\Manufacturer\Manufacturer.cshtml" />
-    <Content Remove="Views\Manufacturer\Remove.cshtml" />
-    <Content Remove="Views\Analyser\Add.cshtml" />
-    <Content Remove="Views\Analyser\Remove.cshtml" />
-    <Content Remove="Views\StorageType\Add.cshtml" />
-    <Content Remove="Views\StorageType\Remove.cshtml" />
-    <Content Remove="Views\StorageLocation\StorageLocation.cshtml" />
-    <Content Remove="Views\StorageType\StorageType.cshtml" />
-    <Content Remove="Views\Supplier\Add.cshtml" />
-    <Content Remove="Views\Supplier\Remove.cshtml" />
-    <Content Remove="Views\Supplier\Supplier.cshtml" />
-    <Content Remove="Views\Users\User.cshtml" />
-    <Content Remove="Views\StorageLocation\Add.cshtml" />
-    <Content Remove="Views\StorageLocation\Remove.cshtml" />
-    <Content Remove="Views\WorkLocation\Add.cshtml" />
-    <Content Remove="Views\WorkLocation\Remove.cshtml" />
-    <Content Remove="Views\WorkLocation\WorkLocation.cshtml" />
-  </ItemGroup>
 
   <ItemGroup>
     <_ContentIncludedByDefault Remove="Views\Users\User.cshtml" />
@@ -43,6 +14,7 @@
     <PackageReference Include="AutoMapper" Version="6.2.2" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="3.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.6" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.3" />
     <PackageReference Include="MySql.Data.EntityFrameworkCore" Version="8.0.10-rc" />
     <PackageReference Include="Syncfusion.EJ2" Version="16.1.0.32" />
   </ItemGroup>
@@ -50,36 +22,6 @@
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.3" />
     <DotNetCliToolReference Include="Microsoft.DotNet.Watcher.Tools" Version="2.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="Views\Article\UseArticle.cshtml" />
-    <None Include="Views\Article\WriteOff.cshtml" />
-    <None Include="Views\Article\Reception.cshtml" />
-    <None Include="Views\Article\Article.cshtml" />
-    <None Include="Views\Article\Remove.cshtml" />
-    <None Include="Views\CatalogArticle\Add.cshtml" />
-    <None Include="Views\CatalogArticle\CatalogArticle.cshtml" />
-    <None Include="Views\CatalogArticle\Remove.cshtml" />
-    <None Include="Views\Manufacturer\Add.cshtml" />
-    <None Include="Views\Manufacturer\Remove.cshtml" />
-    <None Include="Views\Manufacturer\Manufacturer.cshtml" />
-    <None Include="Views\Analyser\Add.cshtml" />
-    <None Include="Views\Analyser\Remove.cshtml" />
-    <None Include="Views\Analyser\Analyser.cshtml" />
-    <None Include="Views\StorageType\Add.cshtml" />
-    <None Include="Views\StorageType\Remove.cshtml" />
-    <None Include="Views\StorageType\StorageType.cshtml" />
-    <None Include="Views\Supplier\Add.cshtml" />
-    <None Include="Views\Supplier\Remove.cshtml" />
-    <None Include="Views\Supplier\Supplier.cshtml" />
-    <None Include="Views\StorageLocation\Add.cshtml" />
-    <None Include="Views\StorageLocation\Remove.cshtml" />
-    <None Include="Views\StorageLocation\StorageLocation.cshtml" />
-    <None Include="Views\WorkLocation\Remove.cshtml" />
-    <None Include="Views\WorkLocation\Add.cshtml" />
-    <None Include="Views\WorkLocation\WorkLocation.cshtml" />
-    <None Include="Views\Users\User.cshtml" />
   </ItemGroup>
 
 </Project>
