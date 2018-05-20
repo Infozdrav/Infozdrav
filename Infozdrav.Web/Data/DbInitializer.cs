@@ -24,13 +24,23 @@ namespace Infozdrav.Web.Data
             _appDbContext = appDbContext;
             _userManager = userManager;
             _roleManager = roleManager;
-            UpdateDatabaseOnModelChange();
+
+            if (!UpdateDatabaseOnModelChange()) // todo: go back to if
+                return;
 
             InitRoles().Wait();
             InitUsers().Wait();
+            InitSuppliers();
+            InitManufacturers();
+            InitCatalogArticles();
+            InitStorageTypes();
+            InitStorageLocations();
+            InitAnalysers();
+            InitWorkLocations();
+            InitArticle();
         }
 
-        private void UpdateDatabaseOnModelChange()
+        private bool UpdateDatabaseOnModelChange()
         {
             var dbModels = GetDbModels();
             var currModels = Assembly.GetEntryAssembly()
@@ -45,13 +55,15 @@ namespace Infozdrav.Web.Data
             // TODO Could be optimized
             if (currModels.Any(m => dbModels.Count(o => o.Name == m.Name && o.Hash == m.Hash) != 1))
                 _appDbContext.Database.EnsureDeleted();
-
+            else
+                return false; // TODO: remove this else
 
             _appDbContext.Database.EnsureCreated();
             var hashTable = _appDbContext.Set<ModelHash>();
             hashTable.AddRange(currModels);
-
             _appDbContext.SaveChanges();
+
+            return true;
         }
 
         private List<ModelHash> GetDbModels()
@@ -105,6 +117,161 @@ namespace Infozdrav.Web.Data
             await _userManager.CreateAsync(user, "$Admin123");
             await _userManager.AddToRoleAsync(user, Roles.Administrator);
 
+            _appDbContext.SaveChanges();
+        }
+
+        private void InitWorkLocations()
+        {
+            if (_appDbContext.WorkLocations.Any())
+                return;
+
+            _appDbContext.Add(new WorkLocation() {Name = "Workplace 1"});
+            _appDbContext.Add(new WorkLocation() {Name = "Workplace 2" });
+            _appDbContext.Add(new WorkLocation() {Name = "Workplace 3" });
+            _appDbContext.SaveChanges();
+        }
+
+        private void InitSuppliers()
+        {
+            if (_appDbContext.Suppliers.Any())
+                return;
+
+            var supplier = new Supplier
+            {
+                Name = "Dobavitelj 1",
+                Address = "Ljubljana, Slovenija",
+                Email = "dobavitelj@dobavitelj.com",
+                Phone = "041234567",
+            };
+
+            _appDbContext.Add(supplier);
+            _appDbContext.SaveChanges();
+        }
+
+        private void InitManufacturers()
+        {
+            if (_appDbContext.Manufacturers.Any())
+                return;
+
+            var manufacturer = new Manufacturer
+            {
+                Name = "Proizvajalec 1",
+                Address = "Ljubljana, Slovenija",
+                Email = "proizvajalec@proizvajalec.si",
+                Phone = "049876543",
+            };
+
+            _appDbContext.Add(manufacturer);
+            _appDbContext.SaveChanges();
+        }
+
+        private void InitCatalogArticles()
+        {
+            if (_appDbContext.CatalogArticles.Any())
+                return;
+
+            var catalogArticle = new CatalogArticle
+            {
+                Name = "Artikel 1",
+                CatalogNumber = "23942",
+                Price = "14€",
+                Type = "reagent",
+                //Manufacturer = 
+                //Supplier = 
+            };
+
+            _appDbContext.Add(catalogArticle);
+            _appDbContext.SaveChanges();
+        }
+
+        private void InitStorageTypes()
+        {
+            if (_appDbContext.StorageTypes.Any())
+                return;
+
+            _appDbContext.Add(new StorageType() { Name = "-20 °c" });
+            _appDbContext.Add(new StorageType() { Name = "2-8 °c" });
+            _appDbContext.Add(new StorageType() { Name = "18-25 °c" });
+            _appDbContext.SaveChanges();
+        }
+
+        private void InitStorageLocations()
+        {
+            if (_appDbContext.StorageLocations.Any())
+                return;
+
+            _appDbContext.Add(new StorageLocation() { Name = "Storage 1" });
+            _appDbContext.Add(new StorageLocation() { Name = "Storage 2" });
+            _appDbContext.Add(new StorageLocation() { Name = "Storage 3" });
+            _appDbContext.SaveChanges();
+        }
+
+        private void InitAnalysers()
+        {
+            if (_appDbContext.Analysers.Any())
+                return;
+
+            _appDbContext.Add(new Analyser() { Name = "Analyser 1" });
+            _appDbContext.Add(new Analyser() { Name = "Analyser 2" });
+            _appDbContext.Add(new Analyser() { Name = "Analyser 3" });
+            _appDbContext.SaveChanges();
+        }
+
+        private void InitArticle()
+        {
+            if (_appDbContext.Articles.Any())
+                return;
+
+            for (int i = 0; i < 5; i++)
+            {
+                _appDbContext.Add(new Article()
+                {
+                    CatalogArticle = _appDbContext.CatalogArticles.FirstOrDefault(),
+                    Lot = "lot:000 " + i,
+                    UseByDate = DateTime.Today,
+                    NumberOfUnits = 1 + i * 10,
+                    DeliveryCost = 4.9m,
+                    Rejected = false,
+                    Note = "Article note " + i,
+                    StorageType = _appDbContext.StorageTypes.FirstOrDefault(),
+                    StorageLocation = _appDbContext.StorageLocations.FirstOrDefault(),
+                    WorkLocation = _appDbContext.WorkLocations.FirstOrDefault(),
+                    Analyser = _appDbContext.Analysers.FirstOrDefault(),
+                    ReceptionTime = DateTime.Today.AddDays(-1),
+                    ReceptionUser = _appDbContext.Users.FirstOrDefault(),
+                });
+            }
+            _appDbContext.Add(new Article()
+            {
+                CatalogArticle = _appDbContext.CatalogArticles.FirstOrDefault(),
+                Lot = "lot:125864862",
+                UseByDate = DateTime.Today,
+                NumberOfUnits = 100,
+                DeliveryCost = 4.9m,
+                Rejected = false,
+                Note = "Article note",
+                StorageType = _appDbContext.StorageTypes.FirstOrDefault(),
+                StorageLocation = _appDbContext.StorageLocations.FirstOrDefault(),
+                WorkLocation = _appDbContext.WorkLocations.FirstOrDefault(),
+                Analyser = _appDbContext.Analysers.FirstOrDefault(),
+                ReceptionTime = DateTime.Today.AddDays(-1),
+                ReceptionUser = _appDbContext.Users.FirstOrDefault(),
+                WriteOffTime = DateTime.Today,
+                WriteOfUser = _appDbContext.Users.FirstOrDefault(),
+                WriteOffReason = WriteOffReason.Expired,
+                WriteOffNote = "Note for writeoff"
+            });
+
+            _appDbContext.Add(new Article()
+            {
+                CatalogArticle = _appDbContext.CatalogArticles.FirstOrDefault(),
+                Lot = "badLot",
+                NumberOfUnits = 200,
+                DeliveryCost = 120.9m,
+                Rejected = true,
+                Note = "Damaged package",
+                WriteOffReason = WriteOffReason.Other,
+            });
             _appDbContext.SaveChanges();
         }
     }

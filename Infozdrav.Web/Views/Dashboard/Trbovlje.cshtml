@@ -1,0 +1,62 @@
+﻿@{
+    ViewData["Title"] = "Trbovlje 'dashboard'";
+}
+<h2>Trbovlje </h2>
+<br />
+<div class="container">
+    <div class="row">
+        <div class="col-sm-4">
+            @*TODO*@
+            <a href="@Url.Action("", "")" class="btn btn-primary btn-block btn-lg">Naročilo artikla</a>
+        </div>
+        <div class="col-sm-4">
+            <a href="@Url.Action("Reception", "Article")" class="btn btn-primary btn-block btn-lg">Sprejem artikla</a>
+        </div>
+        <div class="col-sm-4">
+            <a href="@Url.Action("UseArticleTable", "Article")" class="btn btn-primary btn-block btn-lg">Uporaba artiklov</a>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-sm-4">
+            <a href="@Url.Action("WriteOffTable", "Article")" class="btn btn-primary btn-block btn-lg">Odpis artikla</a>
+        </div>
+        <div class="col-sm-4">
+            <a href="@Url.Action("", "Article")" class="btn btn-primary btn-block btn-lg">Odprema artikla</a>
+        </div>
+        <div class="col-sm-4">
+            <a href="@Url.Action("", "Article")" class="btn btn-primary btn-block btn-lg">Re-odprema artikla</a>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-sm-4">
+            <a href="@Url.Action("", "WorkLocation")" class="btn btn-primary btn-block btn-lg">Delanje pufra</a>
+        </div>
+        <div class="col-sm-4">
+            <a href="@Url.Action("Index", "Article")" class="btn btn-primary btn-block btn-lg">Preverjanje zalog</a>
+        </div>
+        <div class="col-sm-4">
+            <a href="@Url.Action("", "Article")" class="btn btn-primary btn-block btn-lg">Statistika</a>
+        </div>
+    </div>
+</div>
+
+<br /><br /><br /><br /><br />
+<h2>Other tmp buttons</h2>
+<a href="@Url.Action("", "WorkLocation")"
+   class="btn btn-primary">WorkLocation</a>
+<a href="@Url.Action("", "Analyser")"
+   class="btn btn-primary">Analyser</a>
+<a href="@Url.Action("", "Article")"
+   class="btn btn-primary">Article</a>
+<a href="@Url.Action("", "CatalogArticle")"
+   class="btn btn-primary">CatalogArticle</a>
+<a href="@Url.Action("", "Manufacturer")"
+   class="btn btn-primary">Manufacturer</a>
+<a href="@Url.Action("", "StorageLocation")"
+   class="btn btn-primary">StorageLocation</a>
+<a href="@Url.Action("", "StorageType")"
+   class="btn btn-primary">StorageType</a>
+<a href="@Url.Action("", "Supplier")"
+   class="btn btn-primary">Supplier</a>
