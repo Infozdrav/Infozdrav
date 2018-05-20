@@ -1,0 +1,21 @@
+﻿
+@{
+    ViewData["Title"] = "IzberiVzorec";
+}
+
+<h2>IzberiVzorec</h2>
+<br />
+<form asp-action="Obdelava" method="post">
+    <div class="form-group">
+
+        <ejs-grid id="grid" dataSource=@ViewBag.DataSource allowPaging="true">
+            <e-grid-columns>
+                <e-grid-column field="IdVzorca" textAlign="Center" headerText="Id vzorca" template="#actions" width="120"></e-grid-column>
+                <e-grid-column field="DatumSprejema" textAlign="Center" headerText="Datum sprejema" template="#actions" width="150"></e-grid-column>
+                <e-grid-column field="DatumIzdelave" textAlign="Center" headerText="Datim izdelave" template="#actions" width="150"></e-grid-column>
+            </e-grid-columns>
+        </ejs-grid>
+        <br />
+        <button type="submit" class="btn btn-primary">Potrdi</button>
+    </div>
+</form>
