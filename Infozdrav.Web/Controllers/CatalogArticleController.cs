@@ -24,6 +24,8 @@ namespace Infozdrav.Web.Controllers
 
         public IActionResult Index()
         {
+            ViewBag.DataSource = _mapper.Map<ICollection<CatalogArticleViewModel>>(_dbContext.CatalogArticles);
+
             var data = _dbContext.CatalogArticles
                 .Include(s => s.Manufacturer)
                 .Include(p => p.Supplier)

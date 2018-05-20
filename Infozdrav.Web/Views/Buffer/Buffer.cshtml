@@ -3,6 +3,8 @@
 @{
     ViewBag.Title = "Buffer";
     Layout = "_Layout";
+
+    string dateFormat = "short";
 }
 
 <h2>@ViewBag.Title</h2>
@@ -10,15 +12,15 @@
 <form asp-action="Buffer" method="post">
     <div class="form-group">
         <input type="hidden" asp-for="Id" />
-        <label asp-for="Name">Article name</label>
+        <label asp-for="Name">Buffer name</label>
         <input asp-for="Name" type="text"
-               data-val-required="The Article name field is required."
-               class="form-control" id="name" placeholder="Enter article name">
+               data-val-required="The Buffer name field is required."
+               class="form-control" id="name" placeholder="Enter buffer name">
         <span class="form-text text-danger text-muted" asp-validation-for="Name"></span>
 
         <label asp-for="ArticleId">Artikel</label>
         <br />
-        @Html.DropDownListFor(m => m.ArticleId, Model.Articles, "Izberi artikel")
+        @(Html.DropDownList("ArticleId", Model.Articles))
         <span class="form-text text-danger text-muted" asp-validation-for="ArticleId"></span>
         <br />
 
@@ -35,25 +37,25 @@
 
         <label asp-for="StorageTypeId">Način shranjevanja</label>
         <br />
-        @Html.DropDownListFor(m => m.StorageTypeId, Model.StorageTypes, "Izberi način shranjevanja")
+        @(Html.DropDownList("StorageTypeId", Model.StorageTypes))
         <span class="form-text text-danger text-muted" asp-validation-for="StorageTypeId"></span>
         <br />
 
         <label asp-for="StorageLocationId">Mesto shranjevanja</label>
         <br />
-        @Html.DropDownListFor(m => m.StorageLocationId, Model.StorageLocations, "Izberi mesto shranjevanja")
+        @(Html.DropDownList("StorageLocationId", Model.StorageLocations))
         <span class="form-text text-danger text-muted" asp-validation-for="StorageLocationId"></span>
         <br />
 
         <label asp-for="WorkLocationId">Delovna lokacija</label>
         <br />
-        @Html.DropDownListFor(m => m.WorkLocationId, Model.WorkLocations, "Izberi delovno lokacijo")
+        @(Html.DropDownList("WorkLocationId", Model.WorkLocations))
         <span class="form-text text-danger text-muted" asp-validation-for="WorkLocationId"></span>
         <br />
 
         <label asp-for="AnalyserId">Analizator</label>
         <br />
-        @Html.DropDownListFor(m => m.AnalyserId, Model.Analysers, "Izberi analizator")
+        @(Html.DropDownList("AnalyserId", Model.Analysers))
         <span class="form-text text-danger text-muted" asp-validation-for="AnalyserId"></span>
         <br />
 

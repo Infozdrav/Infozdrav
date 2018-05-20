@@ -24,6 +24,8 @@ namespace Infozdrav.Web.Controllers
 
         public IActionResult Index()
         {
+            ViewBag.DataSource = _mapper.Map<ICollection<BufferViewModel>>(_dbContext.Buffers);
+
             var data = _dbContext.Buffers
                 .Include(a => a.Article)
                 .Include(b => b.StorageType)
@@ -32,7 +34,7 @@ namespace Infozdrav.Web.Controllers
                 .Include(e => e.Analyser)
                 .ToList();
 
-            return View(_mapper.Map<List<BufferViewModel>>(data));
+            return View(_mapper.Map<List<Models.Trbovlje.BufferViewModel>>(data));
         }
 
         public IActionResult Buffer(int id)
@@ -81,16 +83,18 @@ namespace Infozdrav.Web.Controllers
             };
         }
 
-        public IActionResult Buffer()
-        {
-            return View(GetBufferViewModel());
-        }
+       /*public IActionResult Buffer()
+       {
+          return View(GetBufferViewModel());
+       }*/
 
         [HttpPost]
         public IActionResult Buffer([FromForm] BufferViewModel buffer)
         {
             if (!ModelState.IsValid)
+            {
                 return View(buffer);
+            }
 
             var dbBuffer = _dbContext.Buffers.FirstOrDefault(a => a.Id == buffer.Id);
             if (buffer == null)
