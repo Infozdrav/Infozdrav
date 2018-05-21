@@ -7,6 +7,7 @@
         public string Temperature { get; set; }
         public int Section { get; set; }
         public Box BoxName { get; set; }
-        public string Position { get; set; }
+        public char PositionRow { get; set; }
+        public int PositionColumn { get; set; }
     }
 }

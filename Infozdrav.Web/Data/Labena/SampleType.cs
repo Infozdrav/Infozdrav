@@ -2,7 +2,7 @@
 {
     public class SampleType : Entity
     {
-        public int SampleId { get; set; }
+        public string ShortName { get; set; }
         public string SampleTypeName { get; set; }
     }
 }

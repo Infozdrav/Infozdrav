@@ -5,7 +5,7 @@ namespace Infozdrav.Web.Data
 {
     public class Processing : Entity
     {
-        public HashSet<Sample> Samples { get; set; }
+        public List<Sample> Samples { get; set; }
         public DateTime Date { get; set; }
         public User UserName { get; set; }
         public Isolate IsolateName { get; set; }

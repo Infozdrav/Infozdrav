@@ -2,6 +2,6 @@
 {
     public class Isolate : Entity
     {
-         public string isolateName { set; get; }
+         public string IsolateName { set; get; }
     }
 }
