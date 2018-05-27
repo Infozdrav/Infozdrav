@@ -154,19 +154,12 @@ namespace Infozdrav.Web.Data
             if (_appDbContext.Fridges.Any())
                 return;
 
-            var preFridge = new Fridge
-            {
-                Name = "prePCR 1",
-                Place = _appDbContext.Rooms.First(o => o.RoomName == "prePCR")
-            };
-            _appDbContext.Fridges.Add(preFridge);
-
-            var poFridge = new Fridge
-            {
-                Name = "postPCR 1",
-                Place = _appDbContext.Rooms.First(o => o.RoomName == "postPCR")
-            };
-            _appDbContext.Fridges.Add(poFridge);
+            _appDbContext.Fridges.Add(new Fridge{Name = "prePCR 1",Place = _appDbContext.Rooms.First(o => o.RoomName == "prePCR")});
+            _appDbContext.Fridges.Add(new Fridge{Name = "prePCR 2",Place = _appDbContext.Rooms.First(o => o.RoomName == "prePCR")});
+            _appDbContext.Fridges.Add(new Fridge{Name = "prePCR 3",Place = _appDbContext.Rooms.First(o => o.RoomName == "prePCR")});
+            
+            _appDbContext.Fridges.Add(new Fridge{Name = "postPCR 1",Place = _appDbContext.Rooms.First(o => o.RoomName == "postPCR")});
+            _appDbContext.Fridges.Add(new Fridge{Name = "postPCR 2",Place = _appDbContext.Rooms.First(o => o.RoomName == "postPCR")});
             _appDbContext.SaveChanges();
         }
     }

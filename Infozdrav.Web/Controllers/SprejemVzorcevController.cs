@@ -9,6 +9,8 @@ using Infozdrav.Web.Models.Labena;
 using Microsoft.AspNetCore.Mvc;
 using Infozdrav.Web.Data;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.CodeAnalysis;
 
 namespace Infozdrav.Web.Controllers
 {
@@ -28,7 +30,9 @@ namespace Infozdrav.Web.Controllers
 
         public IActionResult Sprejem()
         {
-            return View(new SprejemVzorcevViewModel());
+            ViewBag.supliers = _dbContext.Subscribers;
+//            return View(new SprejemVzorcevViewModel());
+            return View();
         }
 
 
@@ -81,7 +85,13 @@ namespace Infozdrav.Web.Controllers
 
         public IActionResult DodajanjeVzorca()
         {
-            return View(new DodajanjeVzorcaViewModel());
+            ViewBag.Fridges = _dbContext.Fridges.Select(m => m.Name);
+            ViewBag.Supplier = _dbContext.Acceptances.Select(m => m.SubscriberName.Name);
+            ViewBag.SupplierDates = _dbContext.Acceptances.Select(m => m.Date);
+            ViewBag.Boxes = _dbContext.Boxes.Select(m => m.BoxName);
+            ViewBag.Types = _dbContext.SampleTypes.Select(m => m.SampleTypeName);
+            ViewBag.Projects = _dbContext.Projects.Select(m => m.Name);
+            return View();
         }
 
         [HttpPost]
@@ -90,24 +100,48 @@ namespace Infozdrav.Web.Controllers
             if (vzorec == null)
                 return RedirectToAction("Index");
 
-            _dbContext.Samples.Add(new Sample
+            Storage stored = new Storage
             {
-                Type = _dbContext.SampleTypes.FirstOrDefault(m => m.SampleTypeName == vzorec.Type),
-                ProjectName = _dbContext.Projects.FirstOrDefault(m => m.Name == vzorec.Project),
-                Stored = new Storage
-                {
-                    BoxName = _dbContext.Boxes.FirstOrDefault(m => m.BoxName == vzorec.Box),
-                    FridgeName = _dbContext.Fridges.FirstOrDefault(m => m.Name == vzorec.Fridge),
-                    PositionColumn = (int) char.GetNumericValue(vzorec.Location[1]),
-                    PositionRow = vzorec.Location[0],
-                    RoomName = _dbContext.Rooms.FirstOrDefault(m => m.RoomName == vzorec.Room),
-                    Temperature = vzorec.Temp
-                },
-                Comments = vzorec.Notes,
+                FridgeName = _dbContext.Fridges.FirstOrDefault(m => m.Name == vzorec.Fridge),
+                Temperature = vzorec.Temp,
+                Section = vzorec.Razdelek
+            };
+            if (vzorec.Location != null)
+            {
+                var column = (int) char.GetNumericValue(vzorec.Location[1]);
+                if (vzorec.Location.Length == 3)
+                    column = 10 * column + (int) char.GetNumericValue(vzorec.Location[2]);
+                stored.PositionColumn = column;
+                stored.PositionRow = vzorec.Location[0];
+            }
+
+            if (vzorec.Box != null)
+                stored.BoxName = _dbContext.Boxes.FirstOrDefault(m => m.BoxName == vzorec.Box);
+
+            var sample = new Sample
+            {
                 SubscriberName = vzorec.IdProvider,
-                Time = vzorec.Date ?? DateTime.Now,
-                Volume = vzorec.Volume
-            });
+                Type = _dbContext.SampleTypes.FirstOrDefault(m => m.SampleTypeName == vzorec.Type),
+                Stored = stored,
+                Accepted = _dbContext.Acceptances.FirstOrDefault(m => m.Date == vzorec.DateReception &&
+                                                                      m.SubscriberName ==
+                                                                      _dbContext.Subscribers.FirstOrDefault(n =>
+                                                                          n.Name == vzorec.Provider))
+            };
+
+            if (vzorec.Project != null)
+                sample.ProjectName = _dbContext.Projects.FirstOrDefault(m => m.Name == vzorec.Project);
+
+            if (vzorec.Notes != null)
+                sample.Comments = vzorec.Notes;
+
+            if (vzorec.Date != null)
+                sample.Time = vzorec.Date ?? DateTime.Now;
+
+            if (vzorec.Volume > 0)
+                sample.Volume = vzorec.VolType == "ml" ? vzorec.Volume : vzorec.Volume / 1000000;
+
+            _dbContext.Samples.Add(sample);
             _dbContext.SaveChanges();
 
             return RedirectToAction("Index");
@@ -120,7 +154,8 @@ namespace Infozdrav.Web.Controllers
 
         public IActionResult UrejanjeSkatel()
         {
-            return View(new SkatlaViewModel());
+            ViewBag.Boxes = _dbContext.Boxes.Select(m => m.BoxName);
+            return View();
         }
 
         public IActionResult PoveziVzorec()

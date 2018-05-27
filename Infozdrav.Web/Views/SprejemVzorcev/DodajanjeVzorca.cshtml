@@ -1,20 +1,36 @@
 ﻿@model Infozdrav.Web.Models.Labena.DodajanjeVzorcaViewModel
 @{
-    ViewData["Title"] = "DodajanjeVzorca";
+    ViewData["Title"] = "Dodajanje vzorca";
 }
 
-<h2>DodajanjeVzorca</h2>
+<h2>Dodajanje vzorca</h2>
 
 <form asp-action="DodajanjeVzorca" method="post">
     <div class="form-group">
+        <label asp-for="Provider">Ime naročnika</label>
+        @Html.DropDownList("Provider",
+            new SelectList(ViewBag.Supplier),
+            "Izberi ime naročnika",
+            new {@class = "form-control"})
+    </div>
+    <div class="form-group">
+        <label asp-for="DateReception">Datum sprejema vzorca</label>
+        @Html.DropDownList("DateReception",
+            new SelectList(ViewBag.SupplierDates),
+            "Izberi datum sprejema",
+            new {@class = "form-control"})
 
         <label asp-for="IdProvider">Oznaka naročnika</label>
-        <input asp-for="IdProvider" type="text" data-val-required="Potreben je vnos oznake naročnika" class="form-control" id="IdProvider" placeholder="Vnesi oznako naročnika"/>
+        <input asp-for="IdProvider" type="text" data-val-required="Potreben je vnos oznake naročnika" class="form-control"
+               id="IdProvider" placeholder="Vnesi oznako, ki jo je določil naročnik"/>
         <span class="form-text text-danger text-muted" asp-validation-for="IdProvider"></span>
 
-        <label asp-for="IdSample">Id vzorca</label>
-        <input asp-for="IdSample" type="text" data-val-required="Potreben je vnos Id vzorca" class="form-control" id="IdSample" placeholder="Vnesi Id vzorca"/>
+        <!--
+        <label asp-for="IdSample">Identifikacijska številka vzorca</label>
+        <input asp-for="IdSample" type="text" data-val-required="Potreben je vnos Id vzorca"
+               class="form-control" id="IdSample" placeholder="Vnesi Id vzorca"/>
         <span class="form-text text-danger text-muted" asp-validation-for="IdSample"></span>
+        -->
 
         <label asp-for="Date">Datum odvzema</label>
         <input asp-for="Date" type="date"
@@ -22,22 +38,18 @@
                class="form-control" id="Date">
         <br/><br/>
 
-        <label>Tip vzorca: </label>
-        <label>@Html.RadioButton("Type", "cela kri")kri</label>
-        <label>@Html.RadioButton("Type", "serum")serum</label>
-        <label>@Html.RadioButton("Type", "DNA")DNA</label>
-        <label>@Html.RadioButton("Type", "RNA")RNA</label>
-        <label>@Html.RadioButton("Type", "miRNA")miRNA</label>
-        <label>@Html.RadioButton("Type", "cfDNA")cfDNA</label>
-        <label>@Html.RadioButton("Type", "protein")proteini</label>
-        <label>@Html.RadioButton("Type", "celice (kultura)")celice (kultura)</label>  
-        <!-- TODO: not hardcoded types -->
 
-        <br/><br/>
+        <label>Tip vzorca: </label>
+        @Html.DropDownList("Type",
+            new SelectList(ViewBag.Types),
+            "Izberi tip vzorca",
+            new {@class = "form-control"})
+
         <a href="@Url.Action("DodajTip")" class="btn btn-primary">Dodaj tip vzorca</a><br/>
+        <br/><br/>
 
         <label asp-for="Volume">Volumen</label>
-        <input asp-for="Volume" type="number" step="0.01" class="form-control" id="Volume" placeholder="Vnesi volumen"/>
+        <input asp-for="Volume" type="number" maxlength="10" min="0" step="0.001" class="form-control" id="Volume" placeholder="Vnesi volumen"/>
 
         <label>@Html.RadioButton("VolType", "ml")mL</label>
         <label>@Html.RadioButton("VolType", "nl")nL</label>
@@ -47,7 +59,10 @@
         <input asp-for="Notes" type="text" class="form-control" id="Notes" placeholder="Vnesi opombe"/>
 
         <label asp-for="Project">Projekt</label>
-        <input asp-for="Project" type="text" class="form-control" id="Project" placeholder="Vnesi projekt"/>
+        @Html.DropDownList("Project",
+            new SelectList(ViewBag.Projects),
+            "Izberi projekt",
+            new {@class = "form-control"})
 
         <a href="@Url.Action("PoveziVzorec")" class="btn btn-primary">Poveži vzorec z že obstoječim</a><br/>
         <a href="@Url.Action("DodajanjeAlikvotov")" class="btn btn-primary">Dodaj alikvote</a><br/>
@@ -55,48 +70,62 @@
         <br/><br/>
         <h4>Hramba</h4>
 
-        <label asp-for="Room">Prostor</label>
-        <label>@Html.RadioButton("Room", "prePCR")PrePCR</label>
-        <label>@Html.RadioButton("Room", "postPCR")PostPCR</label> 
-        <span class="form-text text-danger text-muted" asp-validation-for="Room"></span>
-        <!-- zamenjaj za dropdown -->
-        
-        <br/>
         <label asp-for="Fridge">Hladilnik</label>
-        <label>@Html.RadioButton("Fridge", "prePCR 1")PrePCR 1</label>
-        <label>@Html.RadioButton("Fridge", "postPCR 1")PostPCR 1</label>
+        @Html.DropDownListFor(m => m.Fridge,
+            new SelectList(ViewBag.Fridges),
+            "Izberi hladilnik",
+            new {@class = "form-control"})
+        <!--
+        @Html.DropDownList("Fridge",
+            new SelectList(new[]
+            {
+                "prePCR 1", "prePCR 2", "prePCR 3",
+                "postPCR 1", "postPCR 2"
+            }),
+            "Izberi tip vzorca",
+            new {@class = "form-control"})
+        -->
         <span class="form-text text-danger text-muted" asp-validation-for="Fridge"></span>
         <br/>
         <!-- zamenjaj za dropdown -->
-        
+
         <label>Temperatura: </label>
 
-        <label>@Html.RadioButton("Temp", "sobna")sobna</label>
-        <label>@Html.RadioButton("Temp", "+4")+4 °C</label>
-        <label>@Html.RadioButton("Temp", "-20")-20 °C</label>
-        <label>@Html.RadioButton("Temp", "-80")-80 °C</label>
-        <label>@Html.RadioButton("Temp", "LN2")LN2</label>
+        <label>@Html.RadioButton("Temp", "sobna") sobna </label>
+        <label>@Html.RadioButton("Temp", "+4") +4 °C </label>
+        <label>@Html.RadioButton("Temp", "-20") -20 °C </label>
+        <label>@Html.RadioButton("Temp", "-80") -80 °C </label>
+        <label>@Html.RadioButton("Temp", "LN2") LN2 </label>
         <br/><br/>
 
         <label asp-for="Razdelek">Razdelek</label>
-        <input asp-for="Razdelek" type="text" class="form-control" id="Razdelek" placeholder="Vnesi razdelek"/>
+        <input asp-for="Razdelek" type="number" min="0" class="form-control" id="Razdelek" placeholder="Vnesi razdelek"/>
 
         <label asp-for="Box">Škatla</label>
-        <input asp-for="Box" type="text" data-val-required="Potreben je vnos škatle" class="form-control" id="Box" placeholder="Vnesi škatlo"/>
-        <span class="form-text text-danger text-muted" asp-validation-for="Box"></span>
+        @Html.DropDownListFor(m => m.Box,
+            new SelectList(ViewBag.Boxes),
+            "Izberi škatlo",
+            new {@class = "form-control"})
+        <!--
+        <input asp-for="Box" type="text" class="form-control"
+               id="Box" placeholder="Vnesi škatlo"/>
+        -->
 
         <label asp-for="Location">Pozicija</label>
-        <input asp-for="Location" type="text" class="form-control" id="Location" placeholder="Vnesi pozicijo"/>
+        <input asp-for="Location" type="text" maxlength="3"
+               class="form-control" id="Location"
+               placeholder="Vnesi pozicijo, npr. A1"/>
+        <br>
 
         <a href="@Url.Action("VnosHladilnika")" class="btn btn-primary">Vnos novega hladilnika</a><br/>
         <a href="@Url.Action("DodajanjeSkatel")" class="btn btn-primary">Vnos nove škatle</a>
 
     </div>
 
+
     <button type="submit" class="btn btn-primary">Shrani vzorec</button>
     <a href="@Url.Action("Index")"
        class="btn btn-primary">
         Prekliči
     </a>
-    <!-- TOOO: http post button submit -->
 </form>

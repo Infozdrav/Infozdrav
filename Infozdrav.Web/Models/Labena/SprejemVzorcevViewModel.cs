@@ -55,6 +55,12 @@ namespace Infozdrav.Web.Models.Labena
     public class DodajanjeVzorcaViewModel
     {
         [Required]
+        public string Provider { get; set; }
+        
+        [Required]
+        public DateTime? DateReception { get; set; }
+        
+        [Required]
         public string IdProvider { get; set; }
 
         [Required]
@@ -62,7 +68,7 @@ namespace Infozdrav.Web.Models.Labena
 
         public DateTime? Date { get; set; }
 
-        public string Tip { get; set; }
+//        public string Tip { get; set; }
         // TODO: Add radio buttons for sample and volume type
 
         public double Volume { get; set; }
@@ -71,20 +77,24 @@ namespace Infozdrav.Web.Models.Labena
 
         public string Project { get; set; }
 
-        [Required]
-        public string Room { get; set; }
+        // [Required]
+        // public string Room { get; set; }
 
         [Required]
         public string Fridge { get; set; }
 
-        public string Razdelek { get; set; }
+        [Required]
+        public int Razdelek { get; set; }
 
         public string Box { get; set; }
 
         public string Location { get; set; }
 
         public string Type { get; set; }
+        
         public string VolType { get; set; }
+        
+        [Required]
         public string Temp { get; set; }
 
     }
@@ -95,7 +105,7 @@ namespace Infozdrav.Web.Models.Labena
         public string IdVzorca { get; set; }
 
         [Required]
-        public string IdAlikvota { get; set; }
+        public int stAlikvotov { get; set; }
 
         [Required]
         public DateTime? Date { get; set; }
