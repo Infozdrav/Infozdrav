@@ -30,7 +30,26 @@ namespace Infozdrav.Web.Controllers
 
         public IActionResult Obdelava()
         {
-            return View(new ObdelavaVzorcevViewModel());
+            ViewBag.DataSource = _dbContext.Samples;
+            ViewBag.Types = _dbContext.SampleTypes.Select(m => m.SampleTypeName);
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Obdelava(ObdelavaVzorcevViewModel obdelava)
+        {
+            var process = new Processing
+            {
+                Aparature = obdelava.Aparatura,
+                Chemicals = obdelava.Kemikalije,
+                Date = obdelava.DatumObdelave ?? DateTime.Today,
+                IsolateName = _dbContext.SampleTypes.First( m => m.SampleTypeName == obdelava.Izolat),
+                Protocole = obdelava.Protokol
+            };
+
+            _dbContext.Add(process);
+            _dbContext.SaveChanges();
+            return RedirectToAction("Index");
         }
 
         public IActionResult Rezultati()

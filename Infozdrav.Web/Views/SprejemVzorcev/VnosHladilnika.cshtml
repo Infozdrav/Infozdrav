@@ -13,13 +13,20 @@
                class="form-control" id="Fridge" placeholder="Vnesi ime hladilnika oz. skrinje.">
         <span class="form-text text-danger text-muted" asp-validation-for="Fridge"></span>
     </div>
+    <!--
     <div class="form-group">
-        <label asp-for="Room">Ime prostora</label>
+        
         <input asp-for="Room" type="text"
                data-val-required="Vnos prostora je obvezen."
                class="form-control" id="Place" placeholder="Vnesi ime prostora, v katerem se hladilnik nahaja.">
-        <span class="form-text text-danger text-muted" asp-validation-for="Fridge"></span>
-    </div>
+        <span class="form-text text-danger text-muted" asp-validation-for="Room"></span>
+    </div> -->
+    <label asp-for="Room">Ime prostora</label>
+    @Html.DropDownList("Room",
+        new SelectList(ViewBag.Rooms),
+        "Izberi ime prostora, v katerem se hladilnik nahaja",
+        new {@class = "form-control"})
+    <br>
     <button type="submit" class="btn btn-primary">Shrani</button>
     <a href = @Url.Action("DodajanjeVzorca") class="btn btn-primary">Prekliči</a>
 </form>

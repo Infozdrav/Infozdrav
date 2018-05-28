@@ -1,0 +1,28 @@
+﻿@model Infozdrav.Web.Models.Labena.SprejemVzorcevViewModel
+@{
+    ViewData["Title"] = "Dodajanje kontaktne osebe";
+}
+
+<h2>Dodajanje kontaktne osebe</h2>
+
+
+<form asp-action="DodajanjeKontaktov" method="post">
+    <div class="form-group">
+        <label asp-for="ContactName">Ime</label>
+        <input asp-for="ContactName" type="text" data-val-required="Potreben je vnos imena" class="form-control" id="ContactName" placeholder="Vnesi naziv kontaktne osebe"/>
+        <span class="form-text text-danger text-muted" asp-validation-for="ContactName"></span>
+    
+
+        <label asp-for="Mail">E-mail</label>
+        <input asp-for="Mail" type="text" class="form-control" id="Mail" placeholder="Vnesi e-poštni naslov"/>
+
+        <label asp-for="TelNumber">Tel. št.</label>
+        <input asp-for="TelNumber" type="text" class="form-control" id="TelNumber" placeholder="Vnesi telefonsko številko"/>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Shrani naročnika</button>
+    <a href="@Url.Action("Sprejem")"
+       class="btn btn-primary">
+        Prekliči
+    </a>
+</form>

@@ -14,61 +14,48 @@
         <span class="form-text text-danger text-muted" asp-validation-for="DatumObdelave"></span>
 
         <label asp-for="Oseba">Oseba</label>
-        <input asp-for="Oseba" type="text" data-val-required="Potreben je vnos osebe" class="form-control" id="Oseba" placeholder="Vnesi osebo" />
+        <input asp-for="Oseba" type="text" data-val-required="Potreben je vnos osebe" class="form-control" id="Oseba" placeholder="Vnesi osebo"/>
         <span class="form-text text-danger text-muted" asp-validation-for="Oseba"></span>
 
-        <br /><br />
+        <br/><br/>
 
         <label>Izolat</label>
-        <div>
-            <label>@Html.RadioButton("Izolat", "DNA")DNA</label>
+        @Html.DropDownList("Izolat",
+            new SelectList(ViewBag.Types),
+            "Izberi tip izolata",
+            new {@class = "form-control"})
 
-            <label>@Html.RadioButton("Izolat", "RNA")RNA</label>
+    </div><br/>
 
-            <label>@Html.RadioButton("Izolat", "Serum")Serum</label>
+    <label asp-for="Protokol">Protokol</label>
+    <input asp-for="Protokol" type="text" data-val-required="Potreben je vnos protokola" class="form-control" id="Protokol" placeholder="Vnesi protokol"/>
+    <span class="form-text text-danger text-muted" asp-validation-for="Protokol"></span>
+    <button type="button" class="btn btn-primary">Pripni</button><br/><br/>
 
-            <label>@Html.RadioButton("Izolat", "cfDNA")cfDNA</label>
+    <label asp-for="Aparatura">Aparatura</label>
+    <input asp-for="Aparatura" type="text" class="form-control" id="Aparatura" placeholder="Vnesi aparaturo"/>
 
-            <label>@Html.RadioButton("Izolat", "miRNA")miRNA</label>
+    <label asp-for="Kemikalije">Kemikalije</label>
+    <input asp-for="Kemikalije" type="text" class="form-control" id="Kemikalije" placeholder="Vnesi kemikalije"/>
+    <br/>
+    <div>
+        <div style="float: left; width: 50%; height: 200px">
 
-            <label>@Html.RadioButton("Izolat", "Plazma")Plazma</label>
-
-            <label>@Html.RadioButton("Izolat", "Proteini")Proteini</label>
-
-            <label>@Html.RadioButton("Izolat", "Celice")Celice</label>
-
-        </div><br />
-
-        <label asp-for="Protokol">Protokol</label>
-        <input asp-for="Protokol" type="text" data-val-required="Potreben je vnos protokola" class="form-control" id="Protokol" placeholder="Vnesi protokol" />
-        <span class="form-text text-danger text-muted" asp-validation-for="Protokol"></span>
-        <button type="button" class="btn btn-primary">Pripni</button><br /><br />
-
-        <label asp-for="Aparatura">Aparatura</label>
-        <input asp-for="Aparatura" type="text" class="form-control" id="Aparatura" placeholder="Vnesi aparaturo" />
-
-        <label asp-for="Kemikalije">Kemikalije</label>
-        <input asp-for="Kemikalije" type="text" class="form-control" id="Kemikalije" placeholder="Vnesi kemikalije" />
-        <br />
-        <div>
-            <div style="float:left; width:50%; height:200px">
-
-                <label>Seznam izbranih vzorcev</label><br />
-                <ejs-grid id="grid" dataSource=@ViewBag.DataSource allowPaging="true">
-                    <e-grid-columns>
-                        <e-grid-column field="IdVzorca" textAlign="Center" headerText="Id vzorca" template="#actions" width="120"></e-grid-column>
-                        <e-grid-column field="DatumSprejema" textAlign="Center" headerText="Datum sprejema" template="#actions" width="150"></e-grid-column>
-                        <e-grid-column field="DatumIzdelave" textAlign="Center" headerText="Datim izdelave" template="#actions" width="150"></e-grid-column>
-                    </e-grid-columns>
-                </ejs-grid>
-            </div>
-            <div style="float:right; width:50%; height:200px">
-                <button type="button" class="btn btn-primary">Natisni list</button><br />
-                <a href="@Url.Action("Rezultati")" class="btn btn-primary">Rezultati</a><br />
-                <button type="button" class="btn btn-primary">QR kode</button><br /><br />
-            </div>
+            <label>Seznam izbranih vzorcev</label><br/>
+            <ejs-grid id="grid" dataSource=@ViewBag.DataSource allowPaging="true">
+                <e-grid-columns>
+                    <e-grid-column field="IdVzorca" textAlign="Center" headerText="Id vzorca" template="#actions" width="120"></e-grid-column>
+                    <e-grid-column field="DatumSprejema" textAlign="Center" headerText="Datum sprejema" template="#actions" width="150"></e-grid-column>
+                    <e-grid-column field="DatumIzdelave" textAlign="Center" headerText="Datum izdelave" template="#actions" width="150"></e-grid-column>
+                </e-grid-columns>
+            </ejs-grid>
         </div>
-        <button type="submit" class="btn btn-primary">Shrani</button>
+        <div style="float: right; width: 50%; height: 200px">
+            <button type="button" class="btn btn-primary">Natisni list</button><br/>
+            <a href="@Url.Action("Rezultati")" class="btn btn-primary">Rezultati</a><br/>
+            <button type="button" class="btn btn-primary">QR kode</button><br/><br/>
+        </div>
     </div>
-    
+    <button type="submit" class="btn btn-primary">Shrani</button>
+
 </form>

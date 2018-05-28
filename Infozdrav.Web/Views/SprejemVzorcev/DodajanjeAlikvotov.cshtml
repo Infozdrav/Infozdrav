@@ -10,47 +10,48 @@
     <div class="form-group">
 
         <label asp-for="IdVzorca">Identifikacijska številka vzorca</label>
-        <input asp-for="IdVzorca" type="text" data-val-required="Potreben je vnos Id vzorca" class="form-control" id="idVzorca" placeholder="Vnesi Id vzorca" />
-        <span class="form-text text-danger text-muted" asp-validation-for="IdVzorca"></span>
+        @Html.DropDownList("IdVzorca",
+            new SelectList(ViewBag.Samples),
+            "Izberi vzorec",
+            new {@class = "form-control"})
 
-        <label asp-for="stAlikvotov">Id Alikvota</label>
-        <input asp-for="stAlikvotov" min="1" type="number" data-val-required="Potreben je vnos števila" class="form-control" id="IdAlikvota" placeholder="Vnesi Id alikvota" />
+        <label asp-for="stAlikvotov">Število alikvotov</label>
+        <input asp-for="stAlikvotov" min="1" type="number" data-val-required="Potreben je vnos števila"
+               class="form-control" id="IdAlikvota" placeholder="Vnesi število alikvotov"/>
         <span class="form-text text-danger text-muted" asp-validation-for="stAlikvotov"></span>
 
         <label asp-for="Date">Datum alikvotiranja</label>
         <input asp-for="Date" type="date"
                min="@DateTime.Today.ToString("yyyy-MM-dd")"
                class="form-control" id="Date">
-        <br /><br />
+        <br/>
 
         <label asp-for="Volume">Volumen</label>
-        <input asp-for="Volume" type="number" maxlength="10" min="0" step="0.001" class="form-control" id="Volume" placeholder="Vnesi volumen"/>
+        <input asp-for="Volume" type="number" maxlength="10" min="0" step="0.001" class="form-control"
+               id="Volume" placeholder="Vnesi volumen"/>
 
         <label>@Html.RadioButton("VolType", "ml")mL</label>
         <label>@Html.RadioButton("VolType", "nl")nL</label>
-        <br/><br/>
+        <br/>
 
         <label asp-for="Notes">Opombe</label>
-        <input asp-for="Notes" type="text" class="form-control" id="Notes" placeholder="Vnesi opombe" />
+        <input asp-for="Notes" type="text" class="form-control" id="Notes" placeholder="Vnesi opombe"/>
 
         <label asp-for="Project">Projekt</label>
-        <input asp-for="Project" type="text" class="form-control" id="Project" placeholder="Vnesi projekt" />
-
-        <br /><br />
+        @Html.DropDownList("Project",
+            new SelectList(ViewBag.Projects),
+            "Izberi projekt",
+            new {@class = "form-control"})
+        <br/>
 
         <h4>Hramba</h4>
 
         <label asp-for="Fridge">Hladilnik</label>
         @Html.DropDownList("Fridge",
-            new SelectList(new[]
-            {
-                "prePCR 1", "prePCR 2", "prePCR 3",
-                "postPCR 1", "postPCR 2"
-            }),
+            new SelectList(ViewBag.Fridges),
             "Izberi hladilnik",
             new {@class = "form-control"})
         <span class="form-text text-danger text-muted" asp-validation-for="Fridge"></span>
-        <!-- zamenjaj za dropdown -->
 
         <label asp-for="Razdelek">Razdelek</label>
         <input asp-for="Razdelek" type="number" min="0" class="form-control" id="Razdelek" placeholder="Vnesi razdelek"/>
@@ -62,11 +63,13 @@
         <label>@Html.RadioButton("Temp", "-20") -20 °C </label>
         <label>@Html.RadioButton("Temp", "-80") -80 °C </label>
         <label>@Html.RadioButton("Temp", "LN2") LN2 </label>
-        <br />
+        <br><br>
 
         <label asp-for="Box">Škatla</label>
-        <input asp-for="Box" type="text" class="form-control"
-               id="Box" placeholder="Vnesi škatlo"/>
+        @Html.DropDownList("Box",
+            new SelectList(ViewBag.Boxes),
+            "Izberi škatlo",
+            new {@class = "form-control"})
 
         <label asp-for="Location">Pozicija prvega alikvota</label>
         <input asp-for="Location" type="text" maxlength="3"
@@ -77,6 +80,9 @@
     </div>
 
     <!-- TODO: Če je dodajanje alikvotov iz Dodajanja vzorca, se vrni tja -->
-    <a href="@Url.Action("Index")" class="btn btn-primary">Shrani alikvot</a>
-
+    <a type="submit" href="@Url.Action("Index")" class="btn btn-primary">Shrani alikvot</a>
+    <a href="@Url.Action("Index")"
+       class="btn btn-primary">
+        Prekliči
+    </a>
 </form>

@@ -1,0 +1,27 @@
+﻿@model Infozdrav.Web.Models.Labena.ProjektViewModel
+@{
+    ViewData["Title"] = "Dodajanje projekta";
+}
+
+<h2>Dodajanje projekta</h2>
+
+<form asp-action="DodajanjeProjektov" method="post">
+    <div class="form-group">
+        
+        <label asp-for="Name">Ime</label>
+        <input asp-for="Name" type="text" data-val-required="Potreben je vnos imena" class="form-control"
+               id="SupplyerName" placeholder="Vnesi ime projekta"/>
+        <span class="form-text text-danger text-muted" asp-validation-for="Name"></span>
+
+        <label asp-for="Description">Opis</label>
+        <input asp-for="Description" type="text" data-val-required="Potreben je vnos opisa"
+               class="form-control" id="TaxNumber" placeholder="Vnesi kratek opis projekta"/>
+        <span class="form-text text-danger text-muted" asp-validation-for="Description"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Shrani projekt</button>
+    <a href="@Url.Action("Index")"
+       class="btn btn-primary">
+        Prekliči
+    </a>
+</form>

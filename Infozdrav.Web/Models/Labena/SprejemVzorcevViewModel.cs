@@ -110,7 +110,7 @@ namespace Infozdrav.Web.Models.Labena
         [Required]
         public DateTime? Date { get; set; }
 
-        public string Volume { get; set; }
+        public double Volume { get; set; }
 
         public string Notes { get; set; }
 
@@ -122,7 +122,7 @@ namespace Infozdrav.Web.Models.Labena
         [Required]
         public string Fridge { get; set; }
 
-        public string Razdelek { get; set; }
+        public int Razdelek { get; set; }
 
         public string Box { get; set; }
 
