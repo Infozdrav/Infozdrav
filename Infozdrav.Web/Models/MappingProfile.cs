@@ -23,8 +23,14 @@ namespace Infozdrav.Web.Models
             CreateMap<Trbovlje.CatalogArticleViewModel, CatalogArticle>();
             CreateMap<CatalogArticle, Trbovlje.CatalogArticleViewModel>(MemberList.Source);
 
+            CreateMap<Trbovlje.OrderCatalogArticleViewModel, OrderCatalogArticle>();
+            CreateMap<OrderCatalogArticle, Trbovlje.OrderCatalogArticleViewModel>(MemberList.Source);
+
             CreateMap<Trbovlje.BufferViewModel, Buffer>();
             CreateMap<Buffer, Trbovlje.BufferViewModel>(MemberList.Source);
+
+            CreateMap<Trbovlje.OrderCatalogArticleViewModel, CatalogArticle>();
+            CreateMap<CatalogArticle, Trbovlje.OrderCatalogArticleViewModel>(MemberList.Source);
 
         }
     }

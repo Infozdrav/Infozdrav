@@ -4,10 +4,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Infozdrav.Web.Data
 {
-    public enum UrgencyDegree
+    public enum ArticleType
     {
-        One,
-        Two,
-        Three
+        Reagent, 
+        Kemikalija,
+        PotrosniMaterial
     }
 }

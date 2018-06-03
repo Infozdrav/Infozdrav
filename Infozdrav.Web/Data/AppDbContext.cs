@@ -20,6 +20,7 @@ namespace Infozdrav.Web.Data
         public DbSet<Analyser> Analysers { get; set; }
         public DbSet<Laboratory> Laboratories { get; set; }
         public DbSet<Buffer> Buffers { get; set; }
+        public DbSet<OrderCatalogArticle> OrderCatalogArticles { get; set; }
 
 
         public AppDbContext(DbContextOptions options) : base(options)

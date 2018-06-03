@@ -17,7 +17,7 @@ namespace Infozdrav.Web.Models.Trbovlje
 
         [DisplayName("Article catalog number")]
         [Required]
-        public string CatalogNumber { get; set; }
+        public int CatalogNumber { get; set; }
 
         [DisplayName("Article price")]
         [Required]
@@ -25,7 +25,7 @@ namespace Infozdrav.Web.Models.Trbovlje
 
         [DisplayName("Article type")]
         [Required]
-        public string Type { get; set; }
+        public ArticleType ArticleType { get; set; }
 
         [Required]
         public int ManufacturerId { get; set; }
@@ -35,27 +35,4 @@ namespace Infozdrav.Web.Models.Trbovlje
         public int SupplierId { get; set; }
         public IEnumerable<SelectListItem> Suppliers { get; set; }
     }
-
-    /*public class OrderCatalogArticleViewModel
-    {
-        public int Id { get; set; }
-
-        [DisplayName("Article catalog number")]
-        [Required]
-        public string CatalogNumber { get; set; }
-
-        [DisplayName("Article price")]
-        public string Price { get; set; }
-
-        [DisplayName("Quantity")]
-        [Required]
-        public int Quantity { get; set; }
-
-        [Required]
-        public int UrgencyDegreeId { get; set; }
-        public IEnumerable<SelectListItem> UrgencyDegrees { get; set; }
-
-        public DateTime ReceptionTime { get; set; }
-        public User ReceptionUser { get; set; }
-    }*/
 }

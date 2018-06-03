@@ -31,7 +31,7 @@ namespace Infozdrav.Web.Controllers
                 .Include(p => p.Supplier)
                 .ToList();
 
-            return View(_mapper.Map<List<Models.Trbovlje.CatalogArticleViewModel>>(data));
+            return View(_mapper.Map<List<Models.Trbovlje.CatalogArticleViewModel>>(data.ToList()));
         }
 
         public IActionResult CatalogArticle(int id)

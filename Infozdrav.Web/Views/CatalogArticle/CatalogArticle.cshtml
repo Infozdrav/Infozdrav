@@ -1,4 +1,5 @@
-﻿@model Infozdrav.Web.Models.Trbovlje.CatalogArticleViewModel
+﻿@using Infozdrav.Web.Data
+@model Infozdrav.Web.Models.Trbovlje.CatalogArticleViewModel
 
 @{
     ViewBag.Title = "Article in catalog";
@@ -23,12 +24,10 @@
                class="form-control" id="catalogNumber" placeholder="Enter catalog number">
         <span class="form-text text-danger text-muted" asp-validation-for="CatalogNumber"></span>
 
-        <input type="hidden" asp-for="Id" />
-        <label asp-for="Type">Article type</label>
-        <input asp-for="Type" type="text"
-               data-val-required="The Article type field is required."
-               class="form-control" id="type" placeholder="Enter article type">
-        <span class="form-text text-danger text-muted" asp-validation-for="Type"></span>
+        <label asp-for="ArticleType">Tip artikla</label>
+        <br />
+        @Html.DropDownListFor(m => m.ArticleType, @Html.GetEnumSelectList(typeof(ArticleType)), "Izberi tip artikla")
+        <br />
 
         <input type="hidden" asp-for="Id" />
         <label asp-for="Price">Article price</label>

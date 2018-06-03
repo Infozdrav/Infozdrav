@@ -29,6 +29,7 @@ namespace Infozdrav.Web.Data
             InitArticle();
             InitLaboratories();
             InitBuffer();
+            InitOrderCatalogArticle();
         }
 
         private void UpdateDatabaseOnModelChange()
@@ -167,9 +168,9 @@ namespace Infozdrav.Web.Data
             var catalogArticle = new CatalogArticle
             {
                 Name = "Artikel 1",
-                CatalogNumber = "23942",
+                CatalogNumber = 23942,
                 Price = "14€",
-                Type = "reagent",
+                ArticleType = ArticleType.Kemikalija,
                 Manufacturer = _appDbContext.Manufacturers.FirstOrDefault(),
                 Supplier = _appDbContext.Suppliers.FirstOrDefault()
             };
@@ -275,6 +276,25 @@ namespace Infozdrav.Web.Data
                 PreparationTime = DateTime.Today.AddDays(-1),
                 PreparationUser = _appDbContext.Users.FirstOrDefault(),
             });
+            _appDbContext.SaveChanges();
+        }
+
+        private void InitOrderCatalogArticle()
+        {
+            if (_appDbContext.OrderCatalogArticles.Any())
+                return;
+
+            var orderCatalogArticle = new OrderCatalogArticle
+            {
+                CatalogArticle = _appDbContext.CatalogArticles.FirstOrDefault(),
+                Quantity = 4,
+                UrgencyDegree = UrgencyDegree.Three,
+                Note = "Order note",
+                ReceptionTime = DateTime.Today.AddDays(-1),
+                ReceptionUser = _appDbContext.Users.FirstOrDefault(),
+            };
+
+            _appDbContext.Add(orderCatalogArticle);
             _appDbContext.SaveChanges();
         }
     }
