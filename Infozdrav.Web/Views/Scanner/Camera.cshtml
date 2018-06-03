@@ -1,0 +1,81 @@
+﻿@{
+    ViewBag.Title = "Scanner";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Scanner</title>
+
+    <script src="~/lib/instascan/instascan.min.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body, video {
+            margin: 0 auto;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: black;
+            text-align: center;
+        }
+        select {
+            padding: 7px;
+        }
+    </style>
+</head>
+<body>
+    <select id="camera"></select>
+    <video id="preview"></video>
+<script type="text/javascript">
+    var cameras = null;
+    var select = document.getElementById("camera");
+    var scanner = new Instascan.Scanner({ video: document.getElementById('preview') });
+    scanner.addListener('scan',
+        function (content) {
+            console.log(content)
+            try {
+                window.opener.HandleBarcodeResult(content);
+            } catch (err) {
+                console.log(err);
+            }
+            window.close();
+        });
+
+    function cameraChange() {
+        onchange(select.options[select.selectedIndex].value);
+    }
+
+    function onchange(val) {
+        if (cameras.length > val) {
+            scanner.start(cameras[val]);
+        } else {
+            console.error('No cameras found.');
+        }
+    }
+
+    Instascan.Camera.getCameras().then(function (cams) {
+        cameras = cams;
+        select.onchange = cameraChange;
+        for (i in cams) {
+            var opt = document.createElement('option');
+            opt.value = i;
+            console.log(cams[i]);
+            opt.innerHTML = cams[i].name;
+            select.appendChild(opt);
+        }
+
+        onchange(0);
+    }).catch(function(e) {
+        console.error(e);
+    });
+</script>
+</body>
+</html>
