@@ -1,0 +1,39 @@
+﻿@using Infozdrav.Web.Data
+@model Infozdrav.Web.Models.Trbovlje.OrderCatalogArticleViewModel
+
+@{
+    ViewBag.Title = "Order article";
+    Layout = "_Layout";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<form asp-action="OrderCatalogArticle" method="post">
+    <div class="form-group">
+        <label asp-for="CatalogArticleId">Artikel</label>
+        <br />
+        @(Html.DropDownList("CatalogArticleId", Model.CatalogArticles))
+        <span class="form-text text-danger text-muted" asp-validation-for="CatalogArticleId"></span>
+        <br />
+
+        <input type="hidden" asp-for="Id" />
+        <label asp-for="Quantity">Quantity</label>
+        <input asp-for="Quantity" type="text"
+               data-val-required="The Quantity field is required."
+               class="form-control" id="quantity" placeholder="Enter quantity">
+        <span class="form-text text-danger text-muted" asp-validation-for="Quantity"></span>
+
+        <label asp-for="UrgencyDegree">Stopnja Nujnosti</label>
+        <br />
+        @Html.DropDownListFor(m => m.UrgencyDegree, @Html.GetEnumSelectList(typeof(UrgencyDegree)), "Izberi stopnjo nujnosti")
+        <br />
+
+        <label asp-for="Note">Opombe</label>
+        <input asp-for="Note" type="text"
+               class="form-control" id="Note">
+
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a href="@Url.Action("Index")"
+       class="btn btn-primary">Back</a>
+</form>
