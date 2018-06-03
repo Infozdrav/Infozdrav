@@ -1,14 +1,16 @@
-﻿@model Infozdrav.Web.Models.Trbovlje.ArticleReceptionViewModel
+﻿@using Infozdrav.Web.Data
+@model Infozdrav.Web.Models.Trbovlje.ArticleEditViewModel
 
 @{
-    ViewBag.Title = "Sprejem artikla";
+    ViewBag.Title = "Uredi artikel";
     Layout = "_Layout";
 }
 
 <h2>@ViewBag.Title</h2>
 
-<form asp-action="Reception" method="post" enctype="multipart/form-data">
+<form asp-action="Edit" method="post">
     <div class="form-group">
+        <input type="hidden" asp-for="Id" />
 
         <label asp-for="CatalogArticleId">Kataloška številka</label>
         <br />
@@ -33,25 +35,18 @@
         <label asp-for="NumberOfUnits">Število enot</label>
         <input asp-for="NumberOfUnits" type="number" min="0"
                data-val-required="Potrebno število enot."
-               class="form-control" id="NumberOfUnits" value="1">
+               class="form-control" id="NumberOfUnits">
         <span class="form-text text-danger text-muted" asp-validation-for="NumberOfUnits"></span>
 
         <label asp-for="DeliveryCost">Strošek dostave (€)</label>
-        <input asp-for="DeliveryCost" type="number" step="0.01" min="0"
+        <input asp-for="DeliveryCost" type="text"
                data-val-required="Potrebno je vnesti storšek dostave."
-               class="form-control" id="DeliveryCost" value="0">
+               class="form-control" id="DeliveryCost" >
         <span class="form-text text-danger text-muted" asp-validation-for="DeliveryCost"></span>
 
         <label asp-for="Rejected">Zavrnjen artikle</label>
         <input asp-for="Rejected" type="checkbox"
                class="form-control" id="Rejected">
-
-        @if (Model.ShowIgnoreBadLot)
-        {
-            <label asp-for="IgnoreBadLot">Ignoriraj opozorilo o lotu in vnesi</label>
-            <input asp-for="IgnoreBadLot" type="checkbox"
-                   class="form-control" id="IgnoreBadLot">
-        }
 
         <label asp-for="Note">Opombe</label>
         <input asp-for="Note" type="text"
@@ -81,6 +76,17 @@
         <span class="form-text text-danger text-muted" asp-validation-for="AnalyserId"></span>
         <br />
 
+        <label asp-for="WriteOffReason">Razlog za odpis</label>
+        <br />
+        @Html.DropDownListFor(m => m.WriteOffReason, @Html.GetEnumSelectList<WriteOffReason>(), "Izberi razlog za odpis", new { @class = "form-control" })
+        <span class="form-text text-danger text-muted" asp-validation-for="WriteOffReason"></span>
+        <br />
+
+        <label asp-for="WriteOffNote">Opomba</label>
+        <input asp-for="WriteOffNote" type="text"
+               class="form-control">
+        <span class="form-text text-danger text-muted" asp-validation-for="WriteOffNote"></span>
+
         <label asp-for="Certificate">Certifikat</label>
         <input asp-for="Certificate" type="file"
                data-val-required="Datoteka ni veljavna."
@@ -96,14 +102,9 @@
         <span class="form-text text-danger text-muted" asp-validation-for="SafteyList"></span>
         <br />
         <br />
-    </div>
 
-    <button formaction="/Article/Reception?repeat=true" type="submit" class="btn btn-primary">Shrani in ponovi</button>
-    <button type="submit" class="btn btn-primary">Shrani in končaj</button>
-    <br />
-    <br />
-    <a href="@Url.Action("Reception")"
-       class="btn btn-primary">Pobriši obrazec</a>
+    </div>
+    <button type="submit" class="btn btn-primary">Shrani</button>
     <a href="@Url.Action("Index")"
-       class="btn btn-primary">Prekliči in končaj</a>
+       class="btn btn-primary">Prekliči</a>
 </form>

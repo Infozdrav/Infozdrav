@@ -19,12 +19,17 @@ namespace Infozdrav.Web.Models
             CreateMap<Role, RoleViewModel>();
             CreateMap<DataFileViewModel, DataFile>();
 
-            CreateMap<Trbovlje.ArticleReceptionViewModel, Article>();
+            CreateMap<Trbovlje.ArticleReceptionViewModel, Article>()
+                .ForMember(x => x.Certificate, opt => opt.Ignore())
+                .ForMember(x => x.SafteyList, opt => opt.Ignore());
+            CreateMap<Article, Trbovlje.ArticleEditViewModel>(MemberList.Source);
+            CreateMap<Trbovlje.ArticleEditViewModel, Article>(MemberList.Destination);
             CreateMap<Trbovlje.ArticleUseViewModel, ArticleUse>();
             CreateMap<Article, Trbovlje.ArticleTableViewModel>()
                 .ForMember( x => x.NumberOfAvailableUnits, opt => opt.MapFrom( s => s.NumberOfUnits - s.ArticleUses.Count()));
             CreateMap<Trbovlje.ArticleReceptionViewModel, Trbovlje.ArticleReceptionViewModel>()
-                .ForMember( x => x.ShowIgnoreBadLot, opt => opt.Ignore());
+                .ForMember(x => x.ShowIgnoreBadLot, opt => opt.Ignore());
+
         }
     }
 }
