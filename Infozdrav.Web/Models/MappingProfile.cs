@@ -6,6 +6,7 @@ using AutoMapper;
 using AutoMapper;
 using Infozdrav.Web.Data;
 using Infozdrav.Web.Data.Manage;
+using Infozdrav.Web.Data.Trbovlje;
 using Infozdrav.Web.Helpers;
 using Infozdrav.Web.Models.Manage;
 using Infozdrav.Web.Models.Trbovlje;

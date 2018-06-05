@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using Infozdrav.Web.Abstractions;
 using Infozdrav.Web.Data.Manage;
+using Infozdrav.Web.Data.Trbovlje;
 using Infozdrav.Web.Helpers;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;

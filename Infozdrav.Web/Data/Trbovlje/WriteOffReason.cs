@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace Infozdrav.Web.Data
+namespace Infozdrav.Web.Data.Trbovlje
 {
     public enum WriteOffReason
     {

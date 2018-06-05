@@ -2,6 +2,7 @@
 using System.Linq;
 using AutoMapper;
 using Infozdrav.Web.Data;
+using Infozdrav.Web.Data.Trbovlje;
 using Infozdrav.Web.Models.Manage;
 using Infozdrav.Web.Models.Trbovlje;
 using Infozdrav.Web.Services;
@@ -67,7 +68,7 @@ namespace Infozdrav.Web.Controllers
                 return View(orderCatalogArticle);
 
             var dbOrderCatalogArticle = _dbContext.OrderCatalogArticles.FirstOrDefault(u => u.Id == orderCatalogArticle.Id);
-            if (orderCatalogArticle == null)
+            if (dbOrderCatalogArticle == null)
                 return RedirectToAction("Index");
 
             _mapper.Map(orderCatalogArticle, dbOrderCatalogArticle);

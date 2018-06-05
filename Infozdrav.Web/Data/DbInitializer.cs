@@ -5,9 +5,11 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Infozdrav.Web.Abstractions;
 using Infozdrav.Web.Data.Manage;
+using Infozdrav.Web.Data.Trbovlje;
 using Infozdrav.Web.Helpers;
 using Microsoft.AspNetCore.Identity;
 using Newtonsoft.Json;
+using Buffer = Infozdrav.Web.Data.Trbovlje.Buffer;
 
 namespace Infozdrav.Web.Data
 {
