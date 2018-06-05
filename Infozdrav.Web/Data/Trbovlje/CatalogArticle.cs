@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Infozdrav.Web.Data.Manage;
 
 namespace Infozdrav.Web.Data
 {

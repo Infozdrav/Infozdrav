@@ -46,8 +46,6 @@ namespace Infozdrav.Web.Models
 
             CreateMap<Trbovlje.OrderCatalogArticleViewModel, CatalogArticle>();
             CreateMap<CatalogArticle, Trbovlje.OrderCatalogArticleViewModel>(MemberList.Source);
-
-                .ForMember( x => x.ShowIgnoreBadLot, opt => opt.Ignore());
         }
     }
 }
