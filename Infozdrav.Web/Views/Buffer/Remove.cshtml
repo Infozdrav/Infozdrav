@@ -1,0 +1,21 @@
+﻿@model Infozdrav.Web.Models.Trbovlje.BufferViewModel
+
+@{
+    ViewBag.Title = "Remove buffer";
+    Layout = "_Layout";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<h3>Are you sure you want to delete: </h3>
+
+<form asp-action="Remove" method="post">
+    <div class="form-group">
+        <input type="hidden" asp-for="Id" />
+        <label asp-for="Name">Buffer name</label>
+        <input asp-for="Name" type="text" class="form-control" id="name" disabled>
+    </div>
+    <button type="submit" class="btn btn-primary">Delete</button>
+    <a href="@Url.Action("Buffer")"
+       class="btn btn-primary">Cancel</a>
+</form>

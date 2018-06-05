@@ -1,20 +1,23 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Infozdrav.Web.Data;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Infozdrav.Web.Models.Trbovlje
 {
     public class CatalogArticleViewModel
     {
         public int Id { get; set; }
-    
+
         [DisplayName("Article name")]
         [Required]
         public string Name { get; set; }
 
         [DisplayName("Article catalog number")]
         [Required]
-        public string CatalogNumber { get; set; }
+        public int CatalogNumber { get; set; }
 
         [DisplayName("Article price")]
         [Required]
@@ -22,14 +25,14 @@ namespace Infozdrav.Web.Models.Trbovlje
 
         [DisplayName("Article type")]
         [Required]
-        public string Type { get; set; }
+        public ArticleType ArticleType { get; set; }
 
-        [DisplayName("Supplier")]
         [Required]
-        public Supplier Supplier { get; set; }
+        public int ManufacturerId { get; set; }
+        public IEnumerable<SelectListItem> Manufacturers { get; set; }
 
-        [DisplayName("Manufacturer")]
         [Required]
-        public Manufacturer Manufacturer { get; set; }
+        public int SupplierId { get; set; }
+        public IEnumerable<SelectListItem> Suppliers { get; set; }
     }
 }

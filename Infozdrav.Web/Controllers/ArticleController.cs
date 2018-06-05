@@ -25,25 +25,33 @@ namespace Infozdrav.Web.Controllers
         private readonly AppDbContext _dbContext;
         private readonly UserManager<User> _userManager;
         private readonly IMapper _mapper;
+        private readonly FileService _fileService;
 
         public ArticleController(AppDbContext dbContext, IMapper mapper, UserService userService,
-            UserManager<User> userManager)
+            UserManager<User> userManager, FileService fileService)
         {
             _dbContext = dbContext;
             _userManager = userManager;
             _mapper = mapper;
+            _fileService = fileService;
         }
+       
 
         public IActionResult Index()
         {
-            // TODO: Pregled zaloge
             var data = _dbContext.Articles
-                .Where(a => !a.Rejected && a.WriteOffReason == null)
+                .Include(s => s.CatalogArticle)
+                .Include(s => s.ArticleUses)
                 .Include(s => s.WorkLocation)
+                .Include(s => s.StorageType)
+                .Include(s => s.StorageLocation)
+                .Include(s => s.WorkLocation)
+                .Include(s => s.Analyser)
+                .Include(s => s.Certificate)
+                .Include(s => s.SafteyList)
                 .ToList();
 
-            return View(
-                _mapper.Map<List<Models.Trbovlje.ArticleFullViewModel>>(data)); // TODO: ZA zalogo
+            return View(_mapper.Map<List<Models.Trbovlje.ArticleFullViewModel>>(data));
         }
 
         public IActionResult Article(int id)
@@ -53,44 +61,6 @@ namespace Infozdrav.Web.Controllers
                 return RedirectToAction("Index");
 
             return base.View(_mapper.Map<Models.Trbovlje.ArticleFullViewModel>(article));
-        }
-
-        private IEnumerable<SelectListItem> GetStorageTypes()
-        {
-            return new SelectList(_dbContext.StorageTypes, "Id", "Name");
-        }
-
-        private IEnumerable<SelectListItem> GetStorageLocations()
-        {
-            return new SelectList(_dbContext.StorageLocations, "Id", "Name");
-        }
-
-        private IEnumerable<SelectListItem> GetWorkLocations()
-        {
-            return new SelectList(_dbContext.WorkLocations, "Id", "Name");
-        }
-
-        private IEnumerable<SelectListItem> GetAnalysers()
-        {
-            return new SelectList(_dbContext.Analysers, "Id", "Name");
-        }
-
-        private IEnumerable<SelectListItem> GetCatalogArticles()
-        {
-            // TOOO: Samo "aktiven" artikle
-            return new SelectList(_dbContext.CatalogArticles, "Id", "Name");
-        }
-
-        private ArticleReceptionViewModel GetReceptionViewModel()
-        {
-            return new ArticleReceptionViewModel
-            {
-                StorageTypes = GetStorageTypes(),
-                StorageLocations = GetStorageLocations(),
-                WorkLocations = GetWorkLocations(),
-                Analysers = GetAnalysers(),
-                CatalogArticles = GetCatalogArticles()
-            };
         }
 
         public IActionResult Reception()
@@ -166,13 +136,15 @@ namespace Infozdrav.Web.Controllers
                     return View(_mapper.Map(GetReceptionViewModel(), article));
                 }
 
-                // TODO: File upload...
                 var user = await _userManager.FindByNameAsync(User.Identity.Name);
                 Article dbArticle = _mapper.Map<Article>(article);
                 dbArticle.ReceptionTime = DateTime.Now;
                 dbArticle.ReceptionUser = user;
+                dbArticle.Certificate = _fileService.SaveFile(article.Certificate);
+                dbArticle.SafteyList = _fileService.SaveFile(article.SafteyList);
                 _dbContext.Articles.Add(dbArticle);
                 _dbContext.SaveChanges();
+
                 if (repeat)
                 {
                     ModelState.Clear();
@@ -221,7 +193,6 @@ namespace Infozdrav.Web.Controllers
                 return RedirectToAction("UseArticleTable");
             }
 
-            // TODO: test
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
             ArticleUse dbArticleUse = _mapper.Map<ArticleUse>(articleUse);
             dbArticleUse.UseTime = DateTime.Now;
@@ -277,7 +248,6 @@ namespace Infozdrav.Web.Controllers
                 return View(article);
             }
 
-            // TODO: Set user and stuff
 
             var dbArticle = _dbContext.Articles.Include(a => a.CatalogArticle).FirstOrDefault(a => a.Id == article.Id);
 
@@ -314,10 +284,58 @@ namespace Infozdrav.Web.Controllers
             var dbArticle = _dbContext.Articles.FirstOrDefault(l => l.Id == viewModel.Id);
             if (dbArticle != null)
             {
+                _fileService.DeleteFile(dbArticle.Certificate);
+                _fileService.DeleteFile(dbArticle.SafteyList);
                 _dbContext.Articles.Remove(dbArticle);
                 _dbContext.SaveChanges();
             }
 
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult Edit(int id)
+        {
+            var dbArticle = _dbContext.Articles.FirstOrDefault(l => l.Id == id);
+            if (dbArticle == null)
+                RedirectToAction("Index");
+
+            var viewModel = new ArticleEditViewModel
+            {
+                StorageTypes = GetStorageTypes(),
+                StorageLocations = GetStorageLocations(),
+                WorkLocations = GetWorkLocations(),
+                Analysers = GetAnalysers(),
+                CatalogArticles = GetCatalogArticles()
+            };
+
+            return View(_mapper.Map(dbArticle, viewModel));
+        }
+
+        [HttpPost]
+        public IActionResult Edit([FromForm] ArticleEditViewModel viewModel)
+        {
+            var dbArticle = _dbContext.Articles.FirstOrDefault(l => l.Id == viewModel.Id);
+            if (dbArticle == null)
+                RedirectToAction("Index");
+
+            if (!ModelState.IsValid)
+                return View(viewModel);
+
+            _mapper.Map(viewModel, dbArticle);
+
+            if (viewModel.CertificateUpload != null)
+            {
+                _fileService.DeleteFile(dbArticle.Certificate);
+                dbArticle.Certificate = _fileService.SaveFile(viewModel.CertificateUpload);
+            }
+
+            if (viewModel.SafteyListUpload != null)
+            {
+                _fileService.DeleteFile(dbArticle.SafteyList);
+                dbArticle.SafteyList = _fileService.SaveFile(viewModel.SafteyListUpload);
+            }
+
+            _dbContext.SaveChanges();
             return RedirectToAction("Index");
         }
 
@@ -332,6 +350,8 @@ namespace Infozdrav.Web.Controllers
                 .Include(s => s.StorageLocation)
                 .Include(s => s.WorkLocation)
                 .Include(s => s.Analyser)
+                .Include(s => s.Certificate)
+                .Include(s => s.SafteyList)
                 .ToList();
 
             ViewData["Title"] = title;
@@ -340,5 +360,44 @@ namespace Infozdrav.Web.Controllers
 
             return View("Table", _mapper.Map<List<Models.Trbovlje.ArticleTableViewModel>>(data));
         }
+
+        private IEnumerable<SelectListItem> GetStorageTypes()
+        {
+            return new SelectList(_dbContext.StorageTypes, "Id", "Name");
+        }
+
+        private IEnumerable<SelectListItem> GetStorageLocations()
+        {
+            return new SelectList(_dbContext.StorageLocations, "Id", "Name");
+        }
+
+        private IEnumerable<SelectListItem> GetWorkLocations()
+        {
+            return new SelectList(_dbContext.WorkLocations, "Id", "Name");
+        }
+
+        private IEnumerable<SelectListItem> GetAnalysers()
+        {
+            return new SelectList(_dbContext.Analysers, "Id", "Name");
+        }
+
+        private IEnumerable<SelectListItem> GetCatalogArticles()
+        {
+            // TOOO: Samo "aktiven" artikle
+            return new SelectList(_dbContext.CatalogArticles, "Id", "Name");
+        }
+
+        private ArticleReceptionViewModel GetReceptionViewModel()
+        {
+            return new ArticleReceptionViewModel
+            {
+                StorageTypes = GetStorageTypes(),
+                StorageLocations = GetStorageLocations(),
+                WorkLocations = GetWorkLocations(),
+                Analysers = GetAnalysers(),
+                CatalogArticles = GetCatalogArticles()
+            };
+        }
+
     }
 }
