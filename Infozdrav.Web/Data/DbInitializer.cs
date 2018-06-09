@@ -5,9 +5,11 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Infozdrav.Web.Abstractions;
 using Infozdrav.Web.Data.Manage;
+using Infozdrav.Web.Data.Trbovlje;
 using Infozdrav.Web.Helpers;
 using Microsoft.AspNetCore.Identity;
 using Newtonsoft.Json;
+using Buffer = Infozdrav.Web.Data.Trbovlje.Buffer;
 
 namespace Infozdrav.Web.Data
 {
@@ -38,6 +40,9 @@ namespace Infozdrav.Web.Data
             InitAnalysers();
             InitWorkLocations();
             InitArticle();
+            InitLaboratories();
+            InitBuffer();
+            InitOrderCatalogArticle();
         }
 
         private bool UpdateDatabaseOnModelChange()
@@ -173,11 +178,11 @@ namespace Infozdrav.Web.Data
             var catalogArticle = new CatalogArticle
             {
                 Name = "Artikel 1",
-                CatalogNumber = "23942",
+                CatalogNumber = 23942,
                 Price = "14€",
-                Type = "reagent",
-                //Manufacturer = 
-                //Supplier = 
+                ArticleType = ArticleType.Kemikalija,
+                Manufacturer = _appDbContext.Manufacturers.FirstOrDefault(),
+                Supplier = _appDbContext.Suppliers.FirstOrDefault()
             };
 
             _appDbContext.Add(catalogArticle);
@@ -272,6 +277,54 @@ namespace Infozdrav.Web.Data
                 Note = "Damaged package",
                 WriteOffReason = WriteOffReason.Other,
             });
+            _appDbContext.SaveChanges();
+        }
+        private void InitLaboratories()
+        {
+            if (_appDbContext.Laboratories.Any())
+                return;
+
+            _appDbContext.Add(new Laboratory() { Name = "Urgenca" });
+            _appDbContext.Add(new Laboratory() { Name = "Bolnišnica Trbovlje" });
+            _appDbContext.SaveChanges();
+        }
+
+        private void InitBuffer()
+        {
+            if (_appDbContext.Buffers.Any())
+                return;
+
+            _appDbContext.Add(new Buffer()
+            {
+                Article = _appDbContext.Articles.FirstOrDefault(),
+                UseByDate = DateTime.Today,
+                Note = "Buffer note",
+                StorageType = _appDbContext.StorageTypes.FirstOrDefault(),
+                StorageLocation = _appDbContext.StorageLocations.FirstOrDefault(),
+                WorkLocation = _appDbContext.WorkLocations.FirstOrDefault(),
+                Analyser = _appDbContext.Analysers.FirstOrDefault(),
+                PreparationTime = DateTime.Today.AddDays(-1),
+                PreparationUser = _appDbContext.Users.FirstOrDefault(),
+            });
+            _appDbContext.SaveChanges();
+        }
+
+        private void InitOrderCatalogArticle()
+        {
+            if (_appDbContext.OrderCatalogArticles.Any())
+                return;
+
+            var orderCatalogArticle = new OrderCatalogArticle
+            {
+                CatalogArticle = _appDbContext.CatalogArticles.FirstOrDefault(),
+                Quantity = 4,
+                UrgencyDegree = UrgencyDegree.Three,
+                Note = "Order note",
+                ReceptionTime = DateTime.Today.AddDays(-1),
+                ReceptionUser = _appDbContext.Users.FirstOrDefault(),
+            };
+
+            _appDbContext.Add(orderCatalogArticle);
             _appDbContext.SaveChanges();
         }
     }

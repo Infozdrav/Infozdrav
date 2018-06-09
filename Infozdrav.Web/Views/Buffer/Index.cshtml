@@ -1,0 +1,34 @@
+﻿@model List<Infozdrav.Web.Models.Trbovlje.BufferViewModel>
+
+@{
+    ViewBag.Title = "Buffers";
+    Layout = "_Layout";
+
+    string dateFormat = "short";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<a href="@Url.Action("Add")"
+   class="btn btn-primary">Add buffer</a>
+<br/>
+
+<script id="actions" type="text/x-template">
+    <a href="@Url.Action("Buffer")/${Id}"
+       class="btn btn-primary">Edit</a>
+    <a href="@Url.Action("Remove")/${Id}"
+       class="btn btn-primary">Delete</a>
+</script>
+
+<ejs-grid id="grid" dataSource=@Model allowPaging="true" showColumnMenu="true">
+    <e-grid-columns>
+        <e-grid-column field="Name" textAlign="Right" width="100"></e-grid-column>
+        <e-grid-column field="UseByDate" headerText="Rok Uporabe" format="@dateFormat" width="50"></e-grid-column>
+        <e-grid-column field="Note" textAlign="Right" width="120"></e-grid-column>
+        <e-grid-column field="StorageType" textAlign="Right" width="120"></e-grid-column>
+        <e-grid-column field="StorageLocation" textAlign="Right" width="120"></e-grid-column>
+        <e-grid-column field="WorkLocation" textAlign="Right" width="120"></e-grid-column>
+        <e-grid-column field="Analyser" textAlign="Right" width="120"></e-grid-column>
+        <e-grid-column field="Id" textAlign="Right" headerText="Actions" template="#actions" width="150"></e-grid-column>
+    </e-grid-columns>
+</ejs-grid>
