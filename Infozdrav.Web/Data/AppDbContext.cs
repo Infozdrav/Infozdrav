@@ -138,6 +138,9 @@ namespace Infozdrav.Web.Data
                             var oldVal = maskAttr?.DisplayValue ?? p.OriginalValue.ToString();
                             var newVal = maskAttr?.DisplayValue ?? p.CurrentValue.ToString();
 
+                            if (oldVal == newVal)
+                                continue;
+
                             var audit = new Audit
                             {
                                 User = null, // TODO
