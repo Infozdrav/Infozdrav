@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -7,21 +8,38 @@ using System.Threading.Tasks;
 using Infozdrav.Web.Abstractions;
 using Infozdrav.Web.Attributes;
 using Infozdrav.Web.Data.Manage;
+using Infozdrav.Web.Data.Trbovlje;
 using Infozdrav.Web.Helpers;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Infozdrav.Web.Data
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : IdentityDbContext<User, Role, int>
     {
-        public DbSet<User> Users { get; set; }
-        public DbSet<Role> Roles { get; set; }
+        public DbSet<Audit> Audits { get; set; }
+        public DbSet<Table> Tables { get; set; }
+
+        public DbSet<WorkLocation> WorkLocations { get; set; }
+        public DbSet<Supplier> Suppliers { get; set; }
+        public DbSet<Manufacturer> Manufacturers { get; set; }
+        public DbSet<CatalogArticle> CatalogArticles { get; set; }
+        public DbSet<StorageType> StorageTypes { get; set; }
+        public DbSet<StorageLocation> StorageLocations { get; set; }
+        public DbSet<Article> Articles { get; set; }
+        public DbSet<Analyser> Analysers { get; set; }
+        public DbSet<ArticleUse> ArticleUses { get; set; }
+        public DbSet<Laboratory> Laboratories { get; set; }
+        public DbSet<Trbovlje.Buffer> Buffers { get; set; }
+        public DbSet<OrderCatalogArticle> OrderCatalogArticles { get; set; }
+        
 
 
         public AppDbContext(DbContextOptions options) : base(options)
         {
+            
         }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -33,11 +51,24 @@ namespace Infozdrav.Web.Data
                 var dbTable = modelBuilder.Entity(dbEntity);
                 if (dbEntity.GetInterfaces().Contains(typeof(IAuditEntity)))
                 {
-                    Expression<Func<IAuditEntity, bool>> f = o => o.DeletedAt != null;
-                    dbTable.HasQueryFilter(f);
+                    // Expression<Func<IAuditEntity, bool>> f = o => o.DeletedAt != null;
+                    dbTable.HasQueryFilter(GenerateQueryFilter(dbEntity));
                 }
             }
 
+        }
+
+        private LambdaExpression GenerateQueryFilter(Type entityType)
+        {
+            var entityParam = Expression.Parameter(entityType, "entity");
+
+            var expr = 
+                Expression.Not(
+                Expression.Property(
+                    Expression.Property(entityParam, nameof(IAuditEntity.DeletedAt)),
+                    "HasValue")
+                );
+            return Expression.Lambda(expr, new List<ParameterExpression>{ entityParam });
         }
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
@@ -52,11 +83,6 @@ namespace Infozdrav.Web.Data
             return base.SaveChanges();
         }
 
-        public override int SaveChanges(bool acceptAllChangesOnSuccess)
-        {
-            AuditData();
-            return base.SaveChanges(acceptAllChangesOnSuccess);
-        }
 
         public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = new CancellationToken())
         {
@@ -66,9 +92,6 @@ namespace Infozdrav.Web.Data
 
         private void AuditData()
         {
-            var audits = Set<Audit>();
-            var tables = Set<Table>();
-
             var entities = ChangeTracker.Entries().Where(e => e.State != EntityState.Unchanged).ToList();
             foreach (var entity in entities)
             {
@@ -77,7 +100,7 @@ namespace Infozdrav.Web.Data
                 if (baseEntity == null)
                     continue;
 
-                var table = tables.FirstOrDefault(t => t.Name == baseEntity.GetType().FullName);
+                var table = Tables.FirstOrDefault(t => t.Name == baseEntity.GetType().FullName);
                 if (table == null)
                     continue;
 
@@ -127,7 +150,7 @@ namespace Infozdrav.Web.Data
                                 PropertyNewValue = newVal,
                             };
 
-                            audits.Add(audit);
+                            Audits.Add(audit);
                         }
                         break;
                 }

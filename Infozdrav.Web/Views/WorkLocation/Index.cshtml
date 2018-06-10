@@ -1,0 +1,26 @@
+﻿@model List<Infozdrav.Web.Models.Trbovlje.WorkLocationViewModel>
+
+@{
+    ViewBag.Title = "Work locations";
+    Layout = "_Layout";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<a href="@Url.Action("Add")"
+   class="btn btn-primary">Add work location</a>
+<br/>
+
+<script id="actions" type="text/x-template">
+    <a href="@Url.Action("WorkLocation")/${Id}"
+       class="btn btn-primary">Edit</a>
+    <a href="@Url.Action("Remove")/${Id}"
+       class="btn btn-primary">Delete</a>
+</script>
+
+<ejs-grid id="grid" dataSource=@ViewBag.DataSource allowPaging="true">
+    <e-grid-columns>
+        <e-grid-column field="Name" textAlign="Right" width="120"></e-grid-column>
+        <e-grid-column field="Id" textAlign="Right" headerText="Actions" template="#actions" width="150"></e-grid-column>
+    </e-grid-columns>
+</ejs-grid>

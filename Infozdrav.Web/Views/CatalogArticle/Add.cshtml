@@ -1,0 +1,56 @@
+﻿@using Infozdrav.Web.Data
+@using Infozdrav.Web.Data.Trbovlje
+@model Infozdrav.Web.Models.Trbovlje.CatalogArticleViewModel
+
+@{
+    ViewBag.Title = "Add article in catalog";
+    Layout = "_Layout";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<form asp-action="Add" method="post">
+    <div class="form-group">
+        <input type="hidden" asp-for="Id" />
+        <label asp-for="Name">Article name</label>
+        <input asp-for="Name" type="text"
+               data-val-required="The Article name field is required."
+               class="form-control" id="name" placeholder="Enter article name">
+        <span class="form-text text-danger text-muted" asp-validation-for="Name"></span>
+
+        <input type="hidden" asp-for="Id" />
+        <label asp-for="CatalogNumber">Article catalog number</label>
+        <input asp-for="CatalogNumber" type="number"
+               data-val-required="The Article catalog number field is required."
+               class="form-control" id="catalogNumber" placeholder="Enter catalog number">
+        <span class="form-text text-danger text-muted" asp-validation-for="CatalogNumber"></span>
+
+        <label asp-for="ArticleType">Tip artikla</label>
+        <br />
+        @Html.DropDownListFor(m => m.ArticleType, @Html.GetEnumSelectList(typeof(ArticleType)), "Izberi tip artikla")
+        <br />
+
+        <input type="hidden" asp-for="Id" />
+        <label asp-for="Price">Article price</label>
+        <input asp-for="Price" type="text"
+               data-val-required="The Article price field is required."
+               class="form-control" id="price" placeholder="Enter article price">
+        <span class="form-text text-danger text-muted" asp-validation-for="Price"></span>
+
+        <label asp-for="ManufacturerId">Proizvajalec</label>
+        <br />
+        @(Html.DropDownList("ManufacturerId", Model.Manufacturers))
+        <span class="form-text text-danger text-muted" asp-validation-for="ManufacturerId"></span>
+        <br />
+
+        <label asp-for="SupplierId">Dobavitelj</label>
+        <br />
+        @(Html.DropDownList("SupplierId", Model.Suppliers))
+        <span class="form-text text-danger text-muted" asp-validation-for="SupplierId"></span>
+        <br />
+
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a href="@Url.Action("Index")"
+       class="btn btn-primary">Back</a>
+</form>
