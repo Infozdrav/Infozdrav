@@ -1,15 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-using AutoMapper;
+﻿using AutoMapper;
 ﻿using System.Linq;
-using AutoMapper;
+using Infozdrav.Web.Abstractions;
 using Infozdrav.Web.Data;
 using Infozdrav.Web.Data.Manage;
 using Infozdrav.Web.Data.Trbovlje;
 using Infozdrav.Web.Helpers;
 using Infozdrav.Web.Models.Manage;
-using Infozdrav.Web.Models.Trbovlje;
 
 namespace Infozdrav.Web.Models
 {
@@ -47,6 +43,8 @@ namespace Infozdrav.Web.Models
 
             CreateMap<Trbovlje.OrderCatalogArticleViewModel, CatalogArticle>();
             CreateMap<CatalogArticle, Trbovlje.OrderCatalogArticleViewModel>(MemberList.Source);
+
+            
         }
     }
 }
