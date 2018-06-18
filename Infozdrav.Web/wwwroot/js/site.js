@@ -61,4 +61,8 @@ $(document).ready(function() {
     $(".barcode-scanner").click(function() {
         scanBarcode($(this).attr("data-callback"));
     });
+
+    $('#sidebarCollapse').on('click', function () {
+        $('#sidebar').toggleClass('active');
+    });
 })

@@ -2,6 +2,7 @@
 using System.Linq;
 using AutoMapper;
 using Infozdrav.Web.Data;
+using Infozdrav.Web.Data.Trbovlje;
 using Infozdrav.Web.Models.Manage;
 using Infozdrav.Web.Models.Trbovlje;
 using Infozdrav.Web.Services;
@@ -43,7 +44,7 @@ namespace Infozdrav.Web.Controllers
                 return View(workLocation);
 
             var dbWorkLocation = _dbContext.WorkLocations.FirstOrDefault(u => u.Id == workLocation.Id);
-            if (workLocation == null)
+            if (dbWorkLocation == null)
                 return RedirectToAction("Index");
 
             _mapper.Map(workLocation, dbWorkLocation);

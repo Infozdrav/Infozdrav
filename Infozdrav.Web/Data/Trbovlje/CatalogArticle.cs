@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
+using Infozdrav.Web.Data.Manage;
 
-namespace Infozdrav.Web.Data
+namespace Infozdrav.Web.Data.Trbovlje
 {
     public class CatalogArticle : Entity
     {

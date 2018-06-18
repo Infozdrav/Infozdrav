@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
 using Infozdrav.Web.Data.Manage;
 using Newtonsoft.Json;
 
-namespace Infozdrav.Web.Data
+namespace Infozdrav.Web.Data.Trbovlje
 {
     public class ArticleUse : Entity
     {

@@ -20,6 +20,16 @@ namespace Infozdrav.Web.Helpers
             return GetAllTypesWithBaseFromAssembly<T>(asm);
         }
 
+        public static object GetPropValue(this object src, string propName)
+        {
+            return src.GetType().GetProperty(propName).GetValue(src);
+        }
+
+        public static bool IsPrimitive(this Type t)
+        {
+            return t.IsPrimitive || t == typeof(decimal) || t == typeof(string) || t == typeof(DateTime);
+        }
+
         public static IEnumerable<Type> GetAllTypesWithBaseFromAssembly<T>(Assembly asm)
         {
             var assemblies = asm.GetReferencedAssemblies().ToList();

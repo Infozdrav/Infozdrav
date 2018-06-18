@@ -2,6 +2,7 @@
 using System.Linq;
 using AutoMapper;
 using Infozdrav.Web.Data;
+using Infozdrav.Web.Data.Trbovlje;
 using Infozdrav.Web.Models.Manage;
 using Infozdrav.Web.Models.Trbovlje;
 using Infozdrav.Web.Services;
@@ -43,7 +44,7 @@ namespace Infozdrav.Web.Controllers
                 return View(storageType);
 
             var dbStorageType = _dbContext.StorageTypes.FirstOrDefault(u => u.Id == storageType.Id);
-            if (storageType == null)
+            if (dbStorageType == null)
                 return RedirectToAction("Index");
 
             _mapper.Map(storageType, dbStorageType);

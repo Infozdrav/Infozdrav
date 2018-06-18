@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Infozdrav.Web.Data;
+using Infozdrav.Web.Data.Manage;
+using Infozdrav.Web.Data.Trbovlje;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Infozdrav.Web.Models.Trbovlje

@@ -1,4 +1,5 @@
-﻿using Infozdrav.Web.Abstractions;
+﻿using System.Collections.Generic;
+using Infozdrav.Web.Abstractions;
 using Microsoft.AspNetCore.Identity;
 
 namespace Infozdrav.Web.Data.Manage

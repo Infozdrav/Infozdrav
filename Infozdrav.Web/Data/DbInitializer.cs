@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Infozdrav.Web.Abstractions;
 using Infozdrav.Web.Data.Manage;
+using Infozdrav.Web.Data.Trbovlje;
 using Infozdrav.Web.Helpers;
 using Microsoft.AspNetCore.Identity;
 using Newtonsoft.Json;
+using Buffer = Infozdrav.Web.Data.Trbovlje.Buffer;
 
 namespace Infozdrav.Web.Data
 {
@@ -37,7 +40,7 @@ namespace Infozdrav.Web.Data
             InitStorageLocations();
             InitAnalysers();
             InitWorkLocations();
-            InitArticle();
+            // InitArticle();
             InitLaboratories();
             InitBuffer();
             InitOrderCatalogArticle();
@@ -48,37 +51,36 @@ namespace Infozdrav.Web.Data
             var dbModels = GetDbModels();
             var currModels = Assembly.GetEntryAssembly()
                                 .GetAllTypesWithBase<IEntity>()
-                                .Select(e => new ModelHash
+                                .Select(e => new Table
                                 {
                                     Name = e.FullName,
                                     Hash = GetSimpleHash(e)
                                 })
                                 .ToList();
 
-            // TODO Could be optimized
             if (currModels.Any(m => dbModels.Count(o => o.Name == m.Name && o.Hash == m.Hash) != 1))
                 _appDbContext.Database.EnsureDeleted();
             else
-                return false; // TODO: remove this else
+                return false;
 
             _appDbContext.Database.EnsureCreated();
-            var hashTable = _appDbContext.Set<ModelHash>();
+            var hashTable = _appDbContext.Set<Table>();
             hashTable.AddRange(currModels);
             _appDbContext.SaveChanges();
 
             return true;
         }
 
-        private List<ModelHash> GetDbModels()
+        private List<Table> GetDbModels()
         {
             try
             {
-                var hashTable = _appDbContext.Set<ModelHash>();
+                var hashTable = _appDbContext.Set<Table>();
                 return hashTable.ToList();
             }
             catch (Exception e)
             {
-                return new List<ModelHash>();
+                return new List<Table>();
             }
         }
 
