@@ -9,7 +9,7 @@
 
 <h2>@ViewBag.Title</h2>
 
-<form asp-action="Edit" method="post">
+<form asp-action="Edit" method="post" enctype="multipart/form-data">
     <div class="form-group">
         <input type="hidden" asp-for="Id" />
 
@@ -42,7 +42,7 @@
         <label asp-for="DeliveryCost">Strošek dostave (€)</label>
         <input asp-for="DeliveryCost" type="text"
                data-val-required="Potrebno je vnesti storšek dostave."
-               class="form-control" id="DeliveryCost" >
+               class="form-control" id="DeliveryCost">
         <span class="form-text text-danger text-muted" asp-validation-for="DeliveryCost"></span>
 
         <label asp-for="Rejected">Zavrnjen artikle</label>
@@ -83,24 +83,42 @@
         <span class="form-text text-danger text-muted" asp-validation-for="WriteOffReason"></span>
         <br />
 
-        <label asp-for="WriteOffNote">Opomba</label>
+        <label asp-for="WriteOffNote">Opomba za odpis</label>
         <input asp-for="WriteOffNote" type="text"
                class="form-control">
         <span class="form-text text-danger text-muted" asp-validation-for="WriteOffNote"></span>
 
-        <label asp-for="Certificate">Certifikat</label>
-        <input asp-for="Certificate" type="file"
+        <label asp-for="CertificateUpload">Certifikat</label>
+        @if (Model.Certificate == null)
+        {
+            <p>Ni certifikata</p>
+        }
+        else
+        {
+            <br />
+            <filelink class="btn btn-link" file-name="@Model.Certificate.DiskName">Certifikat</filelink>
+        }
+        <input asp-for="CertificateUpload" type="file"
                data-val-required="Datoteka ni veljavna."
-               name="@Model.Certificate"
+               name="@Model.CertificateUpload"
                class="" id="Certificate">
-        <span class="form-text text-danger text-muted" asp-validation-for="Certificate"></span>
+        <span class="form-text text-danger text-muted" asp-validation-for="CertificateUpload"></span>
 
-        <label asp-for="SafteyList">Varnostni list</label>
-        <input asp-for="SafteyList" type="file"
+        <label asp-for="SafteyListUpload">Varnostni list</label>
+        @if (Model.SafteyList == null)
+         {
+            <p>Ni varnostnega lista</p>
+        }
+        else
+        {
+            <br />
+            <filelink class="btn btn-link" file-name="@Model.SafteyList.DiskName">Varnostni list</filelink>
+        }
+        <input asp-for="SafteyListUpload" type="file"
                data-val-required="Datoteka ni veljavna."
-               name="@Model.SafteyList"
+               name="@Model.SafteyListUpload"
                class="" id="SafteyList">
-        <span class="form-text text-danger text-muted" asp-validation-for="SafteyList"></span>
+        <span class="form-text text-danger text-muted" asp-validation-for="SafteyListUpload"></span>
         <br />
         <br />
 

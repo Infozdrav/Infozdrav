@@ -34,8 +34,8 @@ namespace Infozdrav.Web.Models.Trbovlje
         public int? AnalyserId { get; set; }
         public Analyser Analyser { get; set; }
 
-        public DataFile Certificate { get; set; }
-        public DataFile SafteyList { get; set; }
+        public DataFileViewModel Certificate { get; set; }
+        public DataFileViewModel SafteyList { get; set; }
 
         public DateTime? ReceptionTime { get; set; }
         public User ReceptionUser { get; set; }
@@ -121,8 +121,8 @@ namespace Infozdrav.Web.Models.Trbovlje
         public WorkLocation WorkLocation { get; set; }
         public Analyser Analyser { get; set; }
 
-        public DataFile Certificate { get; set; }
-        public DataFile SafteyList { get; set; }
+        public DataFileViewModel Certificate { get; set; }
+        public DataFileViewModel SafteyList { get; set; }
 
       //  public DateTime ReceptionTime { get; set; }
     }
@@ -165,8 +165,8 @@ namespace Infozdrav.Web.Models.Trbovlje
         public int AnalyserId { get; set; }
         public IEnumerable<SelectListItem> Analysers { get; set; }
 
-        public DataFile Certificate { get; set; }
-        public DataFile SafteyList { get; set; }
+        public DataFileViewModel Certificate { get; set; }
+        public DataFileViewModel SafteyList { get; set; }
         public IFormFile CertificateUpload { get; set; }
         public IFormFile SafteyListUpload { get; set; }
     }

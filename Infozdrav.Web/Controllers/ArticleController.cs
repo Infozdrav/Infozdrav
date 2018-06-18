@@ -215,7 +215,7 @@ namespace Infozdrav.Web.Controllers
         public IActionResult WriteOffTable()
         {
             return GetTableView("Odpis artikla", "WriteOff", "Odpis", 
-                a => !a.Rejected && a.WriteOffReason == null && a.NumberOfUnits - a.ArticleUses.Count() < 1);
+                a => a.WriteOffReason == null);
         }
 
         public IActionResult WriteOff(int id)
@@ -294,7 +294,10 @@ namespace Infozdrav.Web.Controllers
 
         public IActionResult Edit(int id)
         {
-            var dbArticle = _dbContext.Articles.FirstOrDefault(l => l.Id == id);
+            var dbArticle = _dbContext.Articles
+                .Include(s => s.Certificate)
+                .Include(s => s.SafteyList)
+                .FirstOrDefault(l => l.Id == id);
             if (dbArticle == null)
                 RedirectToAction("Index");
 
