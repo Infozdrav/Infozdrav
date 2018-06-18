@@ -8,102 +8,111 @@
 <h2>@ViewBag.Title</h2>
 
 <form asp-action="Reception" method="post" enctype="multipart/form-data">
-    <div class="form-group">
+    <div class="">
+        <div class="row">
+            <div class="col-lg-6 form-group">
+                <label asp-for="CatalogArticleId">Kataloška številka</label>
+                <br />
+                @Html.DropDownListFor(m => m.CatalogArticleId, Model.CatalogArticles, "Izberi kataloško števliko", new { @class = "form-control" })
+                <span class="form-text text-danger text-muted" asp-validation-for="CatalogArticleId"></span>
+                @*TODO: Make this autocomplete or something this is not ok*@
+                <br />
 
-        <label asp-for="CatalogArticleId">Kataloška številka</label>
-        <br />
-        @Html.DropDownListFor(m => m.CatalogArticleId, Model.CatalogArticles, "Izberi kataloško števliko", new { @class = "form-control" })
-        <span class="form-text text-danger text-muted" asp-validation-for="CatalogArticleId"></span>
-        @*TODO: Make this autocomplete or something this is not ok*@
-        <br />
+                <label asp-for="Lot">Lot</label>
+                <input asp-for="Lot" type="text"
+                       data-val-required="Potrebno je vnesti lot."
+                       class="form-control" id="Lot" placeholder="Vnesi lot">
+                <span class="form-text text-danger text-muted" asp-validation-for="Lot"></span>
 
-        <label asp-for="Lot">Lot</label>
-        <input asp-for="Lot" type="text"
-               data-val-required="Potrebno je vnesti lot."
-               class="form-control" id="Lot" placeholder="Vnesi lot">
-        <span class="form-text text-danger text-muted" asp-validation-for="Lot"></span>
+                <label asp-for="UseByDate">Rok uporabe</label>
+                <input asp-for="UseByDate" type="date"
+                       min="@DateTime.Today.ToString("yyyy-MM-dd")"
+                       data-val-required="Potrebno je vnesti rok uporabe."
+                       class="form-control" id="UseByDate">
+                <span class="form-text text-danger text-muted" asp-validation-for="UseByDate"></span>
 
-        <label asp-for="UseByDate">Rok uporabe</label>
-        <input asp-for="UseByDate" type="date"
-               min="@DateTime.Today.ToString("yyyy-MM-dd")"
-               data-val-required="Potrebno je vnesti rok uporabe."
-               class="form-control" id="UseByDate">
-        <span class="form-text text-danger text-muted" asp-validation-for="UseByDate"></span>
+                <label asp-for="NumberOfUnits">Število enot</label>
+                <input asp-for="NumberOfUnits" type="number" min="0"
+                       data-val-required="Potrebno število enot."
+                       class="form-control" id="NumberOfUnits" value="1">
+                <span class="form-text text-danger text-muted" asp-validation-for="NumberOfUnits"></span>
 
-        <label asp-for="NumberOfUnits">Število enot</label>
-        <input asp-for="NumberOfUnits" type="number" min="0"
-               data-val-required="Potrebno število enot."
-               class="form-control" id="NumberOfUnits" value="1">
-        <span class="form-text text-danger text-muted" asp-validation-for="NumberOfUnits"></span>
+                <label asp-for="DeliveryCost">Strošek dostave (€)</label>
+                <input asp-for="DeliveryCost" type="number" step="0.01" min="0"
+                       data-val-required="Potrebno je vnesti storšek dostave."
+                       class="form-control" id="DeliveryCost" value="0">
+                <span class="form-text text-danger text-muted" asp-validation-for="DeliveryCost"></span>
 
-        <label asp-for="DeliveryCost">Strošek dostave (€)</label>
-        <input asp-for="DeliveryCost" type="number" step="0.01" min="0"
-               data-val-required="Potrebno je vnesti storšek dostave."
-               class="form-control" id="DeliveryCost" value="0">
-        <span class="form-text text-danger text-muted" asp-validation-for="DeliveryCost"></span>
+                <label asp-for="Rejected">Zavrnjen artikle</label>
+                <input asp-for="Rejected" type="checkbox"
+                       class="form-control" id="Rejected">
 
-        <label asp-for="Rejected">Zavrnjen artikle</label>
-        <input asp-for="Rejected" type="checkbox"
-               class="form-control" id="Rejected">
-
-        @if (Model.ShowIgnoreBadLot)
-        {
+                @if (Model.ShowIgnoreBadLot)
+    {
             <label asp-for="IgnoreBadLot">Ignoriraj opozorilo o lotu in vnesi</label>
             <input asp-for="IgnoreBadLot" type="checkbox"
                    class="form-control" id="IgnoreBadLot">
-        }
+}
 
-        <label asp-for="Note">Opombe</label>
-        <input asp-for="Note" type="text"
-               class="form-control" id="Note">
+                <label asp-for="Note">Opombe</label>
+                <input asp-for="Note" type="text"
+                       class="form-control" id="Note">
+            </div>
+            <div class="col-lg-6 form-group">
+                <label asp-for="StorageTypeId">Način shranjevanja</label>
+                <br/>
+                @Html.DropDownListFor(m => m.StorageTypeId, Model.StorageTypes, "Izberi način shranjevanja", new {@class = "form-control"})
+                <span class="form-text text-danger text-muted" asp-validation-for="StorageTypeId"></span>
+                <br/>
 
-        <label asp-for="StorageTypeId">Način shranjevanja</label>
-        <br />
-        @Html.DropDownListFor(m => m.StorageTypeId, Model.StorageTypes, "Izberi način shranjevanja", new { @class = "form-control" })
-        <span class="form-text text-danger text-muted" asp-validation-for="StorageTypeId"></span>
-        <br />
+                <label asp-for="StorageLocationId">Mesto shranjevanja</label>
+                <br/>
+                @Html.DropDownListFor(m => m.StorageLocationId, Model.StorageLocations, "Izberi mesto shranjevanja", new {@class = "form-control"})
+                <span class="form-text text-danger text-muted" asp-validation-for="StorageLocationId"></span>
+                <br/>
 
-        <label asp-for="StorageLocationId">Mesto shranjevanja</label>
-        <br />
-        @Html.DropDownListFor(m => m.StorageLocationId, Model.StorageLocations, "Izberi mesto shranjevanja", new { @class = "form-control" })
-        <span class="form-text text-danger text-muted" asp-validation-for="StorageLocationId"></span>
-        <br />
+                <label asp-for="WorkLocationId">Delovna lokacija</label>
+                <br/>
+                @Html.DropDownListFor(m => m.WorkLocationId, Model.WorkLocations, "Izberi delovno lokacijo", new {@class = "form-control"})
+                <span class="form-text text-danger text-muted" asp-validation-for="WorkLocationId"></span>
+                <br/>
 
-        <label asp-for="WorkLocationId">Delovna lokacija</label>
-        <br />
-        @Html.DropDownListFor(m => m.WorkLocationId, Model.WorkLocations, "Izberi delovno lokacijo", new { @class = "form-control" })
-        <span class="form-text text-danger text-muted" asp-validation-for="WorkLocationId"></span>
-        <br />
+                <label asp-for="AnalyserId">Analizator</label>
+                <br/>
+                @Html.DropDownListFor(m => m.AnalyserId, Model.Analysers, "Izberi analizator", new {@class = "form-control"})
+                <span class="form-text text-danger text-muted" asp-validation-for="AnalyserId"></span>
+                <br/>
 
-        <label asp-for="AnalyserId">Analizator</label>
-        <br />
-        @Html.DropDownListFor(m => m.AnalyserId, Model.Analysers, "Izberi analizator", new { @class = "form-control" })
-        <span class="form-text text-danger text-muted" asp-validation-for="AnalyserId"></span>
-        <br />
+                <label asp-for="Certificate">Certifikat</label>
+                <input asp-for="Certificate" type="file"
+                       data-val-required="Datoteka ni veljavna."
+                       name="Certificate"
+                       class="" id="Certificate">
+                <span class="form-text text-danger text-muted" asp-validation-for="Certificate"></span>
 
-        <label asp-for="Certificate">Certifikat</label>
-        <input asp-for="Certificate" type="file"
-               data-val-required="Datoteka ni veljavna."
-               name="Certificate"
-               class="" id="Certificate">
-        <span class="form-text text-danger text-muted" asp-validation-for="Certificate"></span>
-
-        <label asp-for="SafteyList">Varnostni list</label>
-        <input asp-for="SafteyList" type="file"
-               data-val-required="Datoteka ni veljavna."
-               name="SafteyList"
-               class="" id="SafteyList">
-        <span class="form-text text-danger text-muted" asp-validation-for="SafteyList"></span>
-        <br />
-        <br />
+                <label asp-for="SafteyList">Varnostni list</label>
+                <input asp-for="SafteyList" type="file"
+                       data-val-required="Datoteka ni veljavna."
+                       name="SafteyList"
+                       class="" id="SafteyList">
+                <span class="form-text text-danger text-muted" asp-validation-for="SafteyList"></span>
+            </div>
+        </div>
     </div>
-
-    <button formaction="/Article/Reception?repeat=true" type="submit" class="btn btn-primary">Shrani in ponovi</button>
-    <button type="submit" class="btn btn-primary">Shrani in končaj</button>
-    <br />
-    <br />
-    <a href="@Url.Action("Reception")"
-       class="btn btn-primary">Pobriši obrazec</a>
-    <a href="@Url.Action("Index")"
-       class="btn btn-primary">Prekliči in končaj</a>
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <button formaction="/Article/Reception?repeat=true" type="submit" class="btn btn-primary">Shrani in ponovi</button>
+                <button type="submit" class="btn btn-primary">Shrani in končaj</button>
+            </div>
+            <div class="col-lg-6">
+                <a href="@Url.Action("Reception")"
+                   class="btn btn-primary">Pobriši obrazec</a>
+                <a href="@Url.Action("Index")"
+                   class="btn btn-primary">Prekliči in končaj</a>
+            </div>
+        </div>
+    </div>
+    
 </form>

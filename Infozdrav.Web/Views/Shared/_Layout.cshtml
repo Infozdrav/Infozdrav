@@ -22,8 +22,38 @@
                     <li><a href="#">Page</a></li>
                 </ul>
             <li><a href="#">Portfolio</a></li>
+            <li>
+                <a href="#articleSubmenu" data-toggle="collapse" aria-expanded="false">Artikel</a>
+                <ul class="collapse list-unstyled" id="articleSubmenu">
+                    <li><a asp-controller="Article" asp-action="">-Naročilo artikla</a></li>
+                    <li><a asp-controller="Article" asp-action="Reception">Sprejem artikla</a></li>
+                    <li><a asp-controller="Article" asp-action="UseArticleTable">Uporaba artiklov</a></li>
+                    <li><a asp-controller="Article" asp-action="WriteOffTable">Odpis artikla</a></li>
+                    <li><a asp-controller="Article" asp-action="">-Odprema artikla</a></li>
+                    <li><a asp-controller="Article" asp-action="">-Re-odprema artikla</a></li>
+                    <li><a asp-controller="Article" asp-action="">-Delanje pufra</a></li>
+                    <li><a asp-controller="Article" asp-action="Index">Preverjanje zalog</a></li>
+                    <li><a asp-controller="Article" asp-action="">-Statistika</a></li>
+                </ul>
+            </li>
+            @if (User.IsInRole(Roles.Administrator))
+            {
+                <li>
+                    <a href="#otherSubmenu" data-toggle="collapse" aria-expanded="false">Ostalo</a>
+                    <ul class="collapse list-unstyled" id="otherSubmenu">
+                        <li><a asp-controller="Analyser" asp-action="Index">Analizatorji</a></li>
+                        <li><a asp-controller="WorkLocation" asp-action="Index">Delovna mesta</a></li>
+                        <li><a asp-controller="StorageType" asp-action="Index">Načini shranjevanja</a></li>
+                        <li><a asp-controller="StorageLocation" asp-action="Index">Lokacije shranjevanja</a></li>
+
+                    </ul>
+                </li>
+            }
+       
             <li>&nbsp;</li>
-            @if (User.IsInRole(Roles.Administrator)) { <li><a asp-controller="Auth" asp-action="Logout">Users</a></li> }
+            @if (User.IsInRole(Roles.Administrator))
+    {
+        <li><a asp-controller="Auth" asp-action="Logout">Users</a></li>}
             <li><a asp-controller="Auth" asp-action="Logout">Logout</a></li>
         </ul>
     </nav>
