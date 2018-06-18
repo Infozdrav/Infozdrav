@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Infozdrav.Web.Data;
+using Infozdrav.Web.Data.Trbovlje;
 
 namespace Infozdrav.Web.Models.Trbovlje
 {

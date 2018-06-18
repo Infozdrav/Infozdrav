@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using AutoMapper;
 using Infozdrav.Web.Data;
 using Infozdrav.Web.Data.Manage;
+using Infozdrav.Web.Data.Trbovlje;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -67,7 +68,7 @@ namespace Infozdrav.Web.Models.Trbovlje
         public bool Rejected { get; set; }
         public bool ShowIgnoreBadLot { get; set; }
         public bool IgnoreBadLot { get; set; }
-
+        public string Note { get; set; }
 
         [Required]
         public int StorageTypeId { get; set; }

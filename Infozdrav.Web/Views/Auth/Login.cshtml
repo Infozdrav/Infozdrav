@@ -2,33 +2,75 @@
 
 @{
     ViewBag.Title = "title";
-    Layout = "_Layout";
+    Layout = "_Blank";
 }
 
-<h4>Log In</h4>
 
-<div class="row">
-    <div class="col-md-12">
+<div class="wrap">
+    <div class="login-wrap">
+        <div class="logo"></div>
 
-        <div asp-validation-summary="All" class="text-danger"></div>
-        <form asp-action="Login">
-            <input type="hidden" name="returnUrl" value="@ViewBag.returnUrl" />
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
+
+        <div class="row">
+            <div class="col-md-12">
+
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <form asp-action="Login">
+                    <input type="hidden" name="returnUrl" value="@ViewBag.returnUrl" />
+                    <div class="form-group">
+                        <label asp-for="Email" class="control-label"></label>
+                        <input asp-for="Email" class="form-control" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Password" class="control-label"></label>
+                        <input asp-for="Password" class="form-control" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Log in" class="btn btn-default pull-right" />
+                    </div>
+                </form>
             </div>
-            <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Log in" class="btn btn-default" />
-            </div>
-        </form>
+        </div>
     </div>
 </div>
+
+@section Styles {
+    <style>
+        html, body {
+            height: 100%;
+        }
+         .wrap {
+             background: linear-gradient(#9bcfd8, #7cc7d6, #3f779e);
+             height: 100%;
+             height: 100%;
+             margin: 0;
+             padding: 0;
+             overflow: hidden;
+             display: grid;
+         }
+
+        .logo {
+            padding: 20px;
+            width: 100%;
+            height: 100px;
+            background-image: url(../images/logo.png);
+            background-size: contain;
+            background-position: center center;
+            background-repeat: no-repeat;
+        }
+
+        .login-wrap {
+            background: white;
+            margin: auto;
+            padding: 20px;
+            max-width: 400px;
+            width: 100%;
+            border-radius: 10px;
+        }
+    </style>
+}
 
 
 @section Scripts {

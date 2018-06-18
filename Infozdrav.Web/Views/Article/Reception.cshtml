@@ -84,14 +84,14 @@
         <label asp-for="Certificate">Certifikat</label>
         <input asp-for="Certificate" type="file"
                data-val-required="Datoteka ni veljavna."
-               name="@Model.Certificate"
+               name="Certificate"
                class="" id="Certificate">
         <span class="form-text text-danger text-muted" asp-validation-for="Certificate"></span>
 
         <label asp-for="SafteyList">Varnostni list</label>
         <input asp-for="SafteyList" type="file"
                data-val-required="Datoteka ni veljavna."
-               name="@Model.SafteyList"
+               name="SafteyList"
                class="" id="SafteyList">
         <span class="form-text text-danger text-muted" asp-validation-for="SafteyList"></span>
         <br />
