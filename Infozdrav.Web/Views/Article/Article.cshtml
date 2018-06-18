@@ -2,14 +2,110 @@
 @model Infozdrav.Web.Models.Trbovlje.ArticleFullViewModel
 
 @{
-    ViewBag.Title = "Zgodovina artikla";
+    ViewBag.Title = "Artikel";
     Layout = "_Layout";
+
+    string dateFormat = "short";
 }
 
-<h2>@ViewBag.Title</h2>
-To bo completed
-<pre>
-    @Json.Serialize(Model)
-</pre>
+<label asp-for="@Model.Id">Id artikla</label>
+<input asp-for="@Model.Id" class="form-control" type="text" readonly />
 
+<label asp-for="@Model.CatalogArticle.Name">Kataloško ime artikla</label>
+<input asp-for="@Model.CatalogArticle.Name" class="form-control" type="text" readonly />
+
+<label asp-for="@Model.Lot">Lot</label>
+<input asp-for="@Model.Lot" class="form-control" type="text" readonly />
+
+<label asp-for="@Model.UseByDate">Tok uporabe</label>
+<input asp-for="@Model.UseByDate" class="form-control" type="text" readonly />
+
+<label asp-for="@Model.NumberOfUnits">Število enot</label>
+<input asp-for="@Model.NumberOfUnits" class="form-control" type="text" readonly />
+
+<label asp-for="@Model.DeliveryCost">Strošek dostave</label>
+<input asp-for="@Model.DeliveryCost" class="form-control" type="text" readonly />
+
+<label asp-for="@Model.Rejected">Zavrnjen artikel</label>
+<input asp-for="@Model.Rejected" class="form-control" type="text" readonly />
+
+<label asp-for="@Model.Note">Opomba</label>
+<textarea asp-for="@Model.Note" class="form-control" type="text" readonly></textarea>
+
+<label asp-for="@Model.StorageType.Name">Način shranjevanja</label>
+<input asp-for="@Model.StorageType.Name" class="form-control" type="text" readonly />
+
+<label asp-for="@Model.StorageLocation.Name">Lokacija shranjevnja</label>
+<input asp-for="@Model.StorageLocation.Name" class="form-control" type="text" readonly />
+
+<label asp-for="@Model.Analyser.Name">Analizator</label>
+<input asp-for="@Model.Analyser.Name" class="form-control" type="text" readonly />
+
+<label asp-for="@Model.Certificate">Certifikat</label>
+@if (Model.Certificate == null)
+{
+    <p>Ni certifikata</p>
+}
+else
+{
+    <br />
+    <filelink class="btn btn-link" file-name="@Model.Certificate.DiskName">Certifikat</filelink>
+    <br />
+}
+
+<label asp-for="@Model.Certificate">Varnostni list</label>
+@if (Model.SafteyList == null)
+{
+    <p>Ni varnostnega lista</p>
+}
+else
+{
+    <br />
+    <filelink class="btn btn-link" file-name="@Model.SafteyList.DiskName">Varnostni list</filelink>
+    <br />
+}
+
+
+<label asp-for="@Model.ReceptionTime">Datum sprejema</label>
+<input asp-for="@Model.ReceptionTime" class="form-control" type="text" readonly />
+
+<label asp-for="@Model.ReceptionUser.Email">Sprejel</label>
+<input asp-for="@Model.ReceptionUser.Email" class="form-control" type="text" readonly />
+
+<label asp-for="@Model.WriteOfUser.Email">Odpisal</label>
+<input asp-for="@Model.WriteOfUser.Email" class="form-control" type="text" readonly />
+
+
+<label asp-for="@Model.WriteOffTime">Datum odpisa</label>
+<input asp-for="@Model.WriteOffTime" class="form-control" type="text" readonly />
+
+<label asp-for="@Model.WriteOffReason">Razlog odpisa</label>
+<input asp-for="@Model.WriteOffReason" class="form-control" type="text" readonly />
+
+<label asp-for="@Model.WriteOffNote">Opomba odpisa</label>
+<textarea asp-for="@Model.WriteOffNote" class="form-control" type="text" readonly></textarea>
+
+<label>Uporabljenih enot</label>
+<input class="form-control" type="text" readonly value="@Model.ArticleUses.Count()" />
+
+<h2>Uporabe</h2>
+<ejs-grid id="grid" dataSource="@Model.ArticleUses" allowPaging="true" showColumnMenu="true">
+    <e-grid-columns>
+        <e-grid-column field="Id"></e-grid-column>
+        <e-grid-column field="User.Email" headerText="Uporabnik"></e-grid-column>
+        <e-grid-column field="UseTime" headerText="Datum Uporabe" format="@dateFormat"></e-grid-column>
+        <e-grid-column field="UnitNumber" headerText="Alikvot"></e-grid-column>
+    </e-grid-columns>
+</ejs-grid>
+
+<h2>Odpreme</h2>
+TODO
+@*<ejs-grid id="grid" dataSource="@Model" allowPaging="true" showColumnMenu="true">
+    <e-grid-columns>
+
+    </e-grid-columns>
+</ejs-grid>*@
+
+
+<br />
 <a href="@Url.Action("Index")" class="btn btn-primary">Nazaj</a>

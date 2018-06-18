@@ -7,6 +7,7 @@ using AutoMapper;
 using Infozdrav.Web.Data;
 using Infozdrav.Web.Data.Manage;
 using Infozdrav.Web.Data.Trbovlje;
+using Infozdrav.Web.Helpers;
 using Infozdrav.Web.Models.Trbovlje;
 using Infozdrav.Web.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -55,7 +56,20 @@ namespace Infozdrav.Web.Controllers
 
         public IActionResult Article(int id)
         {
-            var article = _dbContext.Articles.FirstOrDefault(u => u.Id == id);
+            var article = _dbContext.Articles
+                .Include(s => s.CatalogArticle)
+                .Include(s => s.ArticleUses)
+                .Include(s => s.WorkLocation)
+                .Include(s => s.StorageType)
+                .Include(s => s.StorageLocation)
+                .Include(s => s.WorkLocation)
+                .Include(s => s.Analyser)
+                .Include(s => s.Certificate)
+                .Include(s => s.SafteyList)
+                .Include(s => s.WriteOfUser)
+                .Include(s => s.ReceptionUser)
+                .FirstOrDefault(u => u.Id == id);
+
             if (article == null)
                 return RedirectToAction("Index");
 
