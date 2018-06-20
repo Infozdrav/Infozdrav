@@ -171,7 +171,7 @@ namespace Infozdrav.Web.Controllers
         public IActionResult UseArticleTable()
         {
             return GetTableView("Uporaba artikla", "UseArticle", "Uporaba",
-                a => !a.Rejected && a.WriteOffReason == null && a.NumberOfUnits - a.ArticleUses.Count() > 0);
+                a => !a.Rejected && a.WriteOffReason == null && a.NumberOfUnits - (a.ArticleUses.Count() + a.Lends.Sum( lend => lend.UnitsUsed)) > 0 && !(a.Lends.Any(lend => lend.LendReciveTime == null)) );
         }
 
         public IActionResult UseArticle(int id) // article id
@@ -193,13 +193,13 @@ namespace Infozdrav.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> UseArticle([FromForm] ArticleUseViewModel articleUse)
         {
-            var article = _dbContext.Articles.FirstOrDefault(a => a.Id == articleUse.ArticleId);
+            var article = _dbContext.Articles.Include(s => s.Lends).FirstOrDefault(a => a.Id == articleUse.ArticleId);
             if (article == null)
             {
                 return RedirectToAction("UseArticleTable");
             }
 
-            var articleUses = _dbContext.ArticleUses.Count(use => use.ArticleId == articleUse.ArticleId);
+            var articleUses = _dbContext.ArticleUses.Count(use => use.ArticleId == articleUse.ArticleId) + article.Lends.Sum(lend => lend.UnitsUsed);
             var articlesLeft = article.NumberOfUnits - articleUses;
             if (articlesLeft < 0)
             {
@@ -355,6 +355,116 @@ namespace Infozdrav.Web.Controllers
             return RedirectToAction("Index");
         }
 
+        public IActionResult LendGiveTable()
+        {
+            return GetTableView("Odprema artikla", "LendGive", "Odprema",
+                a => !a.Rejected && a.WriteOffReason == null && a.NumberOfUnits - (a.ArticleUses.Count() + a.Lends.Sum(lend => lend.UnitsUsed)) > 0 && !(a.Lends.Any(lend => lend.LendReciveTime == null)));
+        }
+
+        public IActionResult LendGive(int id) // article id
+        {
+            var article = _dbContext.Articles.Include(a => a.CatalogArticle).FirstOrDefault(a => a.Id == id);
+
+            if (article == null)
+            {
+                return RedirectToAction("LendGiveTable");
+            }
+
+            return View(new ArticleLendGiveViewModel
+            {
+                Id = article.Id,
+                Laboratories = GetLaboratories()
+            });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> LendGive([FromForm] ArticleLendGiveViewModel articleLendGive)
+        {
+            var article = _dbContext.Articles.Include(s => s.Lends).FirstOrDefault(a => a.Id == articleLendGive.Id);
+            if (article == null || articleLendGive.LaboratoryId == null || !ModelState.IsValid)
+            {
+                return RedirectToAction("LendGiveTable");
+            }
+
+            var articleUses = _dbContext.ArticleUses.Count(use => use.ArticleId == articleLendGive.Id) + article.Lends.Sum(lend => lend.UnitsUsed);
+            var articlesLeft = article.NumberOfUnits - articleUses;
+            if (articlesLeft < 0)
+            {
+                return RedirectToAction("LendGiveTable");
+            }
+
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            Lend dbarticleLendGive = new Lend();
+            dbarticleLendGive.Article = article;
+            dbarticleLendGive.LaboratoryId = (int) articleLendGive.LaboratoryId;
+            dbarticleLendGive.LendGiveTime = DateTime.Now;
+            dbarticleLendGive.LendGiveUser = user;
+
+            _dbContext.Lends.Add(dbarticleLendGive);
+            _dbContext.SaveChanges();
+
+            return RedirectToAction("LendGiveTable");
+        }
+
+        public IActionResult LendReciveTable()
+        {
+            return GetTableView("Re-odprema artikla", "LendRecive", "Re-odprema",
+                a => !a.Rejected && a.WriteOffReason == null && (a.Lends.Any(lend => lend.LendReciveTime == null)));
+        }
+
+        public IActionResult LendRecive(int id) // article id
+        {
+            var article = _dbContext.Articles.Include(a => a.CatalogArticle).FirstOrDefault(a => a.Id == id);
+
+            if (article == null)
+            {
+                return RedirectToAction("LendReciveTable");
+            }
+
+            var lastLend = _dbContext.Lends.FirstOrDefault(l => l.Article == article && l.LendReciveTime == null);
+
+            if (lastLend == null)
+            {
+                return RedirectToAction("LendReciveTable");
+            }
+
+            var articleUses = _dbContext.ArticleUses.Count(use => use.ArticleId == id) + article.Lends.Sum(l => l.UnitsUsed);
+            var articlesLeft = article.NumberOfUnits - articleUses;
+
+            return View(new ArticleLendReciveViewModel
+            {
+                LendId = lastLend.Id,
+                ArticleId = article.Id,
+                UnitsLeft = articlesLeft
+            });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> LendRecive([FromForm] ArticleLendReciveViewModel lendRecive)
+        {
+            var article = _dbContext.Articles.Include(s => s.Lends).FirstOrDefault(a => a.Id == lendRecive.ArticleId);
+            var lend = _dbContext.Lends.FirstOrDefault(a => a.Id == lendRecive.LendId);
+            if (article == null || lend == null || !ModelState.IsValid)
+            {
+                return RedirectToAction("LendReciveTable");
+            }
+
+            var articleUses = _dbContext.ArticleUses.Count(use => use.ArticleId == lendRecive.ArticleId) + article.Lends.Sum(l => l.UnitsUsed);
+            var articlesLeft = article.NumberOfUnits - articleUses;
+            if (articlesLeft < 0)
+            {
+                return RedirectToAction("LendReciveTable");
+            }
+
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            lend.LendReciveTime = DateTime.Now;
+            lend.LendReciveUser = user;
+            lend.UnitsUsed = (int) lendRecive.UnitsUsed;
+            _dbContext.SaveChanges();
+
+            return RedirectToAction("LendReciveTable");
+        }
+
         private IActionResult GetTableView(string title, string action, string actionName, Expression<Func<Article, bool>> predicate)
         {
             var data = _dbContext.Articles
@@ -368,6 +478,7 @@ namespace Infozdrav.Web.Controllers
                 .Include(s => s.Analyser)
                 .Include(s => s.Certificate)
                 .Include(s => s.SafteyList)
+                .Include(s => s.Lends)
                 .ToList();
 
             ViewData["Title"] = title;
@@ -395,6 +506,11 @@ namespace Infozdrav.Web.Controllers
         private IEnumerable<SelectListItem> GetAnalysers()
         {
             return new SelectList(_dbContext.Analysers, "Id", "Name");
+        }
+
+        private IEnumerable<SelectListItem> GetLaboratories()
+        {
+            return new SelectList(_dbContext.Laboratories, "Id", "Name");
         }
 
         private IEnumerable<SelectListItem> GetCatalogArticles()

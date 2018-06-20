@@ -34,6 +34,7 @@ namespace Infozdrav.Web.Data.Trbovlje
         public User ReceptionUser { get; set; }
 
         public IEnumerable<ArticleUse> ArticleUses { get; set; }
+        public IEnumerable<Lend> Lends { get; set; }
 
         public DateTime? WriteOffTime { get; set; }
         public User WriteOfUser { get; set; }

@@ -25,15 +25,15 @@
             <li>
                 <a href="#articleSubmenu" data-toggle="collapse" aria-expanded="false">Artikel</a>
                 <ul class="collapse list-unstyled" id="articleSubmenu">
-                    <li><a asp-controller="Article" asp-action="">-Naročilo artikla</a></li>
+                    <li><a asp-controller="CatalogArticle" asp-action="Index">-Naročilo artikla</a></li>
                     <li><a asp-controller="Article" asp-action="Reception">Sprejem artikla</a></li>
                     <li><a asp-controller="Article" asp-action="UseArticleTable">Uporaba artiklov</a></li>
                     <li><a asp-controller="Article" asp-action="WriteOffTable">Odpis artikla</a></li>
-                    <li><a asp-controller="Article" asp-action="">-Odprema artikla</a></li>
-                    <li><a asp-controller="Article" asp-action="">-Re-odprema artikla</a></li>
-                    <li><a asp-controller="Article" asp-action="">-Delanje pufra</a></li>
+                    <li><a asp-controller="Article" asp-action="LendGiveTable">Odprema artikla</a></li>
+                    <li><a asp-controller="Article" asp-action="LendReciveTable">Re-odprema artikla</a></li>
+                    <li><a asp-controller="Buffer" asp-action="Index">Delanje pufra</a></li>
                     <li><a asp-controller="Article" asp-action="Index">Preverjanje zalog</a></li>
-                    <li><a asp-controller="Article" asp-action="">-Statistika</a></li>
+                    <li><a href="#">-Statistika</a></li>
                 </ul>
             </li>
             @if (User.IsInRole(Roles.Administrator))

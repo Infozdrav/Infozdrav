@@ -1,0 +1,24 @@
+﻿@model Infozdrav.Web.Models.Trbovlje.ArticleLendGiveViewModel
+
+@{
+    ViewBag.Title = "Odpremi artikel";
+    Layout = "_Layout";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<form asp-action="LendGive" method="post">
+    <div class="form-group">
+        <input type="hidden" asp-for="Id" />
+
+        <label asp-for="LaboratoryId">Laboratorij</label>
+        <br />
+        @Html.DropDownListFor(m => m.LaboratoryId, Model.Laboratories, "Izberi laboratorij", new { @class = "form-control" })
+        <span class="form-text text-danger text-muted" asp-validation-for="LaboratoryId"></span>
+        <br />
+
+    </div>
+    <button type="submit" class="btn btn-primary">Shrani</button>
+    <a href="@Url.Action("LendGiveTable")"
+       class="btn btn-primary">Prekliči</a>
+</form>

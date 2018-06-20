@@ -127,6 +127,24 @@ namespace Infozdrav.Web.Models.Trbovlje
       //  public DateTime ReceptionTime { get; set; }
     }
 
+    public class ArticleLendGiveViewModel
+    {
+        public int Id { get; set; }
+
+        [Required]
+        public int? LaboratoryId { get; set; }
+        public IEnumerable<SelectListItem> Laboratories { get; set; }
+    }
+
+    public class ArticleLendReciveViewModel
+    {
+        public int LendId { get; set; }
+        public int ArticleId { get; set; }
+        public int UnitsLeft { get; set; }
+        [Required]
+        public int? UnitsUsed { get; set; }
+    }
+
     public class ArticleEditViewModel
     {
         public int Id { get; set; }
