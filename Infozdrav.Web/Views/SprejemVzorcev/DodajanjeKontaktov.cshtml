@@ -7,18 +7,24 @@
 
 
 <form asp-action="DodajanjeKontaktov" method="post">
+
     <div class="form-group">
         <label asp-for="ContactName">Ime</label>
-        <input asp-for="ContactName" type="text" data-val-required="Potreben je vnos imena" class="form-control" id="ContactName" placeholder="Vnesi naziv kontaktne osebe"/>
+        <input asp-for="ContactName" type="text" data-val-required="Potreben je vnos imena" class="form-control" id="ContactName" placeholder="Vnesi naziv kontaktne osebe" />
         <span class="form-text text-danger text-muted" asp-validation-for="ContactName"></span>
-    
+
 
         <label asp-for="Mail">E-mail</label>
-        <input asp-for="Mail" type="text" class="form-control" id="Mail" placeholder="Vnesi e-poštni naslov"/>
+        <input asp-for="Mail" type="text" class="form-control" id="Mail" placeholder="Vnesi e-poštni naslov" />
 
         <label asp-for="TelNumber">Tel. št.</label>
-        <input asp-for="TelNumber" type="text" class="form-control" id="TelNumber" placeholder="Vnesi telefonsko številko"/>
+        <input asp-for="TelNumber" type="text" class="form-control" id="TelNumber" placeholder="Vnesi telefonsko številko" />
     </div>
+    <script>
+        document.getElementByID("ContactName").required = true;
+        document.getElementByID("Mail").required = true;
+        document.getElementByID("TelNumber").required = true;
+    </script>
 
     <button type="submit" class="btn btn-primary">Shrani naročnika</button>
     <a href="@Url.Action("Sprejem")"

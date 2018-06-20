@@ -11,7 +11,7 @@ using Infozdrav.Web.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.CodeAnalysis;
-using UnityEngine;
+using System.Web;
 
 namespace Infozdrav.Web.Controllers
 {
@@ -139,7 +139,7 @@ namespace Infozdrav.Web.Controllers
                 var column = (int) char.GetNumericValue(vzorec.Location[1]);
                 if (vzorec.Location.Length == 3)
                     column = 10 * column + (int) char.GetNumericValue(vzorec.Location[2]);
-                stored.Position = rowNames[vzorec.Location[0]] * stored.BoxName.Size + column;
+                //stored.Position = rowNames[vzorec.Location[0]] * stored.BoxName.Size + column;
             }
 
             var sampleType = _dbContext.SampleTypes.FirstOrDefault(m => m.SampleTypeName == vzorec.Type);
@@ -340,5 +340,6 @@ namespace Infozdrav.Web.Controllers
 
             return RedirectToAction("DodajanjeVzorca");
         }
+
     }
 }

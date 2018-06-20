@@ -6,6 +6,7 @@
 <h2>Sprejem</h2>
 
 <form asp-action="Sprejem" method="post">
+
     <div class="form-group">
 
         <!-- shranimo iz tega, kdo je vpisan
@@ -14,7 +15,7 @@
                class="form-control" id="SupplierId" placeholder="Vnesi Id prejemnika"/>
         <span class="form-text text-danger text-muted" asp-validation-for="SupplierId"></span>
         <!-- TODO: AutoComplete dropdown using JQuery -->
-        <br/>
+        <br />
 
         <label asp-for="DateOfReception">Datum prejema</label>
         <input asp-for="DateOfReception" type="date"
@@ -29,17 +30,21 @@
             new SelectList(ViewBag.suppliers),
             "Izberi naročnika",
             new {@class = "form-control"})
-        
-        <a href="@Url.Action("DodajanjeNarocnikov")" class="btn btn-primary">Dodaj naročnika</a><br/>
+        <a href="@Url.Action("DodajanjeNarocnikov")" class="btn btn-primary">Dodaj naročnika</a><br />
 
         <label asp-for="ContactName">Kontaktna oseba</label>
         @Html.DropDownList("ContactName",
             new SelectList(ViewBag.people),
             "Izberi ime kontaktne osebe",
             new {@class = "form-control"})
-        <a href="@Url.Action("DodajanjeKontaktov")" class="btn btn-primary">Dodaj kontaktno osebo</a><br/>
+
+        <a href="@Url.Action("DodajanjeKontaktov")" class="btn btn-primary">Dodaj kontaktno osebo</a><br />
 
     </div>
+
+    <script>
+        document.getElementById("DateOfReception").required = true;
+    </script>
 
     <button type="submit" class="btn btn-primary">Shrani sprejem</button>
     <a href="@Url.Action("Index")"
