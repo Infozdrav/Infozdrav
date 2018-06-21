@@ -37,9 +37,9 @@ namespace Infozdrav.Web.Data
         
 
 
-        public AppDbContext(DbContextOptions options, UserManager<User> userManager) : base(options)
+        public AppDbContext(DbContextOptions options) : base(options)
         {
-            _userManager = userManager;
+            // _userManager = userManager;
         }
 
 
