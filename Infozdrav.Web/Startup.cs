@@ -34,7 +34,13 @@ namespace Infozdrav.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
-            services.AddAutoMapper(o => o.AddProfile(new MappingProfile()));
+            services.AddAutoMapper(o =>
+            {
+                o.AddGlobalIgnore(nameof(IAuditEntity.DeletedAt));
+                o.AddGlobalIgnore(nameof(IAuditEntity.CreatedAt));
+                o.AddGlobalIgnore(nameof(IAuditEntity.LastModified));
+                o.AddProfile(new MappingProfile());
+            });
             services.AddDbContext<AppDbContext>(o => o.UseMySQL(Configuration["ConnectionString"]));
 
             services.AddIdentity<User, Role>(options =>
