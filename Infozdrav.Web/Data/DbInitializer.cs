@@ -115,6 +115,7 @@ namespace Infozdrav.Web.Data
             {
                 UserName = "Administrator",
                 Email = "admin@infozdrav.si",
+                FirstName = "Admin",
                 EmailConfirmed = true,
                 Enabled = true
             };

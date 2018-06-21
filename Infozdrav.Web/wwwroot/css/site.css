@@ -12,7 +12,8 @@
 #sidebar {
     min-width: 250px;
     max-width: 250px;
-    height: 100vh;
+    min-height: 100vh;
+    /*overflow-y: scroll;*/
     background: linear-gradient(#3f779e, #7cc7d6, #9bcfd8);
     color: #fff;
     transition: all 0.3s;
@@ -20,6 +21,33 @@
 
     #sidebar.active {
         margin-left: -250px;
+    }
+
+#sidebarCollapse {
+    box-shadow: inset #2388b5 0 0 35px;
+    background: #5abcbd;
+    padding: 20px;
+    border: 0;
+    color: white;
+    text-align: left;
+    width: 100%;
+}
+
+.w-100 {
+    width: 100%;
+}
+
+#select-company {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+    #select-company li {
+        width: 50%;
+        text-align: center;
+
     }
     
 #content {
@@ -107,16 +135,14 @@ a, a:hover, a:focus {
         display: block;
     }
 
-        #sidebar ul li a:hover {
+        #sidebar ul li a:hover,
+        #sidebar ul li > a.active, a[aria-expanded="true"] {
             background: #fff;
             color: black;
             border-top-left-radius: 25px;
             border-bottom-left-radius: 25px;
         }
 
-    #sidebar ul li.active > a, a[aria-expanded="true"] {
-        color: #fff;
-    }
 
 .btn {
     padding-left: 20px;

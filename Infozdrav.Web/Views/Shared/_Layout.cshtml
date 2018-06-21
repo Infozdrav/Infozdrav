@@ -7,6 +7,10 @@
 <div class="wrapper">
 
     <nav id="sidebar">
+        @*<ul id="select-company">
+            <li>Labena</li>
+            <li>Trbovlje</li>
+        </ul>*@
         <!-- Sidebar Header -->
         <div class="sidebar-header">
         </div>
@@ -21,37 +25,53 @@
                 catch (Exception e)
                 {
                 }
-        }
-    </div>
+            }
+        </div>
 
-    <!-- Sidebar Links -->
-    <ul class="list-unstyled components">
-        <li class="active"><a href="#">Home</a></li>
-        <li><a href="#">About</a></li>
-        <li>
-            <!-- Link with dropdown items -->
-            <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false">Pages</a>
-            <ul class="collapse list-unstyled" id="homeSubmenu">
-                <li><a href="#">Page</a></li>
-                <li><a href="#">Page</a></li>
-                <li><a href="#">Page</a></li>
-            </ul>
-        <li><a href="#">Portfolio</a></li>
-        <li>&nbsp;</li>
-        @if (User.IsInRole(Roles.Administrator))
-        {
-            <li><a asp-controller="Users" asp-action="Index">Users</a></li>}
-        <li><a asp-controller="Auth" asp-action="Logout">Logout</a></li>
-    </ul>
-</nav>
+        <!-- Sidebar Links -->
+        <ul class="list-unstyled components">
+            @*
+                @if (true) // Trbovlje
+                {
 
-<div id="content">
-    <button type="button" id="sidebarCollapse" class="btn btn-info navbar-btn">
-        <i class="glyphicon glyphicon-align-left"></i>
-        Toggle Sidebar
-    </button>
-    <div>
-        @RenderBody()
+                    <a href="@Url.Action("", "")" class="btn btn-primary btn-block btn-lg"></a>
+                    <li class="active"><a href="#">Home</a></li>
+                    <li><a href="#">About</a></li>
+                    <li>
+                        <!-- Link with dropdown items -->
+                        <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false">Pages</a>
+                        <ul class="collapse list-unstyled" id="homeSubmenu">
+                            <li><a href="#">Page</a></li>
+                            <li><a href="#">Page</a></li>
+                            <li><a href="#">Page</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#">Portfolio</a></li>
+                }
+            *@
+            @{
+                await Html.RenderPartialAsync("TrbovljeMenu");
+            }
+
+            <li>&nbsp;</li>
+            @if (User.IsInRole(Roles.Administrator))
+            {
+                <li><a asp-controller="Users" asp-action="Index">Users</a></li>
+            }
+            <li><a asp-controller="Auth" asp-action="Logout">Logout</a></li>
+        </ul>
+    </nav>
+    <div class="w-100">
+        <button type="button" id="sidebarCollapse" class="hidden visible-xs">
+            <i class="glyphicon glyphicon-align-left"></i>
+            Menu
+        </button>
+
+        <div id="content">
+
+            <div>
+                @RenderBody()
+            </div>
+        </div>
     </div>
-</div>
 </div>
