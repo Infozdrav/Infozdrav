@@ -299,8 +299,8 @@ namespace Infozdrav.Web.Controllers
         [HttpPost]
         public IActionResult VnosHladilnika([FromForm] VnosHladilnikaViewModel hladilnik)
         {
-            if (hladilnik == null)
-                return RedirectToAction("DodajanjeVzorca");
+            if (hladilnik.Fridge == null || hladilnik.Room == null)
+                return RedirectToAction("VnosHladilnika");
 
             var fridge = new Fridge
             {

@@ -1,4 +1,4 @@
-﻿
+﻿@model Infozdrav.Web.Models.Labena.ObdelavaVzorcevViewModel
 @{
     ViewData["Title"] = "Izberi vzorec";
 }
@@ -16,6 +16,15 @@
             </e-grid-columns>
         </ejs-grid>
         <br />
+
+        <script>
+            document.getElementById("grid").required = true;
+        </script>
+
         <button type="submit" class="btn btn-primary">Potrdi</button>
+        <a href="@Url.Action("Index")"
+           class="btn btn-primary">
+            Prekliči
+        </a>
     </div>
 </form>

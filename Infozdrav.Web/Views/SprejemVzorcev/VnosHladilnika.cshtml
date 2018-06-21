@@ -10,7 +10,7 @@
         <label asp-for="Fridge">Ime hladilnika oz. skrinje</label>
         <input asp-for="Fridge" type="text"
                data-val-required="Vnos hladilnika ali skrinje je obvezno."
-               class="form-control" id="Fridge" placeholder="Vnesi ime hladilnika oz. skrinje.">
+               class="form-control" id="Fridge" placeholder="Vnesi ime hladilnika oz. skrinje." required>
         <span class="form-text text-danger text-muted" asp-validation-for="Fridge"></span>
     </div>
     <!--
@@ -27,8 +27,10 @@
         "Izberi ime prostora, v katerem se hladilnik nahaja",
         new {@class = "form-control"})
     <br>
+
     <script>
         document.getElementByID("Fridge").required = true;
+        document.getElementById("Room").required = true;
     </script>
 
     <button type="submit" class="btn btn-primary">Shrani</button>

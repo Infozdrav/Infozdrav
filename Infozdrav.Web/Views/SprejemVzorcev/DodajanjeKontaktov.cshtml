@@ -20,13 +20,14 @@
         <label asp-for="TelNumber">Tel. št.</label>
         <input asp-for="TelNumber" type="text" class="form-control" id="TelNumber" placeholder="Vnesi telefonsko številko" />
     </div>
+
     <script>
         document.getElementByID("ContactName").required = true;
         document.getElementByID("Mail").required = true;
         document.getElementByID("TelNumber").required = true;
     </script>
 
-    <button type="submit" class="btn btn-primary">Shrani naročnika</button>
+    <button type="submit" class="btn btn-primary">Shrani kontaktno osebo</button>
     <a href="@Url.Action("Sprejem")"
        class="btn btn-primary">
         Prekliči

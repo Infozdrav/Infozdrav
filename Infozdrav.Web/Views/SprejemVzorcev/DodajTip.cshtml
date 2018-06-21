@@ -12,7 +12,7 @@
         <label asp-for="TipVzorca">Tip vzorca</label>
         <input asp-for="TipVzorca" type="text"
                data-val-required="Vnos tipa vzorca je obvezno."
-               class="form-control" id="Tip" placeholder="Vnesi tip vzorca">
+               class="form-control" id="Tip" placeholder="Vnesi tip vzorca" required>
         <span class="form-text text-danger text-muted" asp-validation-for="TipVzorca"></span>
     </div>
     <script>

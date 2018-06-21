@@ -38,7 +38,7 @@ namespace Infozdrav.Web.Controllers
         [HttpPost]
         public IActionResult Obdelava(ObdelavaVzorcevViewModel obdelava)
         {
-            var process = new Processing
+            /*var process = new Processing
             {
                 Aparature = obdelava.Aparatura,
                 Chemicals = obdelava.Kemikalije,
@@ -49,7 +49,8 @@ namespace Infozdrav.Web.Controllers
 
             _dbContext.Add(process);
             _dbContext.SaveChanges();
-            return RedirectToAction("Index");
+            */        
+            return RedirectToAction("Obdelava");
         }
 
         public IActionResult Rezultati()
@@ -60,6 +61,11 @@ namespace Infozdrav.Web.Controllers
         public IActionResult VzorciVObdelavi()
         {
             ViewBag.DataSource = _dbContext.Processings;
+            return View();
+        }
+
+        public IActionResult PregledPodatkov()
+        {
             return View();
         }
     }
