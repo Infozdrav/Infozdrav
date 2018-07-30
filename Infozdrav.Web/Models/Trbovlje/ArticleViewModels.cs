@@ -16,6 +16,7 @@ namespace Infozdrav.Web.Models.Trbovlje
         public int Id { get; set; }
         public int CatalogArticleId { get; set; }
         public CatalogArticle CatalogArticle { get; set; }
+        public string ReadArticleCode { get; set; }
 
         public string Lot { get; set; }
         public DateTime? UseByDate { get; set; }
@@ -53,6 +54,8 @@ namespace Infozdrav.Web.Models.Trbovlje
         [Required]
         public int CatalogArticleId { get; set; }
         public IEnumerable<SelectListItem> CatalogArticles { get; set; }
+
+        public string ReadArticleCode { get; set; }
 
         [Required]
         public string Lot { get; set; }
@@ -111,6 +114,8 @@ namespace Infozdrav.Web.Models.Trbovlje
         public string Lot { get; set; }
         public DateTime UseByDate { get; set; }
 
+        public string ReadArticleCode { get; set; }
+
         [Display(Name = "Neuporabljenih enot")]
         public int NumberOfAvailableUnits { get; set; }
 
@@ -148,6 +153,7 @@ namespace Infozdrav.Web.Models.Trbovlje
     public class ArticleEditViewModel
     {
         public int Id { get; set; }
+        public string ReadArticleCode { get; set; }
 
         public int CatalogArticleId { get; set; }
         public IEnumerable<SelectListItem> CatalogArticles { get; set; }

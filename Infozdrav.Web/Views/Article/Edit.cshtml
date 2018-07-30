@@ -12,12 +12,20 @@
 <form asp-action="Edit" method="post" enctype="multipart/form-data">
     <div class="form-group">
         <input type="hidden" asp-for="Id" />
+        
+        <label asp-for="ReadArticleCode">Črtna koda</label>
+        <barcode-scanner callback="codeReadCallBack">Preberi črtno kodo</barcode-scanner>
+
+        <input asp-for="ReadArticleCode" type="text"
+               data-val-required="Potrebno je vnesti lot."
+               class="form-control" id="ReadArticleCode" placeholder="">
+        <span class="form-text text-danger text-muted" asp-validation-for="ReadArticleCode"></span>
+
 
         <label asp-for="CatalogArticleId">Kataloška številka</label>
         <br />
         @Html.DropDownListFor(m => m.CatalogArticleId, Model.CatalogArticles, "Izberi kataloško števliko", new { @class = "form-control" })
         <span class="form-text text-danger text-muted" asp-validation-for="CatalogArticleId"></span>
-        @*TODO: Make this autocomplete or something this is not ok*@
         <br />
 
         <label asp-for="Lot">Lot</label>
@@ -127,3 +135,10 @@
     <a href="@Url.Action("Index")"
        class="btn btn-primary">Prekliči</a>
 </form>
+
+<script>
+    function codeReadCallBack(result) {
+        document.getElementById('ReadArticleCode').value = result.raw;
+        document.getElementById('Lot').value = result.lot;
+    }
+</script>

@@ -62,11 +62,6 @@ namespace Infozdrav.Web.Controllers
             };
         }
 
-        public IActionResult CatalogArticle()
-        {
-            return View(GetCatalogArticleViewModel());
-        }
-
         [HttpPost]
         public IActionResult CatalogArticle([FromForm] Models.Trbovlje.CatalogArticleViewModel catalogArticle)
         {

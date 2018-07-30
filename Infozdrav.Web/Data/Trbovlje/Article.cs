@@ -6,7 +6,7 @@ namespace Infozdrav.Web.Data.Trbovlje
 {
     public class Article : Entity
     {
-        // Article reception
+        public string ReadArticleCode { get; set; }
         public int CatalogArticleId { get; set; }
         public CatalogArticle CatalogArticle { get; set; }
 

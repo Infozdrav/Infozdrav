@@ -35,5 +35,8 @@ namespace Infozdrav.Web.Models.Trbovlje
         [Required]
         public int SupplierId { get; set; }
         public IEnumerable<SelectListItem> Suppliers { get; set; }
+
+        [Required]
+        public int UseByDaysLimit { get; set; }
     }
 }
