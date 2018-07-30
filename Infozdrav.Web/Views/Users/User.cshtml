@@ -5,7 +5,7 @@
     Layout = "_Layout";
 }
 
-<h2>Edit user @Model.UserName</h2>
+<h2>Edit user: @Model.UserName</h2>
 
 <div asp-validation-summary="All"></div>
 
@@ -43,7 +43,7 @@
                 <input type="hidden" asp-for="Id" />
                 <label asp-for="Password"></label>
                 <input asp-for="Password" type="password"
-                       class="form-control" placeholder="Enter email">
+                       class="form-control">
                 <span class="form-text text-danger text-muted" asp-validation-for="Password"></span>
             </div>
         </div>

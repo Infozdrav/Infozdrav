@@ -4,6 +4,7 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <UserSecretsId>54f33edf-ddf7-4904-9c5c-33cebbb6065b</UserSecretsId>
     <MvcRazorCompileOnPublish>true</MvcRazorCompileOnPublish>
+    <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
   </PropertyGroup>
 
   <ItemGroup>
