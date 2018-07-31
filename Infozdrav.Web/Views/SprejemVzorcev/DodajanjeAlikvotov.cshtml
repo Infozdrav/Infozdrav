@@ -10,16 +10,16 @@
 
     <div class="form-group">
 
-        <label asp-for="IdVzorca" required>Identifikacijska številka vzorca</label>
+        <label asp-for="IdVzorca">Identifikacijska številka vzorca</label>
         @Html.DropDownList("IdVzorca",
             new SelectList(ViewBag.Samples),
             "Izberi vzorec",
             new {@class = "form-control"})
 
-        <label asp-for="stAlikvotov">Število alikvotov</label>
-        <input asp-for="stAlikvotov" min="1" type="number" data-val-required="Potreben je vnos števila" onchange="showTable();"
+        <label asp-for="StAlikvotov">Število alikvotov</label>
+        <input asp-for="StAlikvotov" min="1" type="number" data-val-required="Potreben je vnos števila" onchange="showTable();"
                class="form-control" id="IdAlikvota" placeholder="Vnesi število alikvotov" required />
-        <span class="form-text text-danger text-muted" asp-validation-for="stAlikvotov"></span>
+        <span class="form-text text-danger text-muted" asp-validation-for="StAlikvotov"></span>
 
         <script>
             function showTable() {
@@ -45,8 +45,7 @@
         -->
 
         <label asp-for="Date">Datum alikvotiranja</label>
-        <input asp-for="Date" type="date" required
-               min="@DateTime.Today.ToString("yyyy-MM-dd")"
+        <input asp-for="Date" type="date" data-val-required="Potreben je vnos datuma"
                class="form-control" id="Date">
         <br />
 
@@ -109,8 +108,10 @@
         document.getElementById("IdAlikvota").required = true;
         document.getElementById("Date").required = true;
         document.getElementById("Fridge").required = true;
+        document.getElementById("Razdelek").required = true;
         document.getElementById("Temp").required = true;
         document.getElementById("Box").required = true;
+        document.getElementById("Location").required = true;
     </script>
 
     <button type="submit" class="btn btn-primary">Shrani alikvot</button>

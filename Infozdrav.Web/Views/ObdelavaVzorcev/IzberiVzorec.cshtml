@@ -4,22 +4,40 @@
 }
 
 <h2>Izberi vzorec</h2>
-<br />
-<form asp-action="Obdelava" method="post">
+<br/>
+<form asp-action="IzberiVzorec" method="post">
     <div class="form-group">
 
-        <ejs-grid id="grid" dataSource=@ViewBag.DataSource allowPaging="true">
-            <e-grid-columns>
-                <e-grid-column field="id" textAlign="Center" headerText="Id vzorca" template="#actions" width="120"></e-grid-column>
-                <e-grid-column field="DatumSprejema" textAlign="Center" headerText="Datum sprejema" template="#actions" width="150"></e-grid-column>
-                <e-grid-column field="DatumIzdelave" textAlign="Center" headerText="Datum izdelave" template="#actions" width="150"></e-grid-column>
-            </e-grid-columns>
-        </ejs-grid>
-        <br />
+        @*        <ejs-grid id="grid" dataSource=@ViewBag.DataSource allowPaging="true">*@
+        @*            <e-grid-columns>*@
+        @*                <e-grid-column field="id" textAlign="Center" headerText="Id vzorca" template="#actions" width="120"></e-grid-column>*@
+        @*                <e-grid-column field="DatumSprejema" textAlign="Center" headerText="Datum sprejema" template="#actions" width="150"></e-grid-column>*@
+        @*                <e-grid-column field="DatumIzdelave" textAlign="Center" headerText="Datum izdelave" template="#actions" width="150"></e-grid-column>*@
+        @*            </e-grid-columns>*@
+        @*        </ejs-grid>*@
+        @*        <br />*@
+        <div class="container">
+            @using (Html.BeginForm("IzberiVzorec", "ObdelavaVzorcev"))
+            {
+                foreach (var item in ViewBag.DataSource)
+                {
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox"
+                                   name="Samples"
+                                   value="@item.NewId.ToString()"/> @item.NewId.ToString()
+                        </label>
+                    </div>
+                }
+            }
+        </div>
+        
+        
+        
 
-        <script>
-            document.getElementById("grid").required = true;
-        </script>
+        @*        <script>*@
+        @*            document.getElementById("grid").required = true;*@
+        @*        </script>*@
 
         <button type="submit" class="btn btn-primary">Potrdi</button>
         <a href="@Url.Action("Index")"

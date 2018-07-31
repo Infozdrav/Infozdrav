@@ -1,0 +1,33 @@
+﻿@model Infozdrav.Web.Models.Labena.CellResultsViewModel
+
+@{
+    ViewData["Title"] = "Rezultati";
+}
+
+<h2>Rezultati</h2>
+
+<form asp-action="RezultatiCelice" method="post">
+    <div class="form-group">
+
+        <label asp-for="Sample">Identifikacijska številka vzorca</label>
+        @Html.DropDownList("Sample",
+            new SelectList(ViewBag.Samples),
+            "Izberi vzorec",
+            new {@class = "form-control"})
+
+        <label asp-for="CellNumber">Število celic [10^4 / mL]</label>
+        <input asp-for="CellNumber" min="0" step="0.001" type="number" 
+               data-val-required="Potreben je vnos števila celic" onchange="showTable();"
+               class="form-control" id="CellNumber" placeholder="Vnesi število celic" required/>
+        <span class="form-text text-danger text-muted" asp-validation-for="CellNumber"></span>
+        
+    </div>
+
+    <script>
+        document.getElementById("Sample").required = true;
+        document.getElementById("CellNumber").required = true;
+    </script>
+
+    <button type="submit" class="btn btn-primary">Shrani rezultate</button>
+    <a href="@Url.Action("Index")" class="btn btn-primary">Prekliči</a>
+</form>

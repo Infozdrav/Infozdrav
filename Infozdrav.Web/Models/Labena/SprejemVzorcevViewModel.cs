@@ -10,34 +10,34 @@ namespace Infozdrav.Web.Models.Labena
 {
     public class SprejemVzorcevViewModel
     {
-        [Required]
-        public int SupplierId { get; set; }
+//        [Required]
+//        public int SupplierId { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Polje je potrebno izpolniti")]
         public DateTime? DateOfReception { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Polje je potrebno izpolniti")]
         public string SupplierName { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Polje je potrebno izpolniti")]
         public string TaxNumber { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Polje je potrebno izpolniti")]
         public string StreetNum { get; set; }
 
-        [Required]
-        public int ZipNumber { get; set; }
+        [Required(ErrorMessage = "Polje je potrebno izpolniti")]
+        public int? ZipNumber { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Polje je potrebno izpolniti")]
         public string City { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Polje je potrebno izpolniti")]
         public string Country { get; set; }
 
         public string IdDDV { get; set; }
 
 
-        [Required]
+        [Required(ErrorMessage = "Polje je potrebno izpolniti")]
         public string ContactName { get; set; }
 
         public string Mail { get; set; }
@@ -48,22 +48,22 @@ namespace Infozdrav.Web.Models.Labena
 
     public class DodajTipViewModel
     {
-        [Required]
+        [Required(ErrorMessage = "Polje je potrebno izpolniti")]
         public string TipVzorca { get; set; }
     }
 
     public class DodajanjeVzorcaViewModel
     {
-        [Required]
+        [Required(ErrorMessage = "Polje je potrebno izpolniti")]
         public string Provider { get; set; }
         
-        [Required]
+        [Required(ErrorMessage = "Polje je potrebno izpolniti")]
         public DateTime? DateReception { get; set; }
         
-        [Required]
+        [Required(ErrorMessage = "Polje je potrebno izpolniti")]
         public string IdProvider { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Polje je potrebno izpolniti")]
         public string IdSample { get; set; }
 
         public DateTime? Date { get; set; }
@@ -71,7 +71,7 @@ namespace Infozdrav.Web.Models.Labena
 //        public string Tip { get; set; }
         // TODO: Add radio buttons for sample and volume type
 
-        public double Volume { get; set; }
+        public double? Volume { get; set; }
 
         public string Notes { get; set; }
 
@@ -80,11 +80,11 @@ namespace Infozdrav.Web.Models.Labena
         // [Required]
         // public string Room { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Polje je potrebno izpolniti")]
         public string Fridge { get; set; }
 
-        [Required]
-        public int Razdelek { get; set; }
+        [Required(ErrorMessage = "Polje je potrebno izpolniti")]
+        public int? Razdelek { get; set; }
 
         public string Box { get; set; }
 
@@ -94,35 +94,35 @@ namespace Infozdrav.Web.Models.Labena
         
         public string VolType { get; set; }
         
-        [Required]
+        [Required(ErrorMessage = "Polje je potrebno izpolniti")]
         public string Temp { get; set; }
 
     }
 
     public class DodajanjeAlikvotovViewModel
     {
-        [Required]
+        [Required(ErrorMessage = "Polje je potrebno izpolniti")]
         public string IdVzorca { get; set; }
 
-        [Required]
-        public int stAlikvotov { get; set; }
+        [Required(ErrorMessage = "Polje je potrebno izpolniti")]
+        public int? StAlikvotov { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Polje je potrebno izpolniti")]
         public DateTime? Date { get; set; }
 
-        public double Volume { get; set; }
+        public double? Volume { get; set; }
 
         public string Notes { get; set; }
 
         public string Project { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Polje je potrebno izpolniti")]
         public string Room { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Polje je potrebno izpolniti")]
         public string Fridge { get; set; }
 
-        public int Razdelek { get; set; }
+        public int? Razdelek { get; set; }
 
         public string Box { get; set; }
 
@@ -133,46 +133,46 @@ namespace Infozdrav.Web.Models.Labena
 
     public class SkatlaViewModel
     {
-        [Required]
+        [Required(ErrorMessage = "Polje je potrebno izpolniti")]
         public string ImeSkatle { get; set; }
 
-        [Required]
-        public int Velikost { get; set; }
+        [Required(ErrorMessage = "Polje je potrebno izpolniti")]
+        public int? Velikost { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Polje je potrebno izpolniti")]
         public string Tip { get; set; }
     }
 
     public class PoveziVzorecViewModel
     {
 
-        [Required]
+        [Required(ErrorMessage = "Polje je potrebno izpolniti")]
         public string Vzorec { get; set; }
 
         [DisplayName("Oznaka")]
-        [Required]
+        [Required(ErrorMessage = "Polje je potrebno izpolniti")]
         public string Oznaka { get; set; }
 
         [DisplayName("Id")]
-        [Required]
+        [Required(ErrorMessage = "Polje je potrebno izpolniti")]
         public string Id { get; set; }
 
         [DisplayName("Datum")]
-        [Required]
+        [Required(ErrorMessage = "Polje je potrebno izpolniti")]
         public string Datum { get; set; }
 
         [DisplayName("Projekt")]
-        [Required]
+        [Required(ErrorMessage = "Polje je potrebno izpolniti")]
         public string Projekt { get; set; }
 
     }
 
     public class VnosHladilnikaViewModel
     {
-        [Required]
+        [Required(ErrorMessage = "Polje je potrebno izpolniti")]
         public string Fridge { get; set; }
         
-        [Required]
+        [Required(ErrorMessage = "Polje je potrebno izpolniti")]
         public string Room { get; set; }
     }
 

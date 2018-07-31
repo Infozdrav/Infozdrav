@@ -6,18 +6,12 @@
 <h2>Obdelava vzorcev</h2>
 
 
-<form asp-action="Index" method="post">
-    <div>
+<form asp-action="Obdelava" method="post">
+    <div class="form-group">
         <label asp-for="DatumObdelave">Datum obdelave</label>
-        <input asp-for="DatumObdelave" type="date" data-val-required="Potreben je vnos datuma" min="@DateTime.Today.ToString("yyyy-MM-dd")"
+        <input asp-for="DatumObdelave" type="date" data-val-required="Potreben je vnos datuma"
                class="form-control" id="DatumObdelave">
         <span class="form-text text-danger text-muted" asp-validation-for="DatumObdelave"></span>
-
-        <label asp-for="Oseba">Oseba</label>
-        <input asp-for="Oseba" type="text" data-val-required="Potreben je vnos osebe" class="form-control" id="Oseba" placeholder="Vnesi osebo"/>
-        <span class="form-text text-danger text-muted" asp-validation-for="Oseba"></span>
-
-        <br/><br/>
 
         <label>Izolat</label>
         @Html.DropDownList("Izolat",
@@ -40,22 +34,26 @@
     <br/>
     <div>
         <div style="float: left; width: 50%; height: 200px">
-
-            <label>Seznam izbranih vzorcev</label><br/>
-            <ejs-grid id="grid" dataSource=@ViewBag.DataSource allowPaging="true">
-                <e-grid-columns>
-                    <e-grid-column field="IdVzorca" textAlign="Center" headerText="Id vzorca" template="#actions" width="120"></e-grid-column>
-                    <e-grid-column field="DatumSprejema" textAlign="Center" headerText="Datum sprejema" template="#actions" width="150"></e-grid-column>
-                    <e-grid-column field="DatumIzdelave" textAlign="Center" headerText="Datum izdelave" template="#actions" width="150"></e-grid-column>
-                </e-grid-columns>
-            </ejs-grid>
+            @{
+                for (var i = 0; i < Model.Samples.Count; i++)
+                {
+                    @Html.HiddenFor(model => model.Samples[i])
+                }
+            }
         </div>
         <div style="float: right; width: 50%; height: 200px">
             <button type="button" class="btn btn-primary">Natisni list</button><br/>
-            <a href="@Url.Action("Rezultati")" class="btn btn-primary">Rezultati</a><br/>
+            @*            <a href="@Url.Action("Rezultati")" class="btn btn-primary">Rezultati</a><br/>*@
             <button type="button" class="btn btn-primary">QR kode</button><br/><br/>
         </div>
+
+        <script>
+            document.getElementById("DatumObdelave").required = true;
+            document.getElementById("Izolat").required = true;
+            document.getElementById("Protokol").required = true;
+        </script>
+
+        <button type="submit" class="btn btn-primary">Shrani</button>
     </div>
-    <button type="submit" class="btn btn-primary">Shrani</button>
 
 </form>

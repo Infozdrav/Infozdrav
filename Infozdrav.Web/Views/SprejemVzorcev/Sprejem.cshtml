@@ -8,24 +8,14 @@
 <form asp-action="Sprejem" method="post">
 
     <div class="form-group">
-
-        <!-- shranimo iz tega, kdo je vpisan
-        <label asp-for="SupplierId">Id prejemnika</label>
-        <input asp-for="SupplierId" type="text" data-val-required="Potreben je vnos Id prejemnika"
-               class="form-control" id="SupplierId" placeholder="Vnesi Id prejemnika"/>
-        <span class="form-text text-danger text-muted" asp-validation-for="SupplierId"></span>
-        <!-- TODO: AutoComplete dropdown using JQuery -->
-        <br />
-
         <label asp-for="DateOfReception">Datum prejema</label>
+        <span class="form-text text-danger text-muted" asp-validation-for="DateOfReception"></span>
         <input asp-for="DateOfReception" type="date"
-               min="@DateTime.Today.ToString("yyyy-MM-dd")"
                data-val-required="Potreben je vnos datuma prejema."
                class="form-control" id="DateOfReception">
-        <span class="form-text text-danger text-muted" asp-validation-for="DateOfReception"></span>
 
-        <!-- <h4>Naročnik</h4> -->
         <label asp-for="SupplierName">Naročnik</label>
+        <span class="form-text text-danger text-muted" asp-validation-for="SupplierName"></span>
         @Html.DropDownList("SupplierName",
             new SelectList(ViewBag.suppliers),
             "Izberi naročnika",
@@ -33,6 +23,7 @@
         <a href="@Url.Action("DodajanjeNarocnikov")" class="btn btn-primary">Dodaj naročnika</a><br />
 
         <label asp-for="ContactName">Kontaktna oseba</label>
+        <span class="form-text text-danger text-muted" asp-validation-for="ContactName"></span>
         @Html.DropDownList("ContactName",
             new SelectList(ViewBag.people),
             "Izberi ime kontaktne osebe",
@@ -44,6 +35,8 @@
 
     <script>
         document.getElementById("DateOfReception").required = true;
+        document.getElementById("SupplierName").required = true;
+        document.getElementById("ContactName").required = true;
     </script>
 
     <button type="submit" class="btn btn-primary">Shrani sprejem</button>

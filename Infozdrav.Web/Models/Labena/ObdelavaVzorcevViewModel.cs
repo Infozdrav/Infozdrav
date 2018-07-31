@@ -11,8 +11,8 @@ namespace Infozdrav.Web.Models.Labena
         [Required]
         public DateTime? DatumObdelave { get; set; }
 
-        [Required]
-        public string Oseba { get; set; }
+//        [Required]
+//        public string Oseba { get; set; }
 
         [Required]
         public string Izolat { get; set; }
@@ -25,6 +25,9 @@ namespace Infozdrav.Web.Models.Labena
 
         [Required]
         public string Kemikalije { get; set; }
+        
+        [Required]
+        public List<string> Samples { get; set; }
 
     }
 }
