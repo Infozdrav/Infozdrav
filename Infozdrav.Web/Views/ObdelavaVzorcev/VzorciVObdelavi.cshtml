@@ -1,0 +1,27 @@
+﻿@model Infozdrav.Web.Models.Labena.ObdelavaVzorcevViewModel
+
+@{
+    ViewData["Title"] = "Vzorci v obdelavi";
+}
+
+<h2>Vzorci v obdelavi</h2>
+<br />
+
+<div class="form-group">
+
+    <h4>Obdelave v teku</h4>
+    <br />
+
+    <ejs-grid id="grid" dataSource=@ViewBag.DataSource allowPaging="true">
+        <e-grid-columns>
+            <e-grid-column field="ŠifraObdelave" textAlign="Center" headerText="Šifra obdelave" width="150"></e-grid-column>
+            <e-grid-column field="DatumObdelave" textAlign="Center" headerText="Datum obdelave" width="150"></e-grid-column>
+        </e-grid-columns>
+    </ejs-grid>
+    <br />
+
+
+    <a href="@Url.Action("PregledPodatkov")" class="btn btn-primary">Pregled podatkov</a>
+    <a href="@Url.Action("DodajanjeVzorca")" class="btn btn-primary">Dodaj vzorec</a>
+@*    <a href="@Url.Action("Rezultati")" class="btn btn-primary">Vnesi rezultate</a>*@
+</div>

@@ -1,0 +1,113 @@
+﻿@model Infozdrav.Web.Models.Labena.DodajanjeVzorcaViewModel
+@{
+    ViewData["Title"] = "Dodajanje vzorca";
+}
+
+<h2>Dodajanje vzorca</h2>
+
+<form asp-action="DodajanjeVzorca" method="post">
+
+    <div class="form-group">
+        <label asp-for="Provider">Ime naročnika</label>
+        @Html.DropDownList("Provider",
+            new SelectList(ViewBag.Supplier),
+            "Izberi ime naročnika",
+            new {@class = "form-control"})
+
+        <label asp-for="DateReception">Datum sprejema vzorca</label>
+        @Html.DropDownList("DateReception",
+            new SelectList(ViewBag.SupplierDates),
+            "Izberi datum sprejema",
+            new {@class = "form-control"})
+    </div>
+    <div class="form-group">
+        <label asp-for="IdProvider">Naročnikova oznaka</label>
+        <input asp-for="IdProvider" type="text" data-val-required="Potreben je vnos oznake naročnika" class="form-control"
+               id="IdProvider" placeholder="Vnesi oznako vzorca, ki jo je določil naročnik" />
+        <span class="form-text text-danger text-muted" asp-validation-for="IdProvider"></span>
+
+        <label asp-for="Date">Datum odvzema vzorca</label>
+        <input asp-for="Date" type="date"
+               min="@DateTime.Today.ToString("yyyy-MM-dd")"
+               class="form-control" id="Date" placeholder="Vnesi datum odvzema">
+
+        <label>Tip vzorca: </label>
+        @Html.DropDownList("Type",
+            new SelectList(ViewBag.Types),
+            "Izberi tip vzorca",
+            new {@class = "form-control"})
+
+        <a href="@Url.Action("DodajTip")" class="btn btn-primary">Dodaj tip vzorca</a><br />
+
+        <label asp-for="Volume">Volumen</label>
+        <input asp-for="Volume" type="number" maxlength="10" min="0" step="0.001" class="form-control" id="Volume" placeholder="Vnesi volumen" />
+
+        <label>@Html.RadioButton("VolType", "ml")mL</label>
+        <label>@Html.RadioButton("VolType", "nl")nL</label>
+    </div>
+    <div class="form-group">
+        <label asp-for="Notes">Opombe</label>
+        <input asp-for="Notes" type="text" class="form-control" id="Notes" placeholder="Vnesi opombe" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Project">Projekt</label>
+        @Html.DropDownList("Project",
+            new SelectList(ViewBag.Projects),
+            "Izberi projekt",
+            new {@class = "form-control"})
+
+        <a href="@Url.Action("PoveziVzorec")" class="btn btn-primary">Poveži vzorec z že obstoječim</a><br />
+        <a href="@Url.Action("DodajanjeAlikvotov")" class="btn btn-primary">Dodaj alikvote</a><br />
+
+    </div>
+    <div class="form-group">
+        <h4>Hramba</h4>
+        <label>Temperatura: </label>
+
+        <label>@Html.RadioButton("Temp", "sobna") sobna </label>
+        <label>@Html.RadioButton("Temp", "+4") +4 °C </label>
+        <label>@Html.RadioButton("Temp", "-20") -20 °C </label>
+        <label>@Html.RadioButton("Temp", "-80") -80 °C </label>
+        <label>@Html.RadioButton("Temp", "LN2") LN2 </label>
+        <br />
+
+        <label asp-for="Fridge">Hladilnik</label>
+        @Html.DropDownList("Fridge",
+            new SelectList(ViewBag.Fridges),
+            "Izberi hladilnik",
+            new {@class = "form-control"})
+        <span class="form-text text-danger text-muted" asp-validation-for="Fridge"></span>
+        <a href="@Url.Action("VnosHladilnika")" class="btn btn-primary">Vnos novega hladilnika</a><br />
+
+        <label asp-for="Razdelek">Razdelek</label>
+        <input asp-for="Razdelek" type="number" min="0" class="form-control" id="Razdelek" placeholder="Vnesi razdelek" />
+
+        <label asp-for="Box">Škatla</label>
+        @Html.DropDownList("Box",
+            new SelectList(ViewBag.Boxes),
+            "Izberi škatlo",
+            new {@class = "form-control"})
+        <a href="@Url.Action("DodajanjeSkatel")" class="btn btn-primary">Vnos nove škatle</a>
+        <br>
+
+        <label asp-for="Location">Pozicija</label>
+        <input asp-for="Location" type="text" maxlength="3"
+               class="form-control" id="Location"
+               placeholder="Vnesi pozicijo, npr. A1" />
+
+    </div>
+
+    <script>
+        document.getElementById("Provider").required = true;
+        document.getElementById("IdProvider").required = true;
+        document.getElementById("DateReception").required = true;
+        document.getElementById("Temp").required = true;
+        document.getElementById("Fridge").required = true;
+        document.getElementById("Razdelek").required = true;
+    </script>
+    <button type="submit" class="btn btn-primary">Shrani vzorec</button>
+    <a href="@Url.Action("Index")"
+       class="btn btn-primary">
+        Prekliči
+    </a>
+</form>

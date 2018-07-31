@@ -1,0 +1,59 @@
+﻿@model Infozdrav.Web.Models.Labena.ObdelavaVzorcevViewModel
+@{
+    ViewData["Title"] = "Obdelava";
+}
+
+<h2>Obdelava vzorcev</h2>
+
+
+<form asp-action="Obdelava" method="post">
+    <div class="form-group">
+        <label asp-for="DatumObdelave">Datum obdelave</label>
+        <input asp-for="DatumObdelave" type="date" data-val-required="Potreben je vnos datuma"
+               class="form-control" id="DatumObdelave">
+        <span class="form-text text-danger text-muted" asp-validation-for="DatumObdelave"></span>
+
+        <label>Izolat</label>
+        @Html.DropDownList("Izolat",
+            new SelectList(ViewBag.Types),
+            "Izberi tip izolata",
+            new {@class = "form-control"})
+
+    </div><br/>
+
+    <label asp-for="Protokol">Protokol</label>
+    <input asp-for="Protokol" type="text" data-val-required="Potreben je vnos protokola" class="form-control" id="Protokol" placeholder="Vnesi protokol"/>
+    <span class="form-text text-danger text-muted" asp-validation-for="Protokol"></span>
+    <button type="button" class="btn btn-primary">Pripni</button><br/><br/>
+
+    <label asp-for="Aparatura">Aparatura</label>
+    <input asp-for="Aparatura" type="text" class="form-control" id="Aparatura" placeholder="Vnesi aparaturo"/>
+
+    <label asp-for="Kemikalije">Kemikalije</label>
+    <input asp-for="Kemikalije" type="text" class="form-control" id="Kemikalije" placeholder="Vnesi kemikalije"/>
+    <br/>
+    <div>
+        <div style="float: left; width: 50%; height: 200px">
+            @{
+                for (var i = 0; i < Model.Samples.Count; i++)
+                {
+                    @Html.HiddenFor(model => model.Samples[i])
+                }
+            }
+        </div>
+        <div style="float: right; width: 50%; height: 200px">
+            <button type="button" class="btn btn-primary">Natisni list</button><br/>
+            @*            <a href="@Url.Action("Rezultati")" class="btn btn-primary">Rezultati</a><br/>*@
+            <button type="button" class="btn btn-primary">QR kode</button><br/><br/>
+        </div>
+
+        <script>
+            document.getElementById("DatumObdelave").required = true;
+            document.getElementById("Izolat").required = true;
+            document.getElementById("Protokol").required = true;
+        </script>
+
+        <button type="submit" class="btn btn-primary">Shrani</button>
+    </div>
+
+</form>

@@ -9,8 +9,10 @@ using Infozdrav.Web.Data.Manage;
 using Infozdrav.Web.Data.Trbovlje;
 using Infozdrav.Web.Helpers;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Rest;
 using Newtonsoft.Json;
 using Buffer = Infozdrav.Web.Data.Trbovlje.Buffer;
+using Remotion.Linq.Parsing.Structure.IntermediateModel;
 
 namespace Infozdrav.Web.Data
 {
@@ -44,6 +46,9 @@ namespace Infozdrav.Web.Data
             InitLaboratories();
             InitBuffer();
             InitOrderCatalogArticle();
+            InitSampleType();
+            InitRooms();
+            InitFridges();
         }
 
         private bool UpdateDatabaseOnModelChange()
@@ -87,7 +92,9 @@ namespace Infozdrav.Web.Data
 
         private static string GetSimpleHash(Type t)
         {
-            return JsonConvert.SerializeObject(t.GetProperties().Select(prop => (type: prop.PropertyType.Name, name: prop.Name))).ToSHA1();
+            return JsonConvert
+                .SerializeObject(t.GetProperties().Select(prop => (type: prop.PropertyType.Name, name: prop.Name)))
+                .ToSHA1();
         }
 
         private async Task InitRoles()
@@ -326,6 +333,59 @@ namespace Infozdrav.Web.Data
             };
 
             _appDbContext.Add(orderCatalogArticle);
+            _appDbContext.SaveChanges();
+        }
+
+        private void InitSampleType()
+        {
+            if (_appDbContext.SampleTypes.Any())
+                return;
+
+            _appDbContext.SampleTypes.Add(new SampleType{ShortName = "WBL",SampleTypeName = "cela kri"});
+            _appDbContext.SampleTypes.Add(new SampleType{ShortName = "PBL",SampleTypeName = "plazma"});
+            _appDbContext.SampleTypes.Add(new SampleType{ShortName = "SBL",SampleTypeName = "serum"});
+            _appDbContext.SampleTypes.Add(new SampleType {ShortName = "DNA", SampleTypeName = "DNA"});
+            _appDbContext.SampleTypes.Add(new SampleType {ShortName = "RNA", SampleTypeName = "RNA"});
+            _appDbContext.SampleTypes.Add(new SampleType {ShortName = "miR", SampleTypeName = "miRNA"});
+            _appDbContext.SampleTypes.Add(new SampleType {ShortName = "cfD", SampleTypeName = "cfDNA"});
+            _appDbContext.SampleTypes.Add(new SampleType {ShortName = "PRT", SampleTypeName = "protein"});
+            _appDbContext.SampleTypes.Add(new SampleType {ShortName = "CLC", SampleTypeName = "celice (kultura)"});
+            _appDbContext.SampleTypes.Add(new SampleType {ShortName = "CLT", SampleTypeName = "celice (tkivo)"});
+            _appDbContext.SampleTypes.Add(new SampleType {ShortName = "BMW", SampleTypeName = "kostni mozeg"});
+            _appDbContext.SampleTypes.Add(new SampleType {ShortName = "ASB", SampleTypeName = "aspiracijska biopsija"});
+            _appDbContext.SampleTypes.Add(new SampleType {ShortName = "LKV", SampleTypeName = "likvor"});
+            _appDbContext.SampleTypes.Add(new SampleType {ShortName = "URN", SampleTypeName = "urin"});
+            _appDbContext.SampleTypes.Add(new SampleType {ShortName = "PLT", SampleTypeName = "rastlinski material"});
+            _appDbContext.SampleTypes.Add(new SampleType {ShortName = "WTR", SampleTypeName = "voda"});
+            _appDbContext.SampleTypes.Add(new SampleType {ShortName = "BCT", SampleTypeName = "bakterije"});
+            _appDbContext.SampleTypes.Add(new SampleType {ShortName = "YST", SampleTypeName = "kvasovke"});
+            _appDbContext.SampleTypes.Add(new SampleType {ShortName = "SWP", SampleTypeName = "bris"});
+            _appDbContext.SampleTypes.Add(new SampleType {ShortName = "SLV", SampleTypeName = "slina"});
+            _appDbContext.SampleTypes.Add(new SampleType {ShortName = "OTH", SampleTypeName = "drugo"});
+            _appDbContext.SaveChanges();
+        }
+
+        private void InitRooms()
+        {
+            if (_appDbContext.Rooms.Any())
+                return;
+
+            _appDbContext.Rooms.Add(new Room {RoomName = "prePCR"});
+            _appDbContext.Rooms.Add(new Room {RoomName = "postPCR"});
+            _appDbContext.SaveChanges();
+        }
+
+        private void InitFridges()
+        {
+            if (_appDbContext.Fridges.Any())
+                return;
+
+            _appDbContext.Fridges.Add(new Fridge{Name = "prePCR 1",Place = _appDbContext.Rooms.First(o => o.RoomName == "prePCR")});
+            _appDbContext.Fridges.Add(new Fridge{Name = "prePCR 2",Place = _appDbContext.Rooms.First(o => o.RoomName == "prePCR")});
+            _appDbContext.Fridges.Add(new Fridge{Name = "prePCR 3",Place = _appDbContext.Rooms.First(o => o.RoomName == "prePCR")});
+            
+            _appDbContext.Fridges.Add(new Fridge{Name = "postPCR 1",Place = _appDbContext.Rooms.First(o => o.RoomName == "postPCR")});
+            _appDbContext.Fridges.Add(new Fridge{Name = "postPCR 2",Place = _appDbContext.Rooms.First(o => o.RoomName == "postPCR")});
             _appDbContext.SaveChanges();
         }
     }
