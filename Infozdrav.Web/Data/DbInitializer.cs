@@ -64,6 +64,7 @@ namespace Infozdrav.Web.Data
                                 .ToList();
 
             if (currModels.Any(m => dbModels.Count(o => o.Name == m.Name && o.Hash == m.Hash) != 1))
+                
                 _appDbContext.Database.EnsureDeleted();
             else
                 return false;
