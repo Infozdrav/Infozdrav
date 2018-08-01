@@ -1,13 +1,45 @@
 ﻿@using Infozdrav.Web.Data.Manage
-<li><a asp-controller="OrderCatalogArticle" asp-action="Index" is-active-route>Naročilo artikla</a></li>
-<li><a asp-controller="Article" asp-action="Reception" is-active-route>Sprejem artikla</a></li>
-<li><a asp-controller="Article" asp-action="UseArticleTable" is-active-route>Uporaba artikla</a></li>
-<li><a asp-controller="Article" asp-action="WriteOffTable" is-active-route>Odpis artikla</a></li>
-<li><a asp-controller="Article" asp-action="LendGiveTable" is-active-route>Odprema artikla</a></li>
-<li><a asp-controller="Article" asp-action="LendReciveTable" is-active-route>Re-Odprema artikla</a></li>
-<li><a asp-controller="Buffer" asp-action="Index" is-active-route>Pufri</a></li>
-<li><a asp-controller="Article" asp-action="Index" is-active-route>Zaloga</a></li>
-<li>@*<a asp-controller="Article" asp-action="" is-active-route>Statistika</a>*@</li>
+@if (User.IsInRole(Roles.Administrator) || User.IsInRole(Roles.ArticleCatalogEdit))
+{
+    <li><a asp-controller="CatalogArticle" asp-action="Index" is-active-route>Katalog artiklov</a></li>
+}
+@if (User.IsInRole(Roles.Administrator) || User.IsInRole(Roles.CatalogArticleOrder))
+{
+    <li><a asp-controller="OrderCatalogArticle" asp-action="Index" is-active-route>Naročilo artikla</a></li>
+}
+@if (User.IsInRole(Roles.Administrator) || User.IsInRole(Roles.ArticleReception))
+{
+    <li><a asp-controller="Article" asp-action="Reception" is-active-route>Sprejem artikla</a></li>
+}
+@if (User.IsInRole(Roles.Administrator) || User.IsInRole(Roles.ArticleUse))
+{
+    <li><a asp-controller="Article" asp-action="UseArticleTable" is-active-route>Uporaba artikla</a></li>
+}
+@if (User.IsInRole(Roles.Administrator) || User.IsInRole(Roles.ArticleWriteOff))
+{
+    <li><a asp-controller="Article" asp-action="WriteOffTable" is-active-route>Odpis artikla</a></li>
+}
+@if (User.IsInRole(Roles.Administrator) || User.IsInRole(Roles.ArticleLend))
+{
+    <li><a asp-controller="Article" asp-action="LendGiveTable" is-active-route>Odprema artikla</a></li>
+}
+@if (User.IsInRole(Roles.Administrator) || User.IsInRole(Roles.ArticleLendRecive))
+{
+    <li><a asp-controller="Article" asp-action="LendReciveTable" is-active-route>Re-Odprema artikla</a></li>
+}
+@if (User.IsInRole(Roles.Administrator) || User.IsInRole(Roles.BufferCreate))
+{
+    <li><a asp-controller="Buffer" asp-action="Index" is-active-route>Pufri</a></li>
+}
+@if (User.IsInRole(Roles.Administrator) || User.IsInRole(Roles.StockView))
+{
+    <li><a asp-controller="Article" asp-action="Index" is-active-route>Zaloga</a></li>
+}
+
+@*@if (User.IsInRole(Roles.Administrator))
+    {
+        <li>@*<a asp-controller="Article" asp-action="" is-active-route>Statistika</a>*@</li>
+}*@
 
 <li>&nbsp;</li>
 @if (User.IsInRole(Roles.Administrator))
@@ -22,8 +54,6 @@
             <li><a asp-controller="Supplier" asp-action="Index" is-active-route>Dobavlitelji</a></li>
             <li><a asp-controller="StorageLocation" asp-action="Index" is-active-route>Lokacije shranjevanja</a></li>
             <li><a asp-controller="StorageType" asp-action="Index" is-active-route>Vrste shranjevanja</a></li>
-            <a href="@Url.Action("", "CatalogArticle")"
-               class="btn btn-primary">CatalogArticle</a>
         </ul>
     </li>
 }

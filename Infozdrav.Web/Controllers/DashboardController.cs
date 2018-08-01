@@ -30,7 +30,7 @@ namespace Infozdrav.Web.Controllers
         public IActionResult Trbovlje()
         {
             var data = _dbContext.Articles
-                .Where(a => a.UseByDate != null & a.CatalogArticle.UseByDaysLimit <= ((DateTime)a.UseByDate - DateTime.Now).TotalDays)
+                .Where(a => a.WriteOffReason == null & a.UseByDate != null & a.CatalogArticle.UseByDaysLimit <= ((DateTime)a.UseByDate - DateTime.Now).TotalDays)
                 .Include(s => s.CatalogArticle)
                 .Include(s => s.ArticleUses)
                 .Include(s => s.WorkLocation)
