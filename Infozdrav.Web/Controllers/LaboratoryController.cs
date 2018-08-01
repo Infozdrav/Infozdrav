@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Infozdrav.Web.Controllers
 {
+    [Authorize(Roles = Roles.Administrator)]
+
     public class LaboratoryController : Controller
     {
         private readonly AppDbContext _dbContext;

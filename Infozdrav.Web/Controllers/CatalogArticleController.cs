@@ -2,15 +2,19 @@
 using System.Linq;
 using AutoMapper;
 using Infozdrav.Web.Data;
+using Infozdrav.Web.Data.Manage;
 using Infozdrav.Web.Data.Trbovlje;
 using Infozdrav.Web.Models.Trbovlje;
 using Infozdrav.Web.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infozdrav.Web.Controllers
 {
+    [Authorize(Roles = Roles.Administrator + "," + Roles.ArticleCatalogEdit)]
+
     public class CatalogArticleController : Controller
     {
         private readonly AppDbContext _dbContext;

@@ -35,8 +35,9 @@ namespace Infozdrav.Web.Controllers
             _mapper = mapper;
             _fileService = fileService;
         }
-       
 
+
+        [Authorize(Roles = Roles.Administrator + "," + Roles.StockView)]
         public IActionResult Index()
         {
             var data = _dbContext.Articles
@@ -54,6 +55,7 @@ namespace Infozdrav.Web.Controllers
             return View(_mapper.Map<List<Models.Trbovlje.ArticleFullViewModel>>(data));
         }
 
+        [Authorize(Roles = Roles.Administrator + "," + Roles.ArticleView)]
         public IActionResult Article(int id)
         {
             var article = _dbContext.Articles
@@ -76,11 +78,13 @@ namespace Infozdrav.Web.Controllers
             return base.View(_mapper.Map<Models.Trbovlje.ArticleFullViewModel>(article));
         }
 
+        [Authorize(Roles = Roles.Administrator + "," + Roles.ArticleReception)]
         public IActionResult Reception()
         {
             return View(GetReceptionViewModel());
         }
 
+        [Authorize(Roles = Roles.Administrator + "," + Roles.ArticleReception)]
         [HttpPost]
         public async Task<IActionResult> Reception([FromForm] Models.Trbovlje.ArticleReceptionViewModel article,
             bool repeat = false)
@@ -168,12 +172,14 @@ namespace Infozdrav.Web.Controllers
             return RedirectToAction("Index");
         }
 
+        [Authorize(Roles = Roles.Administrator + "," + Roles.ArticleUse)]
         public IActionResult UseArticleTable()
         {
             return GetTableView("Uporaba artikla", "UseArticle", "Uporaba",
                 a => !a.Rejected && a.WriteOffReason == null && a.NumberOfUnits - (a.ArticleUses.Count() + a.Lends.Sum( lend => lend.UnitsUsed)) > 0 && !(a.Lends.Any(lend => lend.LendReciveTime == null)) );
         }
 
+        [Authorize(Roles = Roles.Administrator + "," + Roles.ArticleUse)]
         public IActionResult UseArticle(int id) // article id
         {
             var article = _dbContext.Articles.Include(a => a.CatalogArticle).FirstOrDefault(a => a.Id == id);
@@ -190,6 +196,7 @@ namespace Infozdrav.Web.Controllers
             });
         }
 
+        [Authorize(Roles = Roles.Administrator + "," + Roles.ArticleUse)]
         [HttpPost]
         public async Task<IActionResult> UseArticle([FromForm] ArticleUseViewModel articleUse)
         {
@@ -226,12 +233,14 @@ namespace Infozdrav.Web.Controllers
             return RedirectToAction("UseArticleTable");
         }
 
+        [Authorize(Roles = Roles.Administrator + "," + Roles.ArticleWriteOff)]
         public IActionResult WriteOffTable()
         {
             return GetTableView("Odpis artikla", "WriteOff", "Odpis", 
                 a => a.WriteOffReason == null);
         }
 
+        [Authorize(Roles = Roles.Administrator + "," + Roles.ArticleWriteOff)]
         public IActionResult WriteOff(int id)
         {
             var article = _dbContext.Articles.Include(a => a.CatalogArticle).FirstOrDefault(a => a.Id == id);
@@ -244,6 +253,7 @@ namespace Infozdrav.Web.Controllers
             return View(_mapper.Map<ArticleWriteOffViewModel>(article));
         }
 
+        [Authorize(Roles = Roles.Administrator + "," + Roles.ArticleWriteOff)]
         [HttpPost]
         public async Task<IActionResult> WriteOff([FromForm] ArticleWriteOffViewModel article)
         {
@@ -282,6 +292,7 @@ namespace Infozdrav.Web.Controllers
             return RedirectToAction("WriteOffTable");
         }
 
+        [Authorize(Roles = Roles.Administrator)]
         public IActionResult Remove(int id)
         {
             var dbArticle = _dbContext.Articles.FirstOrDefault(l => l.Id == id);
@@ -291,6 +302,7 @@ namespace Infozdrav.Web.Controllers
             return View(_mapper.Map<ArticleFullViewModel>(dbArticle));
         }
 
+        [Authorize(Roles = Roles.Administrator)]
         [HttpPost]
         public IActionResult Remove([FromForm] ArticleFullViewModel viewModel)
         {
@@ -306,6 +318,7 @@ namespace Infozdrav.Web.Controllers
             return RedirectToAction("Index");
         }
 
+        [Authorize(Roles = Roles.Administrator)]
         public IActionResult Edit(int id)
         {
             var dbArticle = _dbContext.Articles
@@ -327,6 +340,7 @@ namespace Infozdrav.Web.Controllers
             return View(_mapper.Map(dbArticle, viewModel));
         }
 
+        [Authorize(Roles = Roles.Administrator)]
         [HttpPost]
         public IActionResult Edit([FromForm] ArticleEditViewModel viewModel)
         {
@@ -355,12 +369,14 @@ namespace Infozdrav.Web.Controllers
             return RedirectToAction("Index");
         }
 
+        [Authorize(Roles = Roles.Administrator + "," + Roles.ArticleLend)]
         public IActionResult LendGiveTable()
         {
             return GetTableView("Odprema artikla", "LendGive", "Odprema",
                 a => !a.Rejected && a.WriteOffReason == null && a.NumberOfUnits - (a.ArticleUses.Count() + a.Lends.Sum(lend => lend.UnitsUsed)) > 0 && !(a.Lends.Any(lend => lend.LendReciveTime == null)));
         }
 
+        [Authorize(Roles = Roles.Administrator + "," + Roles.ArticleLend)]
         public IActionResult LendGive(int id) // article id
         {
             var article = _dbContext.Articles.Include(a => a.CatalogArticle).FirstOrDefault(a => a.Id == id);
@@ -377,6 +393,7 @@ namespace Infozdrav.Web.Controllers
             });
         }
 
+        [Authorize(Roles = Roles.Administrator + "," + Roles.ArticleLend)]
         [HttpPost]
         public async Task<IActionResult> LendGive([FromForm] ArticleLendGiveViewModel articleLendGive)
         {
@@ -406,12 +423,14 @@ namespace Infozdrav.Web.Controllers
             return RedirectToAction("LendGiveTable");
         }
 
+        [Authorize(Roles = Roles.Administrator + "," + Roles.ArticleLendRecive)]
         public IActionResult LendReciveTable()
         {
             return GetTableView("Re-odprema artikla", "LendRecive", "Re-odprema",
                 a => !a.Rejected && a.WriteOffReason == null && (a.Lends.Any(lend => lend.LendReciveTime == null)));
         }
 
+        [Authorize(Roles = Roles.Administrator + "," + Roles.ArticleLendRecive)]
         public IActionResult LendRecive(int id) // article id
         {
             var article = _dbContext.Articles.Include(a => a.CatalogArticle).FirstOrDefault(a => a.Id == id);
@@ -439,6 +458,7 @@ namespace Infozdrav.Web.Controllers
             });
         }
 
+        [Authorize(Roles = Roles.Administrator + "," + Roles.ArticleLendRecive)]
         [HttpPost]
         public async Task<IActionResult> LendRecive([FromForm] ArticleLendReciveViewModel lendRecive)
         {

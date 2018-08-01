@@ -1,5 +1,5 @@
 ﻿@using Infozdrav.Web.Data.Manage
-<li><a asp-controller="" asp-action="" is-active-route>Naročilo artikla</a></li>
+<li><a asp-controller="OrderCatalogArticle" asp-action="Index" is-active-route>Naročilo artikla</a></li>
 <li><a asp-controller="Article" asp-action="Reception" is-active-route>Sprejem artikla</a></li>
 <li><a asp-controller="Article" asp-action="UseArticleTable" is-active-route>Uporaba artikla</a></li>
 <li><a asp-controller="Article" asp-action="WriteOffTable" is-active-route>Odpis artikla</a></li>
@@ -7,7 +7,7 @@
 <li><a asp-controller="Article" asp-action="LendReciveTable" is-active-route>Re-Odprema artikla</a></li>
 <li><a asp-controller="Buffer" asp-action="Index" is-active-route>Pufri</a></li>
 <li><a asp-controller="Article" asp-action="Index" is-active-route>Zaloga</a></li>
-<li><a asp-controller="Article" asp-action="" is-active-route>Statistika</a></li>
+<li>@*<a asp-controller="Article" asp-action="" is-active-route>Statistika</a>*@</li>
 
 <li>&nbsp;</li>
 @if (User.IsInRole(Roles.Administrator))
