@@ -1,9 +1,11 @@
 ﻿using System;
+using Infozdrav.Web.Abstractions;
 
 namespace Infozdrav.Web.Data
 {
-    public class Sample : Entity
+    public class Sample : IEntity
     {
+        public int Id { get; set; }
         public SampleId NewId { get; set; }
         public Acceptance Accepted { get; set; }
         public string SubscriberName { get; set; }
