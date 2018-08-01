@@ -70,6 +70,7 @@ namespace Infozdrav.Web.Controllers
                 .Include(s => s.SafteyList)
                 .Include(s => s.WriteOfUser)
                 .Include(s => s.ReceptionUser)
+                .Include(s => s.Lends)
                 .FirstOrDefault(u => u.Id == id);
 
             if (article == null)

@@ -110,12 +110,16 @@ else
 </ejs-grid>
 
 <h2>Odpreme</h2>
-TODO
-@*<ejs-grid id="grid" dataSource="@Model" allowPaging="true" showColumnMenu="true">
+<ejs-grid id="grid" dataSource="@Model.Lends" allowPaging="true" showColumnMenu="true">
     <e-grid-columns>
-
+        <e-grid-column field="LendGiveUser.Email" headerText="Odpremil"></e-grid-column>
+        <e-grid-column field="LendGiveTime" headerText="Datum odpreme" format="@dateFormat"></e-grid-column>
+        <e-grid-column field="LendReciveUser.Email" headerText="Re-Odpremil"></e-grid-column>
+        <e-grid-column field="LendReciveTime" headerText="Datum re-odpreme" format="@dateFormat"></e-grid-column>
+        <e-grid-column field="Laboratory" headerText="Laboratorij.Name"></e-grid-column>
+        <e-grid-column field="UnitsUsed" headerText="Oprablejnih enot"></e-grid-column>
     </e-grid-columns>
-</ejs-grid>*@
+</ejs-grid>
 
 
 <br />

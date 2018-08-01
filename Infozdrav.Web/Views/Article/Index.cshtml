@@ -17,9 +17,12 @@
 <br />
 
 <script id="actions" type="text/x-template">
-    <a href="@Url.Action("Article")/${Id}"
-       class="btn btn-primary">Info</a>
-
+     @if (User.IsInRole(Roles.Administrator) ||User.IsInRole(Roles.ArticleView))
+     {
+         <a href="@Url.Action("Article")/${Id}"
+           class="btn btn-primary">Info</a>
+     }
+    
 
       @if (User.IsInRole(Roles.Administrator))
       {
@@ -28,6 +31,7 @@
           <a href="@Url.Action("Remove")/${Id}"
             class="btn btn-primary">Izbriši</a>
       }
+
 
 
 </script>

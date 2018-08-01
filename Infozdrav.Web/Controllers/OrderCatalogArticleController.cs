@@ -14,6 +14,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infozdrav.Web.Controllers
 {
+    [Authorize(Roles = Roles.Administrator + "," + Roles.CatalogArticleOrder)]
 
     public class OrderCatalogArticleController : Controller
     {
