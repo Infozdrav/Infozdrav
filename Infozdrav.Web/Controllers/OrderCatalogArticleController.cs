@@ -131,7 +131,7 @@ namespace Infozdrav.Web.Controllers
                 .Include(s => s.CatalogArticle)
                 .ToList();
 
-            return View(_mapper.Map<List<Models.Trbovlje.OrderCatalogArticleViewModel>>(data));
+            return View(_mapper.Map<List<Models.Trbovlje.OrderCatalogArticleViewModel>>(data).First());
         }
 
         public IActionResult Confirm()

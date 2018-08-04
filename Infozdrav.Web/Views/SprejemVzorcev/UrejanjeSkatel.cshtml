@@ -1,0 +1,27 @@
+﻿@model Infozdrav.Web.Models.Labena.SkatlaViewModel
+@{
+    ViewData["Title"] = "Urejanje škatel";
+}
+
+<h2>Urejanje škatel</h2>
+
+<form asp-action="UrejanjeSkatel" method="post">
+    <div class="form-group">
+
+        <br />
+        <label asp-for="ImeSkatle">Izbrana škatla</label>
+        <!--
+        <input asp-for="ImeSkatle" type="text"
+               data-val-required="Škatlo je potrebno izbrati."
+               class="form-control" id="Skatla" placeholder="Izberi škatlo">
+         TODO: Make a dropdown -->
+        @Html.DropDownListFor(m => m.ImeSkatle,
+            new SelectList(ViewBag.Boxes),
+            "Izberi škatlo",
+            new {@class = "form-control"})
+        <span class="form-text text-danger text-muted" asp-validation-for="ImeSkatle"></span>
+        <br />
+
+        <button type="submit" class="btn btn-primary">Shrani</button>
+    </div>
+</form>
