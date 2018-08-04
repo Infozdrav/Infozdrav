@@ -10,6 +10,7 @@ using Infozdrav.Web.Attributes;
 using Infozdrav.Web.Data.Manage;
 using Infozdrav.Web.Data.Trbovlje;
 using Infozdrav.Web.Helpers;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,6 +18,7 @@ namespace Infozdrav.Web.Data
 {
     public class AppDbContext : IdentityDbContext<User, Role, int>
     {
+        private readonly UserManager<User> _userManager;
         public DbSet<Audit> Audits { get; set; }
         public DbSet<Table> Tables { get; set; }
 
@@ -27,17 +29,30 @@ namespace Infozdrav.Web.Data
         public DbSet<StorageType> StorageTypes { get; set; }
         public DbSet<StorageLocation> StorageLocations { get; set; }
         public DbSet<Article> Articles { get; set; }
+        public DbSet<Lend> Lends { get; set; }
         public DbSet<Analyser> Analysers { get; set; }
         public DbSet<ArticleUse> ArticleUses { get; set; }
         public DbSet<Laboratory> Laboratories { get; set; }
         public DbSet<Trbovlje.Buffer> Buffers { get; set; }
         public DbSet<OrderCatalogArticle> OrderCatalogArticles { get; set; }
+
+        public DbSet<User> Users { get; set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<SampleType> SampleTypes { get; set; }
+        public DbSet<Room> Rooms { get; set; }
+        public DbSet<Fridge> Fridges { get; set; }
+        public DbSet<Subscriber> Subscribers { get; set; }
+        public DbSet<Acceptance> Acceptances { get; set; }
+        public DbSet<Sample> Samples { get; set; }
+        public DbSet<Box> Boxes { get; set; }
+        public DbSet<Results> Results { get; set; }
+        public DbSet<Processing> Processings { get; set; }
+        public DbSet<ContactPerson> ContactPeople { get; set; }
+        public DbSet<Project> Projects { get; set; }
         
-
-
         public AppDbContext(DbContextOptions options) : base(options)
         {
-            
+            // _userManager = userManager;
         }
 
 
@@ -135,25 +150,32 @@ namespace Infozdrav.Web.Data
 
                             var maskAttr = attrs.FirstOrDefault(t => t.GetType() == typeof(MaskedAudit)) as MaskedAudit;
 
-                            var oldVal = maskAttr?.DisplayValue ?? p.OriginalValue.ToString();
-                            var newVal = maskAttr?.DisplayValue ?? p.CurrentValue.ToString();
-
-                            if (oldVal == newVal)
-                                continue;
-
-                            var audit = new Audit
+                            try
                             {
-                                User = null, // TODO
-                                EntityId = baseEntity.Id,
-                                Table = table,
-                                Timestamp = baseEntity.LastModified.Value,
-                                Type = auditType,
-                                PropertyName = prop.Name,
-                                PropertyOldValue = oldVal,
-                                PropertyNewValue = newVal,
-                            };
+                                var oldVal = maskAttr?.DisplayValue ?? p.OriginalValue?.ToString();
+                                var newVal = maskAttr?.DisplayValue ?? p.CurrentValue?.ToString();
 
-                            Audits.Add(audit);
+                                if (oldVal == newVal)
+                                    continue;
+
+                                var audit = new Audit
+                                {
+                                    User = null, // TODO
+                                    EntityId = baseEntity.Id,
+                                    Table = table,
+                                    Timestamp = baseEntity.LastModified.Value,
+                                    Type = auditType,
+                                    PropertyName = prop.Name,
+                                    PropertyOldValue = oldVal,
+                                    PropertyNewValue = newVal,
+                                };
+
+                                Audits.Add(audit);
+                            }
+                            catch (Exception)
+                            {
+                                // ignored
+                            }
                         }
                         break;
                 }

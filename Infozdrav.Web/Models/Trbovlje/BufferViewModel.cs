@@ -19,11 +19,9 @@ namespace Infozdrav.Web.Models.Trbovlje
         public int ArticleId { get; set; }
         public IEnumerable<SelectListItem> Articles { get; set; }
 
-        [DisplayName("Buffer use-by date")]
         [Required]
         public DateTime UseByDate { get; set; }
 
-        [DisplayName("Buffer preparation time")]
         [Required]
         public DateTime PreparationDate { get; set; }
 

@@ -18,7 +18,9 @@ namespace Infozdrav.Web.Data.Trbovlje
         public int? SupplierId { get; set; }
         public Supplier Supplier { get; set; }
 
-         public DateTime? ReceptionTime { get; set; }
-         public User ReceptionUser { get; set; }
+        public DateTime? ReceptionTime { get; set; }
+        public User ReceptionUser { get; set; }
+
+        public int UseByDaysLimit { get; set; }
     }
 }

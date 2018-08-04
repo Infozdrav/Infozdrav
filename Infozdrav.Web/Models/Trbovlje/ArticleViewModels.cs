@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using AutoMapper;
 using Infozdrav.Web.Data;
 using Infozdrav.Web.Data.Manage;
@@ -16,6 +17,7 @@ namespace Infozdrav.Web.Models.Trbovlje
         public int Id { get; set; }
         public int CatalogArticleId { get; set; }
         public CatalogArticle CatalogArticle { get; set; }
+        public string ReadArticleCode { get; set; }
 
         public string Lot { get; set; }
         public DateTime? UseByDate { get; set; }
@@ -34,13 +36,15 @@ namespace Infozdrav.Web.Models.Trbovlje
         public int? AnalyserId { get; set; }
         public Analyser Analyser { get; set; }
 
-        public DataFile Certificate { get; set; }
-        public DataFile SafteyList { get; set; }
+        public DataFileViewModel Certificate { get; set; }
+        public DataFileViewModel SafteyList { get; set; }
 
         public DateTime? ReceptionTime { get; set; }
         public User ReceptionUser { get; set; }
 
         public IEnumerable<ArticleUse> ArticleUses { get; set; }
+        public int ArticleUsesCount => ArticleUses.Count();
+        public IEnumerable<Lend> Lends { get; set; }
 
         public DateTime? WriteOffTime { get; set; }
         public User WriteOfUser { get; set; }
@@ -53,6 +57,8 @@ namespace Infozdrav.Web.Models.Trbovlje
         [Required]
         public int CatalogArticleId { get; set; }
         public IEnumerable<SelectListItem> CatalogArticles { get; set; }
+
+        public string ReadArticleCode { get; set; }
 
         [Required]
         public string Lot { get; set; }
@@ -111,6 +117,8 @@ namespace Infozdrav.Web.Models.Trbovlje
         public string Lot { get; set; }
         public DateTime UseByDate { get; set; }
 
+        public string ReadArticleCode { get; set; }
+
         [Display(Name = "Neuporabljenih enot")]
         public int NumberOfAvailableUnits { get; set; }
 
@@ -121,15 +129,34 @@ namespace Infozdrav.Web.Models.Trbovlje
         public WorkLocation WorkLocation { get; set; }
         public Analyser Analyser { get; set; }
 
-        public DataFile Certificate { get; set; }
-        public DataFile SafteyList { get; set; }
+        public DataFileViewModel Certificate { get; set; }
+        public DataFileViewModel SafteyList { get; set; }
 
       //  public DateTime ReceptionTime { get; set; }
+    }
+
+    public class ArticleLendGiveViewModel
+    {
+        public int Id { get; set; }
+
+        [Required]
+        public int? LaboratoryId { get; set; }
+        public IEnumerable<SelectListItem> Laboratories { get; set; }
+    }
+
+    public class ArticleLendReciveViewModel
+    {
+        public int LendId { get; set; }
+        public int ArticleId { get; set; }
+        public int UnitsLeft { get; set; }
+        [Required]
+        public int? UnitsUsed { get; set; }
     }
 
     public class ArticleEditViewModel
     {
         public int Id { get; set; }
+        public string ReadArticleCode { get; set; }
 
         public int CatalogArticleId { get; set; }
         public IEnumerable<SelectListItem> CatalogArticles { get; set; }
@@ -165,8 +192,8 @@ namespace Infozdrav.Web.Models.Trbovlje
         public int AnalyserId { get; set; }
         public IEnumerable<SelectListItem> Analysers { get; set; }
 
-        public DataFile Certificate { get; set; }
-        public DataFile SafteyList { get; set; }
+        public DataFileViewModel Certificate { get; set; }
+        public DataFileViewModel SafteyList { get; set; }
         public IFormFile CertificateUpload { get; set; }
         public IFormFile SafteyListUpload { get; set; }
     }

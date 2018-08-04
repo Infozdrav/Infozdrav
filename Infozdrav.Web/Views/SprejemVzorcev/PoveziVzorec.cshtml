@@ -1,0 +1,33 @@
+﻿@model Infozdrav.Web.Models.Labena.PoveziVzorecViewModel
+@{
+    ViewData["Title"] = "Povezi vzorec";
+}
+
+<h2>Povezi vzorec</h2>
+<br />
+<form asp-action="PoveziVzorec" method="post">
+    <div class="form-group">
+
+        <h4>Poveži vzorec z že obstoječim</h4>
+        <br />
+        <label asp-for="Vzorec">Izbrani vzorec</label>
+        <input asp-for="Vzorec" type="text"
+               data-val-required="Vzorec je potrebno izbrati."
+               class="form-control" id="Vzorec" placeholder="Izberi vzorec">
+        <span class="form-text text-danger text-muted" asp-validation-for="Vzorec"></span>
+        <br />
+        <!-- TODO: Make a dropdown -->
+
+        <ejs-grid id="grid" dataSource=@ViewBag.DataSource allowPaging="true">
+            <e-grid-columns>
+                <e-grid-column field="Oznaka" textAlign="Center" headerText="Oznaka vzorca" width="150"></e-grid-column>
+                <e-grid-column field="Id" textAlign="Center" headerText="Id vzorca" template="#actions" width="120"></e-grid-column>
+                <e-grid-column field="Datum" textAlign="Center" headerText="Datum sprejema" template="#actions" width="150"></e-grid-column>
+                <e-grid-column field="Projekt" textAlign="Center" headerText="Projekt" template="#actions" width="150"></e-grid-column>
+            </e-grid-columns>
+        </ejs-grid>
+        <br />
+        <button type="submit" class="btn btn-primary">Poveži vzorec</button>
+        <a href="@Url.Action("DodajanjeVzorca")" class="btn btn-primary">Prekliči</a>
+    </div>
+</form>

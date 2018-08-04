@@ -1,0 +1,119 @@
+﻿@model Infozdrav.Web.Models.Labena.DodajanjeAlikvotovViewModel
+@{
+    ViewData["Title"] = "Dodajanje alikvotov";
+}
+
+<h2>Dodajanje alikvotov</h2>
+
+
+<form asp-action="DodajanjeAlikvotov" method="post">
+
+    <div class="form-group">
+
+        <label asp-for="IdVzorca">Identifikacijska številka vzorca</label>
+        @Html.DropDownList("IdVzorca",
+            new SelectList(ViewBag.Samples),
+            "Izberi vzorec",
+            new {@class = "form-control"})
+
+        <label asp-for="StAlikvotov">Število alikvotov</label>
+        <input asp-for="StAlikvotov" min="1" type="number" data-val-required="Potreben je vnos števila" onchange="showTable();"
+               class="form-control" id="IdAlikvota" placeholder="Vnesi število alikvotov" required />
+        <span class="form-text text-danger text-muted" asp-validation-for="StAlikvotov"></span>
+
+        <script>
+            function showTable() {
+                console.log("Zaporedna stevilka \t Id alikvota \t Volumen \t Skatla \t Pozicija");
+                for (var zapSt = 0; zapSt < document.getElementById('IdAlikvota').value; zapSt++) {
+                    console.log(zapSt + "\t XXXX/XX XXX_" + zapSt + "\t" + document.getElementById('Volume').value
+                        + "\t" + document.getElementById('Box').value + "\t" + document.getElementById('Location').value);
+                }
+            }
+        </script>
+
+
+        <!--
+        <ejs-grid id="grid" dataSource=@ViewBag.DataSource allowPaging="true">
+            <e-grid-columns>
+                <e-grid-column field="ZapSt" textAlign="Center" headerText="Zaporedna št. alikvota" width="150"></e-grid-column>
+                <e-grid-column field="IdAlikvota" textAlign="Center" headerText="Id alikvota" template="#actions" width="120"></e-grid-column>
+                <e-grid-column field="Volume" textAlign="Center" headerText="Volumen" template="#actions" width="150"></e-grid-column>
+                <e-grid-column field="Box" textAlign="Center" headerText="Škatla" template="#actions" width="150"></e-grid-column>
+                <e-grid-column field="Location" textAlign="Center" headerText="Pozicija" template="#actions" width="150"></e-grid-column>
+            </e-grid-columns>
+        </ejs-grid>
+        -->
+
+        <label asp-for="Date">Datum alikvotiranja</label>
+        <input asp-for="Date" type="date" data-val-required="Potreben je vnos datuma"
+               class="form-control" id="Date">
+        <br />
+
+        <label asp-for="Volume">Volumen</label>
+        <input asp-for="Volume" type="number" maxlength="10" min="0" step="0.001" class="form-control"
+               id="Volume" placeholder="Vnesi volumen" />
+
+        <label>@Html.RadioButton("VolType", "ml")mL</label>
+        <label>@Html.RadioButton("VolType", "nl")nL</label>
+        <br />
+
+        <label asp-for="Notes">Opombe</label>
+        <input asp-for="Notes" type="text" class="form-control" id="Notes" placeholder="Vnesi opombe" />
+
+        <label asp-for="Project">Projekt</label>
+        @Html.DropDownList("Project",
+            new SelectList(ViewBag.Projects),
+            "Izberi projekt",
+            new {@class = "form-control"})
+        <br />
+
+        <h4>Hramba</h4>
+
+        <label asp-for="Fridge">Hladilnik</label>
+        @Html.DropDownList("Fridge",
+            new SelectList(ViewBag.Fridges),
+            "Izberi hladilnik",
+            new {@class = "form-control"})
+        <span class="form-text text-danger text-muted" asp-validation-for="Fridge"></span>
+
+        <label asp-for="Razdelek">Razdelek</label>
+        <input asp-for="Razdelek" type="number" min="0" class="form-control" id="Razdelek" placeholder="Vnesi razdelek" />
+        <br>
+        <label>Temperatura: </label>
+
+        <label>@Html.RadioButton("Temp", "sobna") sobna </label>
+        <label>@Html.RadioButton("Temp", "+4") +4 °C </label>
+        <label>@Html.RadioButton("Temp", "-20") -20 °C </label>
+        <label>@Html.RadioButton("Temp", "-80") -80 °C </label>
+        <label>@Html.RadioButton("Temp", "LN2") LN2 </label>
+        <br><br>
+
+        <label asp-for="Box">Škatla</label>
+        @Html.DropDownList("Box",
+            new SelectList(ViewBag.Boxes),
+            "Izberi škatlo",
+            new {@class = "form-control"})
+
+        <label asp-for="Location">Pozicija prvega alikvota</label>
+        <input asp-for="Location" type="text" maxlength="3"
+               class="form-control" id="Location"
+               placeholder="Vnesi prvo pozicijo, npr. A1" />
+        <br>
+
+    </div>
+
+    <!-- TODO: Če je dodajanje alikvotov iz Dodajanja vzorca, se vrni tja -->
+    <script>
+        document.getElementById("IdVzorca").required = true;
+        document.getElementById("IdAlikvota").required = true;
+        document.getElementById("Date").required = true;
+        document.getElementById("Fridge").required = true;
+        document.getElementById("Razdelek").required = true;
+        document.getElementById("Temp").required = true;
+        document.getElementById("Box").required = true;
+        document.getElementById("Location").required = true;
+    </script>
+
+    <button type="submit" class="btn btn-primary">Shrani alikvot</button>
+    <a href="@Url.Action("Index")" class="btn btn-primary">Prekliči</a>
+</form>

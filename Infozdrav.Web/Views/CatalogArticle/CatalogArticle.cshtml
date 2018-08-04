@@ -36,6 +36,13 @@
                data-val-required="The Article price field is required."
                class="form-control" id="price" placeholder="Enter article price">
         <span class="form-text text-danger text-muted" asp-validation-for="Price"></span>
+        
+        <label asp-for="UseByDaysLimit">Opozori x dni pred pretekom</label>
+        <input asp-for="UseByDaysLimit" type="number"
+               data-val-required="The UseByDaysLimit price field is required."
+               class="form-control" id="UseByDaysLimit" placeholder="Enter article price">
+        <span class="form-text text-danger text-muted" asp-validation-for="UseByDaysLimit"></span>
+
 
         <label asp-for="ManufacturerId">Proizvajalec</label>
         <br />

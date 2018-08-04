@@ -1,0 +1,47 @@
+﻿@model Infozdrav.Web.Models.Labena.SprejemVzorcevViewModel
+@{
+    ViewData["Title"] = "Sprejem";
+}
+
+<h2>Sprejem</h2>
+
+<form asp-action="Sprejem" method="post">
+
+    <div class="form-group">
+        <label asp-for="DateOfReception">Datum prejema</label>
+        <span class="form-text text-danger text-muted" asp-validation-for="DateOfReception"></span>
+        <input asp-for="DateOfReception" type="date"
+               data-val-required="Potreben je vnos datuma prejema."
+               class="form-control" id="DateOfReception">
+
+        <label asp-for="SupplierName">Naročnik</label>
+        <span class="form-text text-danger text-muted" asp-validation-for="SupplierName"></span>
+        @Html.DropDownList("SupplierName",
+            new SelectList(ViewBag.suppliers),
+            "Izberi naročnika",
+            new {@class = "form-control"})
+        <a href="@Url.Action("DodajanjeNarocnikov")" class="btn btn-primary">Dodaj naročnika</a><br />
+
+        <label asp-for="ContactName">Kontaktna oseba</label>
+        <span class="form-text text-danger text-muted" asp-validation-for="ContactName"></span>
+        @Html.DropDownList("ContactName",
+            new SelectList(ViewBag.people),
+            "Izberi ime kontaktne osebe",
+            new {@class = "form-control"})
+
+        <a href="@Url.Action("DodajanjeKontaktov")" class="btn btn-primary">Dodaj kontaktno osebo</a><br />
+
+    </div>
+
+    <script>
+        document.getElementById("DateOfReception").required = true;
+        document.getElementById("SupplierName").required = true;
+        document.getElementById("ContactName").required = true;
+    </script>
+
+    <button type="submit" class="btn btn-primary">Shrani sprejem</button>
+    <a href="@Url.Action("Index")"
+       class="btn btn-primary">
+        Prekliči
+    </a>
+</form>
