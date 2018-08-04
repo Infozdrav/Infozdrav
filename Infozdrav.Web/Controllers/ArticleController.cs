@@ -130,8 +130,10 @@ namespace Infozdrav.Web.Controllers
                     return View(_mapper.Map(GetReceptionViewModel(), article));
                 }
 
-                // TODO: Iz kataloga dobiti koliko dni mora biti artikle vsaj uporaben oz. minimanel rok uporab
-                if (article.UseByDate <= DateTime.Today)
+                var catalogArticle =
+                    _dbContext.CatalogArticles.FirstOrDefault(c => c.Id == article.CatalogArticleId);
+                if (article.UseByDate <= DateTime.Today 
+                    || (catalogArticle != null && ((DateTime)article.UseByDate - DateTime.Today).TotalDays >= catalogArticle.UseByDaysLimit))
                 {
                     if (!article.Rejected)
                     {

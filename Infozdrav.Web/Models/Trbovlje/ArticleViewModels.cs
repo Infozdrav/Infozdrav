@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using AutoMapper;
 using Infozdrav.Web.Data;
 using Infozdrav.Web.Data.Manage;
@@ -42,6 +43,7 @@ namespace Infozdrav.Web.Models.Trbovlje
         public User ReceptionUser { get; set; }
 
         public IEnumerable<ArticleUse> ArticleUses { get; set; }
+        public int ArticleUsesCount => ArticleUses.Count();
         public IEnumerable<Lend> Lends { get; set; }
 
         public DateTime? WriteOffTime { get; set; }

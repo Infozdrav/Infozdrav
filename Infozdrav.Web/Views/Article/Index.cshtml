@@ -51,11 +51,11 @@
         <e-grid-column field="Lot" minWidth="10"></e-grid-column>
         <e-grid-column field="UseByDate" headerText="Rok Uporabe" format="@dateFormat" minWidth="120"></e-grid-column>
         <e-grid-column field="ReceptionTime" headerText="Datum sprejema" format="@dateFormat" minWidth="120"></e-grid-column>
-        <e-grid-column field="ArticleUses.Count()" headerText="Št. porabljenih enot" textAlign="Center"></e-grid-column>
+        <e-grid-column field="ArticleUsesCount"  headerText="Št. porabljenih enot" textAlign="Center"></e-grid-column>
         <e-grid-column field="NumberOfUnits" headerText="Št. vseh enot" textAlign="Center"></e-grid-column>
         <e-grid-column field="DeliveryCost" headerText="Cena dostave" visible="false"></e-grid-column>
         @*<e-grid-column field="Note"></e-grid-column>*@
-        <e-grid-column field="StorageType.Name" headerText="Tip hrambe" minWidth="120"></e-grid-column>
+        <e-grid-column field="StorageType.Name" headerText="Tip hrambe" minWidth="120" visible="false"></e-grid-column>
         <e-grid-column field="StorageLocation.Name" headerText="Lokacija" minWidth="100"></e-grid-column>
         <e-grid-column field="WorkLocation.Name" headerText="Delovno mesto" minWidth="150"></e-grid-column>
         <e-grid-column field="Analyser.Name" headerText="Analizator" minWidth="130"></e-grid-column>
