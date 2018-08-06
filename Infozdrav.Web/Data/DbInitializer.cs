@@ -191,7 +191,8 @@ namespace Infozdrav.Web.Data
                 Price = "14€",
                 ArticleType = ArticleType.Kemikalija,
                 Manufacturer = _appDbContext.Manufacturers.FirstOrDefault(),
-                Supplier = _appDbContext.Suppliers.FirstOrDefault()
+                Supplier = _appDbContext.Suppliers.FirstOrDefault(),
+                UseByDaysLimit = 2
             };
 
             _appDbContext.Add(catalogArticle);

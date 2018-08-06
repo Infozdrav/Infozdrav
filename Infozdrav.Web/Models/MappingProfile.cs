@@ -28,7 +28,7 @@ namespace Infozdrav.Web.Models
             CreateMap<Trbovlje.ArticleEditViewModel, Article>(MemberList.Destination);
             CreateMap<Trbovlje.ArticleUseViewModel, ArticleUse>();
             CreateMap<Article, Trbovlje.ArticleTableViewModel>()
-                .ForMember( x => x.NumberOfAvailableUnits, opt => opt.MapFrom( s => s.NumberOfUnits - s.ArticleUses.Count()));
+                .ForMember( x => x.NumberOfAvailableUnits, opt => opt.MapFrom( s => s.NumberOfUnits - s.ArticleUses.Count() - s.Lends.Sum(l => l.UnitsUsed)));
             CreateMap<Trbovlje.ArticleReceptionViewModel, Trbovlje.ArticleReceptionViewModel>()
                 .ForMember( x=> x.ShowIgnoreBadLot, opt => opt.Ignore());
 

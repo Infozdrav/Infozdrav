@@ -6,7 +6,7 @@ namespace Infozdrav.Web.Data.Trbovlje
 {
     public class Article : Entity
     {
-        // Article reception
+        public string ReadArticleCode { get; set; }
         public int CatalogArticleId { get; set; }
         public CatalogArticle CatalogArticle { get; set; }
 
@@ -34,6 +34,7 @@ namespace Infozdrav.Web.Data.Trbovlje
         public User ReceptionUser { get; set; }
 
         public IEnumerable<ArticleUse> ArticleUses { get; set; }
+        public IEnumerable<Lend> Lends { get; set; }
 
         public DateTime? WriteOffTime { get; set; }
         public User WriteOfUser { get; set; }

@@ -8,16 +8,18 @@
 
 <h2>@ViewBag.Title</h2>
 
+<a href="@Url.Action("Trbovlje", "Dashboard")"
+   class="btn btn-primary">Nazaj na nadzorno ploščo</a>
+<br />
+
 <script id="actions" type="text/x-template">
     <a href="@Url.Action((string)ViewBag.Action)/${Id}"
        class="btn btn-primary">@ViewBag.ActionName</a>
 </script>
 
-<barcode-scanner callback="codeReadCallBack">Preberi črtno kodo</barcode-scanner>
 
 <ejs-grid id="grid" dataSource="@Model" allowPaging="true" allowResizing="true" allowGrouping="true" allowFiltering="true" allowSorting="true" allowTextWrap="true" showColumnMenu="true" dataBound="dataBound" >
     <e-grid-columns>
-        <e-grid-column field="ReadArticleCode" visible="false"></e-grid-column>
         <e-grid-column field="Id"></e-grid-column>
         <e-grid-column field="Lot" minWidth="10"></e-grid-column>
         <e-grid-column field="CatalogArticle.Name" headerText="Kataloško ime" minWidth="100"></e-grid-column>
@@ -40,13 +42,5 @@
 <script>
     function dataBound(args) {
         this.autoFitColumns();
-    }
-</script>
-
-<script>
-    function codeReadCallBack(result) {
-        var grid = document.getElementById("grid").ej2_instances[0];
-        grid.filterByColumn('ReadArticleCode', "equal", result.raw || "");
-        grid.filterByColumn('Lot', "equal", result.lot || "");
     }
 </script>

@@ -1,0 +1,25 @@
+﻿@model Infozdrav.Web.Models.Trbovlje.ArticleLendReciveViewModel
+
+@{
+    ViewBag.Title = "Re-odprema artikla";
+    Layout = "_Layout";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<form asp-action="LendRecive" method="post">
+    <div class="form-group">
+        <input type="hidden" asp-for="ArticleId" />
+        <input type="hidden" asp-for="LendId" />
+
+        <label asp-for="UnitsLeft">Št. enot na voljo</label>
+        <input asp-for="UnitsLeft" class="form-control" type="text" disabled=""/>
+
+        <label asp-for="UnitsUsed">Št. uporabljenih enot</label>
+        <input asp-for="UnitsUsed" class="form-control" type="text" />
+
+    </div>
+    <button type="submit" class="btn btn-primary">Shrani</button>
+    <a href="@Url.Action("LendReciveTable")"
+       class="btn btn-primary">Prekliči</a>
+</form>

@@ -5,11 +5,6 @@
     Layout = "_Layout";
 }
 
-<h2>Dashboard</h2>
-
-@if (User.IsInRole(Roles.Administrator))
-{
-    
+@{
+    await Html.RenderPartialAsync("Trbovlje");
 }
-
-<a href="@Url.Action("Trbovlje")">Trbovlje</a>

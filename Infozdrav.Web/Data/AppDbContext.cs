@@ -29,6 +29,7 @@ namespace Infozdrav.Web.Data
         public DbSet<StorageType> StorageTypes { get; set; }
         public DbSet<StorageLocation> StorageLocations { get; set; }
         public DbSet<Article> Articles { get; set; }
+        public DbSet<Lend> Lends { get; set; }
         public DbSet<Analyser> Analysers { get; set; }
         public DbSet<ArticleUse> ArticleUses { get; set; }
         public DbSet<Laboratory> Laboratories { get; set; }
