@@ -37,7 +37,7 @@ namespace Infozdrav.Web.Controllers
             {
                 var user = await _userManager.FindByEmailAsync(model.Email);
 
-                if (user != null || !user.Enabled)
+                if (user != null && !user.Enabled)
                 {
                     await _signInManager.SignOutAsync();
                     var result = await _signInManager.PasswordSignInAsync(user, model.Password, true, false);
