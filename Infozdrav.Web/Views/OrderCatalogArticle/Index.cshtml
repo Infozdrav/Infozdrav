@@ -1,4 +1,5 @@
-﻿@model List<Infozdrav.Web.Models.Trbovlje.OrderCatalogArticleViewModel>
+﻿@using Infozdrav.Web.Data
+@model List<Infozdrav.Web.Models.Trbovlje.OrderCatalogArticleViewModel>
 
 @{
     ViewBag.Title = "Orders";
@@ -9,10 +10,10 @@
 
 <a href="@Url.Action("ConfirmIndex")"
    class="btn btn-primary">Confirm orders</a>
-<br/>
+<br />
 <a href="@Url.Action("Order")"
    class="btn btn-primary">Order article from catalog</a>
-<br/>
+<br />
 
 <script id="actions" type="text/x-template">
     <a href="@Url.Action("OrderCatalogArticle")/${Id}"
@@ -23,9 +24,10 @@
 
 <ejs-grid id="grid" dataSource=@ViewBag.DataSource allowPaging="true">
     <e-grid-columns>
-        <e-grid-column field="Catalog article" textAlign="Right" width="120"></e-grid-column>
+        <e-grid-column field="CatalogArticleName" textAlign="Right" width="120"></e-grid-column>
         <e-grid-column field="Quantity" textAlign="Right" width="100"></e-grid-column>
-        <e-grid-column field="Urgency Degree" textAlign="Right" width="120"></e-grid-column>
+        <e-grid-column field="Price" textAlign="Right" width="100"></e-grid-column>
+        <e-grid-column field="UrgencyDegree" textAlign="Right" width="120"></e-grid-column>
         <e-grid-column field="Note" textAlign="Right" width="120"></e-grid-column>
         <e-grid-column field="Id" textAlign="Right" headerText="Actions" template="#actions" width="150"></e-grid-column>
     </e-grid-columns>

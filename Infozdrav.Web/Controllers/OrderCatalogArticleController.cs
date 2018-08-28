@@ -24,12 +24,13 @@ namespace Infozdrav.Web.Controllers
 
         public IActionResult Index()
         {
+
             ViewBag.DataSource = _mapper.Map<ICollection<OrderCatalogArticleViewModel>>(_dbContext.OrderCatalogArticles);
 
             var data = _dbContext.OrderCatalogArticles
                 .Include(s => s.CatalogArticle)
                 .ToList();
-
+            
             return View(_mapper.Map<List<Models.Trbovlje.OrderCatalogArticleViewModel>>(data));
         }
 

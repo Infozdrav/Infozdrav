@@ -2,7 +2,7 @@
 @model Infozdrav.Web.Models.Trbovlje.BufferViewModel
 
 @{
-    ViewBag.Title = "Add buffer";
+    ViewBag.Title = "Dodaj pufer";
     Layout = "_Layout";
 }
 
@@ -11,10 +11,10 @@
 <form asp-action="Add" method="post">
     <div class="form-group">
         <input type="hidden" asp-for="Id" />
-        <label asp-for="Name">Buffer name</label>
+        <label asp-for="Name">Ime pufra</label>
         <input asp-for="Name" type="text"
-               data-val-required="The Buffer name field is required."
-               class="form-control" id="name" placeholder="Enter buffer name">
+               data-val-required="Potrebno je vnesti ime pufra."
+               class="form-control" id="name" placeholder="Vnesi ime pufra">
         <span class="form-text text-danger text-muted" asp-validation-for="Name"></span>
 
         <label asp-for="ArticleId">Artikel</label>
@@ -59,7 +59,7 @@
         <br />
 
     </div>
-    <button type="submit" class="btn btn-primary">Save</button>
+    <button type="submit" class="btn btn-primary">Shrani</button>
     <a href="@Url.Action("Index")"
-       class="btn btn-primary">Back</a>
+       class="btn btn-primary">Nazaj</a>
 </form>

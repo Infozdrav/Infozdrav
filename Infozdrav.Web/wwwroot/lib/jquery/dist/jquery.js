@@ -2520,7 +2520,7 @@ compile = Sizzle.compile = function( selector, match /* Internal Use Only */ ) {
 		// Cache the compiled function
 		cached = compilerCache( selector, matcherFromGroupMatchers( elementMatchers, setMatchers ) );
 
-		// Save selector and tokenization
+		// Shrani selector and tokenization
 		cached.selector = selector;
 	}
 	return cached;
@@ -8471,7 +8471,7 @@ jQuery.extend( {
 					return this;
 				},
 
-				// Cancel the request
+				// Preklièi the request
 				abort: function( statusText ) {
 					var finalText = statusText || strAbort;
 					if ( transport ) {
@@ -8550,7 +8550,7 @@ jQuery.extend( {
 		// Determine if request has content
 		s.hasContent = !rnoContent.test( s.type );
 
-		// Save the URL in case we're toying with the If-Modified-Since
+		// Shrani the URL in case we're toying with the If-Modified-Since
 		// and/or If-None-Match header later on
 		cacheURL = s.url;
 
@@ -9324,13 +9324,13 @@ jQuery.ajaxPrefilter( "json jsonp", function( s, originalSettings, jqXHR ) {
 				window[ callbackName ] = overwritten;
 			}
 
-			// Save back as free
+			// Shrani back as free
 			if ( s[ callbackName ] ) {
 
 				// Make sure that re-using the options doesn't screw things around
 				s.jsonpCallback = originalSettings.jsonpCallback;
 
-				// Save the callback name for future use
+				// Shrani the callback name for future use
 				oldCallbacks.push( callbackName );
 			}
 
@@ -9444,7 +9444,7 @@ jQuery.fn.load = function( url, params, callback ) {
 			data: params
 		} ).done( function( responseText ) {
 
-			// Save response for use in complete callback
+			// Shrani response for use in complete callback
 			response = arguments;
 
 			self.html( selector ?
