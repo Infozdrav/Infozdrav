@@ -1,4 +1,4 @@
-﻿@model Infozdrav.Web.Models.Trbovlje.AnalyserViewModel
+﻿@model Infozdrav.Web.Models.Trbovlje.ArticleFullViewModel
 
 @{
     ViewBag.Title = "Remove analyser";
@@ -12,10 +12,10 @@
 <form asp-action="Remove" method="post">
     <div class="form-group">
         <input type="hidden" asp-for="Id" />
-        <label asp-for="Name">Analyser name</label>
-        <input asp-for="Name" type="text" class="form-control" id="name" disabled>
+        <label asp-for="Id">Article id</label>
+        <input asp-for="Id" type="text" class="form-control" id="id" disabled>
     </div>
     <button type="submit" class="btn btn-primary">Delete</button>
-    <a href="@Url.Action("Analyser")"
+    <a href="@Url.Action("Index")"
        class="btn btn-primary">Cancel</a>
 </form>

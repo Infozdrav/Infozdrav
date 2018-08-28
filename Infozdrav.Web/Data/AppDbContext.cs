@@ -1,15 +1,27 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Reflection;
+using System.Threading;
+using System.Threading.Tasks;
 using Infozdrav.Web.Abstractions;
+using Infozdrav.Web.Attributes;
+using Infozdrav.Web.Data.Manage;
+using Infozdrav.Web.Data.Trbovlje;
 using Infozdrav.Web.Helpers;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
 
 namespace Infozdrav.Web.Data
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : IdentityDbContext<User, Role, int>
     {
-        public DbSet<User> Users { get; set; }
-        public DbSet<Role> Roles { get; set; }
+        private readonly UserManager<User> _userManager;
+        public DbSet<Audit> Audits { get; set; }
+        public DbSet<Table> Tables { get; set; }
+
         public DbSet<WorkLocation> WorkLocations { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
         public DbSet<Manufacturer> Manufacturers { get; set; }
@@ -17,15 +29,32 @@ namespace Infozdrav.Web.Data
         public DbSet<StorageType> StorageTypes { get; set; }
         public DbSet<StorageLocation> StorageLocations { get; set; }
         public DbSet<Article> Articles { get; set; }
+        public DbSet<Lend> Lends { get; set; }
         public DbSet<Analyser> Analysers { get; set; }
+        public DbSet<ArticleUse> ArticleUses { get; set; }
         public DbSet<Laboratory> Laboratories { get; set; }
-        public DbSet<Buffer> Buffers { get; set; }
+        public DbSet<Trbovlje.Buffer> Buffers { get; set; }
         public DbSet<OrderCatalogArticle> OrderCatalogArticles { get; set; }
 
-
+        public DbSet<User> Users { get; set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<SampleType> SampleTypes { get; set; }
+        public DbSet<Room> Rooms { get; set; }
+        public DbSet<Fridge> Fridges { get; set; }
+        public DbSet<Subscriber> Subscribers { get; set; }
+        public DbSet<Acceptance> Acceptances { get; set; }
+        public DbSet<Sample> Samples { get; set; }
+        public DbSet<Box> Boxes { get; set; }
+        public DbSet<Results> Results { get; set; }
+        public DbSet<Processing> Processings { get; set; }
+        public DbSet<ContactPerson> ContactPeople { get; set; }
+        public DbSet<Project> Projects { get; set; }
+        
         public AppDbContext(DbContextOptions options) : base(options)
         {
+            // _userManager = userManager;
         }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -33,7 +62,139 @@ namespace Infozdrav.Web.Data
 
             var dbEntities = Assembly.GetEntryAssembly().GetAllTypesWithBase<IEntity>();
             foreach (var dbEntity in dbEntities)
-                modelBuilder.Entity(dbEntity);
+            {
+                var dbTable = modelBuilder.Entity(dbEntity);
+                if (dbEntity.GetInterfaces().Contains(typeof(IAuditEntity)))
+                {
+                    // Expression<Func<IAuditEntity, bool>> f = o => o.DeletedAt != null;
+                    dbTable.HasQueryFilter(GenerateQueryFilter(dbEntity));
+                }
+            }
+
+        }
+
+        private LambdaExpression GenerateQueryFilter(Type entityType)
+        {
+            var entityParam = Expression.Parameter(entityType, "entity");
+
+            var expr = 
+                Expression.Not(
+                Expression.Property(
+                    Expression.Property(entityParam, nameof(IAuditEntity.DeletedAt)),
+                    "HasValue")
+                );
+            return Expression.Lambda(expr, new List<ParameterExpression>{ entityParam });
+        }
+
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+        {
+            AuditData();
+            return base.SaveChangesAsync(cancellationToken);
+        }
+
+        public override int SaveChanges()
+        {
+            AuditData();
+            return base.SaveChanges();
+        }
+
+
+        public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = new CancellationToken())
+        {
+            AuditData();
+            return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+        }
+
+        private void AuditData()
+        {
+            var entities = ChangeTracker.Entries().Where(e => e.State != EntityState.Unchanged).ToList();
+            foreach (var entity in entities)
+            {
+                var baseEntity = entity.Entity as IAuditEntity;
+
+                if (baseEntity == null)
+                    continue;
+
+                var table = Tables.FirstOrDefault(t => t.Name == baseEntity.GetType().FullName);
+                if (table == null)
+                    continue;
+
+
+                baseEntity.LastModified = DateTime.UtcNow;
+
+                switch (entity.State)
+                {
+                    case EntityState.Deleted:
+                        entity.State = EntityState.Modified;
+                        baseEntity.DeletedAt = DateTime.Now;
+                        break;
+                    case EntityState.Added:
+                        baseEntity.CreatedAt = DateTime.Now;
+                        break;
+                    default:
+                        var propertyNames = entity.Metadata.GetProperties().ToList();
+                        var auditType = StateToAuditType(entity);
+                        foreach (var prop in propertyNames)
+                        {
+                            var p = entity.Property(prop.Name);
+                            var type = baseEntity.GetType().GetProperty(prop.Name);
+
+                            if (p.IsTemporary
+                                || type == null
+                                || !type.PropertyType.IsPrimitive())
+                                continue;
+
+                            var attrs = type.GetCustomAttributes(typeof(AuditAttribute), false);
+                            if (attrs.Any(t => t.GetType() == typeof(IgnoreAudit)))
+                                continue;
+
+                            var maskAttr = attrs.FirstOrDefault(t => t.GetType() == typeof(MaskedAudit)) as MaskedAudit;
+
+                            try
+                            {
+                                var oldVal = maskAttr?.DisplayValue ?? p.OriginalValue?.ToString();
+                                var newVal = maskAttr?.DisplayValue ?? p.CurrentValue?.ToString();
+
+                                if (oldVal == newVal)
+                                    continue;
+
+                                var audit = new Audit
+                                {
+                                    User = null, // TODO
+                                    EntityId = baseEntity.Id,
+                                    Table = table,
+                                    Timestamp = baseEntity.LastModified.Value,
+                                    Type = auditType,
+                                    PropertyName = prop.Name,
+                                    PropertyOldValue = oldVal,
+                                    PropertyNewValue = newVal,
+                                };
+
+                                Audits.Add(audit);
+                            }
+                            catch (Exception)
+                            {
+                                // ignored
+                            }
+                        }
+                        break;
+                }
+            }
+        }
+
+        private static AuditType StateToAuditType(Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry entity)
+        {
+            switch (entity.State)
+            {
+                case EntityState.Deleted:
+                    return AuditType.Deleted;
+                case EntityState.Modified:
+                    return AuditType.Modified;
+                case EntityState.Added:
+                    return AuditType.Added;
+            }
+
+            throw new NotImplementedException();
         }
     }
 }

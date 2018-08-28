@@ -1,0 +1,19 @@
+version: '3.4'
+
+services:
+  infozdrav.web:
+    image: ${DOCKER_REGISTRY}infozdravweb
+    build:
+      context: .
+      dockerfile: Infozdrav.Web/Dockerfile
+    environment:
+      ConnectionString: Server=db;Database=infozdrav;Uid=infozdrav;Pwd=password
+  db:
+    image: mariadb
+    container_name: db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: infozdrav
+      MYSQL_USER: infozdrav
+      MYSQL_PASSWORD: password

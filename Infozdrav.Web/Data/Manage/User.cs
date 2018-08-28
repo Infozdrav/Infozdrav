@@ -1,14 +1,19 @@
 ﻿using System.Collections.Generic;
+using Infozdrav.Web.Abstractions;
+using Microsoft.AspNetCore.Identity;
 
-namespace Infozdrav.Web.Data
+namespace Infozdrav.Web.Data.Manage
 {
-    public class User : Entity
+    public class User : IdentityUser<int>, IEntity
     {
-        public string Name { get; set; }
-        public string Email { get; set; }
+        public User()
+        {
+        }
 
-        public string Password { get; set; }
+        public string FirstName { get; set; }
 
-        public List<UserRole> Roles { get; set; }
+        public string LastName { get; set; }
+
+        public bool Enabled { get; set; }
     }
 }

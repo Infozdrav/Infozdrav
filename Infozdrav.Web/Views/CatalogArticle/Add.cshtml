@@ -1,4 +1,5 @@
 ﻿@using Infozdrav.Web.Data
+@using Infozdrav.Web.Data.Trbovlje
 @model Infozdrav.Web.Models.Trbovlje.CatalogArticleViewModel
 
 @{
@@ -17,7 +18,6 @@
                class="form-control" id="name" placeholder="Enter article name">
         <span class="form-text text-danger text-muted" asp-validation-for="Name"></span>
 
-        <input type="hidden" asp-for="Id" />
         <label asp-for="CatalogNumber">Article catalog number</label>
         <input asp-for="CatalogNumber" type="number"
                data-val-required="The Article catalog number field is required."
@@ -29,12 +29,18 @@
         @Html.DropDownListFor(m => m.ArticleType, @Html.GetEnumSelectList(typeof(ArticleType)), "Izberi tip artikla")
         <br />
 
-        <input type="hidden" asp-for="Id" />
         <label asp-for="Price">Article price</label>
         <input asp-for="Price" type="text"
                data-val-required="The Article price field is required."
                class="form-control" id="price" placeholder="Enter article price">
         <span class="form-text text-danger text-muted" asp-validation-for="Price"></span>
+        
+        <label asp-for="UseByDaysLimit">Opozori x dni pred pretekom</label>
+        <input asp-for="UseByDaysLimit" type="number"
+               data-val-required="The UseByDaysLimit price field is required."
+               class="form-control" id="UseByDaysLimit" placeholder="Enter article price">
+        <span class="form-text text-danger text-muted" asp-validation-for="UseByDaysLimit"></span>
+
 
         <label asp-for="ManufacturerId">Proizvajalec</label>
         <br />

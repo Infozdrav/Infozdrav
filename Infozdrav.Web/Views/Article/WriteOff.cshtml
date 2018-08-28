@@ -1,4 +1,5 @@
 ﻿@using Infozdrav.Web.Data
+@using Infozdrav.Web.Data.Trbovlje
 @model Infozdrav.Web.Models.Trbovlje.ArticleWriteOffViewModel
 
 @{
@@ -30,16 +31,18 @@
                class="form-control">
 
         <label asp-for="WriteOffReason">Razlog za odpis</label>
-        <br/>
-        @Html.DropDownListFor(m => m.WriteOffReason, @Html.GetEnumSelectList(typeof(WriteOffReason)), "Izberi razlog za odpis")
+        <br />
+        @Html.DropDownListFor(m => m.WriteOffReason, @Html.GetEnumSelectList<WriteOffReason>(), "Izberi razlog za odpis", new { @class = "form-control" })
+        <span class="form-text text-danger text-muted" asp-validation-for="WriteOffReason"></span>
         <br />
 
         <label asp-for="WriteOffNote">Opomba</label>
         <input asp-for="WriteOffNote" type="text"
                class="form-control">
+        <span class="form-text text-danger text-muted" asp-validation-for="WriteOffNote"></span>
     </div>
 
     <button type="submit" class="btn btn-primary">Shrani</button>
-    <a href="@Url.Action("Index")"
+    <a href="@Url.Action("WriteOffTable")"
        class="btn btn-primary">Prekliči</a>
 </form>

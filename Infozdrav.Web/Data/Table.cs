@@ -2,7 +2,7 @@
 
 namespace Infozdrav.Web.Data
 {
-    public class ModelHash : IEntity
+    public class Table : IEntity
     {
         public int Id { get; set; }
         public string Name { get; set; }

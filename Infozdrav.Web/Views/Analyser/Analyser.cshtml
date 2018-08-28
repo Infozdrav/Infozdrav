@@ -10,10 +10,10 @@
 <form asp-action="Analyser" method="post">
     <div class="form-group">
         <input type="hidden" asp-for="Id" />
-        <label asp-for="Name">Ime analizatorja</label>
+        <label asp-for="Name">Naziv analizatorja</label>
         <input asp-for="Name" type="text"
-               data-val-required=""Ime analizatorja" je obvezno."
-               class="form-control" id="name" placeholder="Vnesi ime analizatorja">
+               data-val-required="The analyser name field is required."
+               class="form-control" id="name" placeholder="Naziv analizatorja">
         <span class="form-text text-danger text-muted" asp-validation-for="Name"></span>
     </div>
     <button type="submit" class="btn btn-primary">Shrani</button>

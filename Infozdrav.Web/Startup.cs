@@ -1,17 +1,21 @@
-﻿  using System.Linq;
+using System;
+using System.Linq;
 using System.Reflection;
 using AutoMapper;
 using Infozdrav.Web.Abstractions;
 using Infozdrav.Web.Data;
+using Infozdrav.Web.Data.Manage;
 using Infozdrav.Web.Helpers;
 using Infozdrav.Web.Models;
-  using Infozdrav.Web.Settings;
-  using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-  using Microsoft.AspNetCore.Mvc;
-  using Microsoft.AspNetCore.Mvc.Infrastructure;
-  using Microsoft.AspNetCore.Mvc.Routing;
-  using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Infozdrav.Web.Settings;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -30,8 +34,52 @@ namespace Infozdrav.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
-            services.AddAutoMapper(o => o.AddProfile(new MappingProfile()));
+            services.AddAutoMapper(o =>
+            {
+                o.AddGlobalIgnore(nameof(IAuditEntity.DeletedAt));
+                o.AddGlobalIgnore(nameof(IAuditEntity.CreatedAt));
+                o.AddGlobalIgnore(nameof(IAuditEntity.LastModified));
+                o.AddProfile(new MappingProfile());
+            });
             services.AddDbContext<AppDbContext>(o => o.UseMySQL(Configuration["ConnectionString"]));
+
+            services.AddIdentity<User, Role>(options =>
+            {
+                // Lockout settings
+                options.Lockout.AllowedForNewUsers = true;
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+                options.Lockout.MaxFailedAccessAttempts = 5;
+
+                // Password settings
+                options.Password.RequireDigit = true;
+                options.Password.RequiredLength = 8;
+                options.Password.RequiredUniqueChars = 2;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireNonAlphanumeric = true;
+                options.Password.RequireUppercase = true;
+
+                // Signin settings
+                options.SignIn.RequireConfirmedEmail = false;
+                options.SignIn.RequireConfirmedPhoneNumber = false;
+
+                // User settings
+                options.User.RequireUniqueEmail = true;
+            })
+                .AddEntityFrameworkStores<AppDbContext>()
+                .AddDefaultTokenProviders();
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.AccessDeniedPath = "/Auth/AccessDenied";
+                options.Cookie.Name = "InfozdravWeb";
+                options.Cookie.HttpOnly = true;
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
+                options.LoginPath = "/Auth/Login";
+                // ReturnUrlParameter requires `using Microsoft.AspNetCore.Authentication.Cookies;`
+                options.ReturnUrlParameter = CookieAuthenticationDefaults.ReturnUrlParameter;
+                options.SlidingExpiration = true;
+            });
+
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
             services.AddScoped<IUrlHelper>(factory =>
             {
@@ -71,13 +119,14 @@ namespace Infozdrav.Web
                 app.UseExceptionHandler("/Home/Error");
             }
 
+            app.UseStatusCodePages();
             app.UseStaticFiles();
-
+            app.UseAuthentication();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=Dashboard}/{action=Index}/{id?}");
             });
         }
     }

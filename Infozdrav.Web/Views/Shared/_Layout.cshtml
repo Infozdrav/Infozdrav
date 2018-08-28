@@ -1,40 +1,80 @@
-﻿<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Infozdrav.Web</title>
+﻿@using Infozdrav.Web.Data.Manage
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<User> UserManager
+@{
+    Layout = "_Blank";
+}
+<div class="wrapper">
 
-    <environment include="Development">
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-        <link rel="stylesheet" href="https://cdn.syncfusion.com/ej2/bootstrap.css" />
-        <link rel="stylesheet" href="~/css/site.css" />
-    </environment>
-    <environment exclude="Development">
-        <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
-              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
-              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
-        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
-    </environment>
-</head>
-<body>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Infozdrav.Web</a>
+    <nav id="sidebar">
+        @*<ul id="select-company">
+            <li>Labena</li>
+            <li>Trbovlje</li>
+        </ul>*@
+        <!-- Sidebar Header -->
+        <div class="sidebar-header">
+        </div>
+
+        <div class="sidebar-user">
+            @{
+                try
+                {
+                    var u = await UserManager.GetUserAsync(User);
+                    @u.FirstName[0]@u.LastName[0]
+                }
+                catch (Exception e)
+                {
+                }
+            }
+        </div>
+
+        <!-- Sidebar Links -->
+        <ul class="list-unstyled components">
+            @*
+                @if (true) // Trbovlje
+                {
+
+                    <a href="@Url.Action("", "")" class="btn btn-primary btn-block btn-lg"></a>
+                    <li class="active"><a href="#">Home</a></li>
+                    <li><a href="#">About</a></li>
+                    <li>
+                        <!-- Link with dropdown items -->
+                        <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false">Pages</a>
+                        <ul class="collapse list-unstyled" id="homeSubmenu">
+                            <li><a href="#">Page</a></li>
+                            <li><a href="#">Page</a></li>
+                            <li><a href="#">Page</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#">Portfolio</a></li>
+                }
+            *@
+            @{
+                await Html.RenderPartialAsync("TrbovljeMenu");
+            }
+
+            <li>&nbsp;</li>
+            @if (User.IsInRole(Roles.Administrator))
+            {
+                <li><a asp-controller="Users" asp-action="Index">Users</a></li>
+            }
+            <li><a asp-controller="Auth" asp-action="Logout">Logout</a></li>
+        </ul>
+    </nav>
+    <div class="w-100">
+        <button type="button" id="sidebarCollapse" class="hidden visible-xs">
+            <i class="glyphicon glyphicon-align-left"></i>
+            Menu
+        </button>
+
+        <div id="content">
+
+            <div>
+                @RenderBody()
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Trbovlje">Trbovlje</a></li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="Labena">Labena</a></li>
                 </ul>
             </div>
         </div>
@@ -46,31 +86,3 @@
             <p>&copy; 2018 - Infozdrav.Web</p>
         </footer>
     </div>
-
-    <environment include="Development">
-        <script src="~/lib/jquery/dist/jquery.js"></script>
-        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
-        <script src="~/js/site.js" asp-append-version="true"></script>
-    </environment>
-    <environment exclude="Development">
-        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
-                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
-                asp-fallback-test="window.jQuery"
-                crossorigin="anonymous"
-                integrity="sha384-K+ctZQ+LL8q6tP7I94W+qzQsfRV2a+AfHIi9k8z8l9ggpc8X+Ytst4yBo/hH+8Fk">
-        </script>
-        <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"
-                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
-                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
-                crossorigin="anonymous"
-                integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
-        </script>
-        <script src="~/js/site.min.js" asp-append-version="true"></script>
-    </environment>
-
-    @RenderSection("Scripts", required: false)
-    @* Syncfusion Essential JS 2 Scripts *@
-    <script src="https://cdn.syncfusion.com/ej2/dist/ej2.min.js"></script>
-    <ejs-scripts></ejs-scripts>
-</body>
-</html>

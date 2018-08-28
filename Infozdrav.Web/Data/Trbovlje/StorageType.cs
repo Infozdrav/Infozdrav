@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Infozdrav.Web.Data
+﻿namespace Infozdrav.Web.Data.Trbovlje
 {
     public class StorageType : Entity
     {

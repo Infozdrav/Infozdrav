@@ -2,15 +2,19 @@
 using System.Linq;
 using AutoMapper;
 using Infozdrav.Web.Data;
-using Infozdrav.Web.Models.Manage;
+using Infozdrav.Web.Data.Manage;
+using Infozdrav.Web.Data.Trbovlje;
 using Infozdrav.Web.Models.Trbovlje;
 using Infozdrav.Web.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infozdrav.Web.Controllers
 {
+    [Authorize(Roles = Roles.Administrator + "," + Roles.ArticleCatalogEdit)]
+
     public class CatalogArticleController : Controller
     {
         private readonly AppDbContext _dbContext;
@@ -62,11 +66,6 @@ namespace Infozdrav.Web.Controllers
             };
         }
 
-        public IActionResult CatalogArticle()
-        {
-            return View(GetCatalogArticleViewModel());
-        }
-
         [HttpPost]
         public IActionResult CatalogArticle([FromForm] Models.Trbovlje.CatalogArticleViewModel catalogArticle)
         {
@@ -74,7 +73,7 @@ namespace Infozdrav.Web.Controllers
                 return View(catalogArticle);
 
             var dbCatalogArticle = _dbContext.CatalogArticles.FirstOrDefault(u => u.Id == catalogArticle.Id);
-            if (catalogArticle == null)
+            if (dbCatalogArticle == null)
                 return RedirectToAction("Index");
 
             _mapper.Map(catalogArticle, dbCatalogArticle);

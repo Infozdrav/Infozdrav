@@ -1,0 +1,39 @@
+﻿@model Infozdrav.Web.Models.Labena.ProteinResultsViewModel
+
+@{
+    ViewData["Title"] = "Rezultati";
+}
+
+<h2>Rezultati</h2>
+
+<form asp-action="RezultatiProteini" method="post">
+    <div class="form-group">
+
+        <label asp-for="Sample">Identifikacijska številka vzorca</label>
+        @Html.DropDownList("Sample",
+            new SelectList(ViewBag.Samples),
+            "Izberi vzorec",
+            new {@class = "form-control"})
+
+        <label asp-for="Concentration">Koncentracija [ng / mL]</label>
+        <input asp-for="Concentration" min="0" step="0.001" type="number" 
+               data-val-required="Potreben je vnos koncentracije" onchange="showTable();"
+               class="form-control" id="Concentration" placeholder="Vnesi koncentracijo" required/>
+        <span class="form-text text-danger text-muted" asp-validation-for="Concentration"></span>
+        
+        <label asp-for="Volume">Prostornina [mL]</label>
+        <input asp-for="Volume" min="0" step="0.001" type="number" 
+               data-val-required="Potreben je vnos prostornine" onchange="showTable();"
+               class="form-control" id="Volume" placeholder="Vnesi prostornino" required/>
+        <span class="form-text text-danger text-muted" asp-validation-for="Volume"></span>
+    </div>
+
+    <script>
+        document.getElementById("Sample").required = true;
+        document.getElementById("Concentration").required = true;
+        document.getElementById("Volume").required = true;
+    </script>
+
+    <button type="submit" class="btn btn-primary">Shrani rezultate</button>
+    <a href="@Url.Action("Index")" class="btn btn-primary">Prekliči</a>
+</form>

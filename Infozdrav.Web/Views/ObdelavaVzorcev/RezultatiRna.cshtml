@@ -1,0 +1,61 @@
+﻿@model Infozdrav.Web.Models.Labena.RnaResultsViewModel
+
+@{
+    ViewData["Title"] = "Rezultati";
+}
+
+<h2>Rezultati</h2>
+
+<form asp-action="RezultatiRna" method="post">
+    <div class="form-group">
+
+        <label asp-for="Sample">Identifikacijska številka vzorca</label>
+        @Html.DropDownList("Sample",
+            new SelectList(ViewBag.Samples),
+            "Izberi vzorec",
+            new {@class = "form-control"})
+
+        <label asp-for="Concentration">Koncentracija [ng / uL]</label>
+        <input asp-for="Concentration" min="0" step="0.001" type="number" 
+               data-val-required="Potreben je vnos koncentracije" onchange="showTable();"
+               class="form-control" id="Concentration" placeholder="Vnesi koncentracijo" required/>
+        <span class="form-text text-danger text-muted" asp-validation-for="Concentration"></span>
+        
+        <label asp-for="Volume">Prostornina [uL]</label>
+        <input asp-for="Volume" min="0" step="0.001" type="number" 
+               data-val-required="Potreben je vnos prostornine" onchange="showTable();"
+               class="form-control" id="Volume" placeholder="Vnesi prostornino" required/>
+        <span class="form-text text-danger text-muted" asp-validation-for="Volume"></span>
+        
+        
+        <label asp-for="A260A280">A260/A280</label>
+        <input asp-for="A260A280" min="0" step="0.001" type="number" 
+               data-val-required="Potreben je vnos A260A280" onchange="showTable();"
+               class="form-control" id="A260A280" placeholder="Vnesi A260/A280" required/>
+        <span class="form-text text-danger text-muted" asp-validation-for="A260A280"></span>
+
+        <label asp-for="A260A230">A260/A230</label>
+        <input asp-for="A260A230" min="0" step="0.001" type="number" 
+               data-val-required="Potreben je vnos A260A230" onchange="showTable();"
+               class="form-control" id="A260A230" placeholder="Vnesi A260/A230" required/>
+        <span class="form-text text-danger text-muted" asp-validation-for="A260A230"></span>
+        
+        <label asp-for="Rin">RIN</label>
+        <input asp-for="Rin" min="0" step="0.001" type="number" 
+               data-val-required="Potreben je vnos RIN" onchange="showTable();"
+               class="form-control" id="Rin" placeholder="Vnesi RIN" required/>
+        <span class="form-text text-danger text-muted" asp-validation-for="Rin"></span>
+    </div>
+
+    <script>
+        document.getElementById("Sample").required = true;
+        document.getElementById("Concentration").required = true;
+        document.getElementById("Volume").required = true;
+        document.getElementById("A260A230").required = true;
+        document.getElementById("A260A280").required = true;
+        document.getElementById("Rin").required = true;
+    </script>
+
+    <button type="submit" class="btn btn-primary">Shrani rezultate</button>
+    <a href="@Url.Action("Index")" class="btn btn-primary">Prekliči</a>
+</form>

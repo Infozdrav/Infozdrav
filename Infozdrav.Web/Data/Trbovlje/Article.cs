@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
+using Infozdrav.Web.Data.Manage;
 
-namespace Infozdrav.Web.Data
+namespace Infozdrav.Web.Data.Trbovlje
 {
     public class Article : Entity
     {
-        // Article reception
+        public string ReadArticleCode { get; set; }
         public int CatalogArticleId { get; set; }
-        public CatalogArticle CatalogArticle { get; set; } // TODO: Link to actuall catalog number
+        public CatalogArticle CatalogArticle { get; set; }
 
         public string Lot { get; set; }
         public DateTime? UseByDate { get; set; }
@@ -27,14 +27,14 @@ namespace Infozdrav.Web.Data
         public int? AnalyserId { get; set; }
         public Analyser Analyser { get; set; }
 
-        //public FileStream Certificate { get; set; }
-        //public FileStream SafteyList { get; set; } // TODO: Implement files
-
-        public string Certificate { get; set; }
-        public string SafteyList { get; set; }
+        public DataFile Certificate { get; set; }
+        public DataFile SafteyList { get; set; }
 
         public DateTime? ReceptionTime { get; set; }
         public User ReceptionUser { get; set; }
+
+        public IEnumerable<ArticleUse> ArticleUses { get; set; }
+        public IEnumerable<Lend> Lends { get; set; }
 
         public DateTime? WriteOffTime { get; set; }
         public User WriteOfUser { get; set; }

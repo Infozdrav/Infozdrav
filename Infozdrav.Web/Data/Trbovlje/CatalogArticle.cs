@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
+using Infozdrav.Web.Data.Manage;
 
-namespace Infozdrav.Web.Data
+namespace Infozdrav.Web.Data.Trbovlje
 {
     public class CatalogArticle : Entity
     {
@@ -18,7 +18,9 @@ namespace Infozdrav.Web.Data
         public int? SupplierId { get; set; }
         public Supplier Supplier { get; set; }
 
-         public DateTime? ReceptionTime { get; set; }
-         public User ReceptionUser { get; set; }
+        public DateTime? ReceptionTime { get; set; }
+        public User ReceptionUser { get; set; }
+
+        public int UseByDaysLimit { get; set; }
     }
 }

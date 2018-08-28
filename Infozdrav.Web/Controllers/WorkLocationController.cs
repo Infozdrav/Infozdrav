@@ -2,13 +2,18 @@
 using System.Linq;
 using AutoMapper;
 using Infozdrav.Web.Data;
+using Infozdrav.Web.Data.Manage;
+using Infozdrav.Web.Data.Trbovlje;
 using Infozdrav.Web.Models.Manage;
 using Infozdrav.Web.Models.Trbovlje;
 using Infozdrav.Web.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Infozdrav.Web.Controllers
 {
+    [Authorize(Roles = Roles.Administrator)]
+
     public class WorkLocationController : Controller
     {
         private readonly AppDbContext _dbContext;
@@ -43,7 +48,7 @@ namespace Infozdrav.Web.Controllers
                 return View(workLocation);
 
             var dbWorkLocation = _dbContext.WorkLocations.FirstOrDefault(u => u.Id == workLocation.Id);
-            if (workLocation == null)
+            if (dbWorkLocation == null)
                 return RedirectToAction("Index");
 
             _mapper.Map(workLocation, dbWorkLocation);

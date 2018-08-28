@@ -2,13 +2,18 @@
 using System.Linq;
 using AutoMapper;
 using Infozdrav.Web.Data;
+using Infozdrav.Web.Data.Manage;
+using Infozdrav.Web.Data.Trbovlje;
 using Infozdrav.Web.Models.Manage;
 using Infozdrav.Web.Models.Trbovlje;
 using Infozdrav.Web.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Infozdrav.Web.Controllers
 {
+    [Authorize(Roles = Roles.Administrator)]
+
     public class StorageLocationController : Controller
     {
         private readonly AppDbContext _dbContext;
@@ -43,7 +48,7 @@ namespace Infozdrav.Web.Controllers
                 return View(storageLocation);
 
             var dbStorageLocation = _dbContext.StorageLocations.FirstOrDefault(u => u.Id == storageLocation.Id);
-            if (storageLocation == null)
+            if (dbStorageLocation == null)
                 return RedirectToAction("Index");
 
             _mapper.Map(storageLocation, dbStorageLocation);
