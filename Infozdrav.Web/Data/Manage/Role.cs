@@ -24,5 +24,6 @@ namespace Infozdrav.Web.Data.Manage
         public const string ArticleCatalogEdit= "Urejanje kataloga artiklov";
         public const string CatalogArticleOrder = "Naročanje artiklov";
         public const string OrderConfirm = "Sprejem naročil";
+        public const string CatalogArticleConfirmOrder = "Potrjevanje artiklov";
     }
 }

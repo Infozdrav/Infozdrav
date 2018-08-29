@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Infozdrav.Web.Data;
+using Infozdrav.Web.Data.Manage;
+using Infozdrav.Web.Data.Trbovlje;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Infozdrav.Web.Models.Trbovlje
@@ -47,5 +49,23 @@ namespace Infozdrav.Web.Models.Trbovlje
         public int AnalyserId { get; set; }
         public IEnumerable<SelectListItem> Analysers { get; set; }
 
+    }
+
+    public class BufferTableViewModel
+    {
+        public string Name { get; set; }
+
+        public Article Article { get; set; }
+
+        public DateTime UseByDate { get; set; }
+        public string Note { get; set; }
+
+        public StorageType StorageType { get; set; }
+        public StorageLocation StorageLocation { get; set; }
+        public WorkLocation WorkLocation { get; set; }
+        public Analyser Analyser { get; set; }
+
+        public DateTime? PreparationTime { get; set; }
+        public User PreparationUser { get; set; }
     }
 }

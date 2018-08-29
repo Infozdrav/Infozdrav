@@ -1,26 +1,26 @@
 ﻿@model List<Infozdrav.Web.Models.Trbovlje.StorageTypeViewModel>
 
 @{
-    ViewBag.Title = "Storage types";
+    ViewBag.Title = "Tipi shranjevanja";
     Layout = "_Layout";
 }
 
 <h2>@ViewBag.Title</h2>
 
 <a href="@Url.Action("Add")"
-   class="btn btn-primary">Add storage type</a>
+   class="btn btn-primary">Dodaj tip shranjevanja</a>
 <br/>
 
 <script id="actions" type="text/x-template">
     <a href="@Url.Action("StorageType")/${Id}"
-       class="btn btn-primary">Edit</a>
+       class="btn btn-primary">Uredi</a>
     <a href="@Url.Action("Remove")/${Id}"
-       class="btn btn-primary">Delete</a>
+       class="btn btn-primary">Odstrani</a>
 </script>
 
 <ejs-grid id="grid" dataSource=@ViewBag.DataSource allowPaging="true">
     <e-grid-columns>
-        <e-grid-column field="Name" textAlign="Right" width="120"></e-grid-column>
+        <e-grid-column field="Name" headerText="Tip shranjevanja" textAlign="Right" width="120"></e-grid-column>
         <e-grid-column field="Id" textAlign="Right" headerText="Actions" template="#actions" width="150"></e-grid-column>
     </e-grid-columns>
 </ejs-grid>

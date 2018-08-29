@@ -133,7 +133,7 @@ namespace Infozdrav.Web.Controllers
                 var catalogArticle =
                     _dbContext.CatalogArticles.FirstOrDefault(c => c.Id == article.CatalogArticleId);
                 if (article.UseByDate <= DateTime.Today 
-                    || (catalogArticle != null && ((DateTime)article.UseByDate - DateTime.Today).TotalDays >= catalogArticle.UseByDaysLimit))
+                    || (catalogArticle != null && ((DateTime)article.UseByDate - DateTime.Today).TotalDays <= catalogArticle.UseByDaysLimit))
                 {
                     if (!article.Rejected)
                     {

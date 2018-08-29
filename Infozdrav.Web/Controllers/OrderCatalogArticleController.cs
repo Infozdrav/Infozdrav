@@ -124,6 +124,7 @@ namespace Infozdrav.Web.Controllers
             return RedirectToAction("Index");
         }
 
+        [Authorize(Roles = Roles.Administrator + "," + Roles.CatalogArticleConfirmOrder)]
         public IActionResult ConfirmIndex()
         {
             ViewBag.DataSource = _mapper.Map<ICollection<OrderCatalogArticleViewModel>>(_dbContext.OrderCatalogArticles);
@@ -135,11 +136,13 @@ namespace Infozdrav.Web.Controllers
             return View(_mapper.Map<List<Models.Trbovlje.OrderCatalogArticleViewModel>>(data).First());
         }
 
+        [Authorize(Roles = Roles.Administrator + "," + Roles.CatalogArticleConfirmOrder)]
         public IActionResult Confirm()
         {
             return View(GetOrderCatalogArticleViewModel());
         }
 
+        [Authorize(Roles = Roles.Administrator + "," + Roles.CatalogArticleConfirmOrder)]
         [HttpPost]
         public IActionResult Confirm([FromForm] Models.Trbovlje.OrderCatalogArticleViewModel orderCatalogArticle)
         {

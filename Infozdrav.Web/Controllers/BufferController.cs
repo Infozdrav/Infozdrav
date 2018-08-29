@@ -37,7 +37,7 @@ namespace Infozdrav.Web.Controllers
                 .Include(e => e.Analyser)
                 .ToList();
 
-            return View(_mapper.Map<List<Models.Trbovlje.BufferViewModel>>(data));
+            return View(_mapper.Map<List<Models.Trbovlje.BufferTableViewModel>>(data));
         }
 
         public IActionResult Buffer(int id)

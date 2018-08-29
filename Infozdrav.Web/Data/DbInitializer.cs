@@ -169,13 +169,24 @@ namespace Infozdrav.Web.Data
 
             var manufacturer = new Manufacturer
             {
+                IdCode = "MD-231",
                 Name = "Proizvajalec 1",
                 Address = "Ljubljana, Slovenija",
                 Email = "proizvajalec@proizvajalec.si",
                 Phone = "049876543",
             };
 
+            var manufacturerTwo = new Manufacturer
+            {
+                IdCode = "",
+                Name = "Proizvajalec 2",
+                Address = "Ljubljana, Slovenija",
+                Email = "proizvajalec@proizvajalec.si",
+                Phone = "0493216543",
+            };
+
             _appDbContext.Add(manufacturer);
+            _appDbContext.Add(manufacturerTwo);
             _appDbContext.SaveChanges();
         }
 

@@ -3,7 +3,7 @@
 @model Infozdrav.Web.Models.Trbovlje.OrderCatalogArticleViewModel
 
 @{
-    ViewBag.Title = "Order article from catalog";
+    ViewBag.Title = "Naroči artikel iz kataloga";
     Layout = "_Layout";
 }
 
@@ -18,10 +18,10 @@
         <br />
 
         <input type="hidden" asp-for="Id" />
-        <label asp-for="Quantity">Quantity</label>
+        <label asp-for="Quantity">Količina</label>
         <input asp-for="Quantity" type="text"
-               data-val-required="The Quantity field is required."
-               class="form-control" id="quantity" placeholder="Enter quantity">
+               data-val-required="Potrebno je vnesti količino."
+               class="form-control" id="quantity" placeholder="Vnesi količino">
         <span class="form-text text-danger text-muted" asp-validation-for="Quantity"></span>
 
         <label asp-for="UrgencyDegree">Stopnja Nujnosti</label>
@@ -36,5 +36,5 @@
     </div>
     <button type="submit" class="btn btn-primary">Shrani</button>
     <a href="@Url.Action("Index")"
-       class="btn btn-primary">Back</a>
+       class="btn btn-primary">Prekliči</a>
 </form>

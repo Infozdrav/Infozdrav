@@ -22,13 +22,13 @@
 
 <ejs-grid id="grid" dataSource=@Model allowPaging="true" showColumnMenu="true">
     <e-grid-columns>
-        <e-grid-column field="Name" headerText="Ime" textAlign="Right" width="100"></e-grid-column>
+        <e-grid-column field="Name" headerText="Naziv" textAlign="Right" width="100"></e-grid-column>
         <e-grid-column field="UseByDate" headerText="Rok Uporabe" format="@dateFormat" width="50"></e-grid-column>
         <e-grid-column field="Note" headerText="Opombe" textAlign="Right" width="120"></e-grid-column>
-        <e-grid-column field="StorageType" headerText="Način shranjevanja" textAlign="Right" width="120"></e-grid-column>
-        <e-grid-column field="StorageLocation" headerText="Mesto shranjevanja" textAlign="Right" width="120"></e-grid-column>
-        <e-grid-column field="WorkLocation" headerText="Delovna lokacija" textAlign="Right" width="120"></e-grid-column>
-        <e-grid-column field="Analyser" headerText="Analizator" textAlign="Right" width="120"></e-grid-column>
+        <e-grid-column field="StorageType.Name" headerText="Način shranjevanja" textAlign="Right" width="120"></e-grid-column>
+        <e-grid-column field="StorageLocation.Name" headerText="Mesto shranjevanja" textAlign="Right" width="120"></e-grid-column>
+        <e-grid-column field="WorkLocation.Name" headerText="Delovna lokacija" textAlign="Right" width="120"></e-grid-column>
+        <e-grid-column field="Analyser.Name" headerText="Analizator" textAlign="Right" width="120"></e-grid-column>
         <e-grid-column field="Id" textAlign="Right" headerText="Actions" template="#actions" width="150"></e-grid-column>
     </e-grid-columns>
 </ejs-grid>

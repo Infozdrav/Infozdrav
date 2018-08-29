@@ -8,20 +8,23 @@ namespace Infozdrav.Web.Models.Trbovlje
     public class SupplierViewModel
     {
         public int Id { get; set; }
-    
-        [DisplayName("Supplier name")]
+
+        [DisplayName("Šifra dobavitelja")]
+        public string IdCode { get; set; }
+
+        [DisplayName("Naziv dobavitelja")]
         [Required]
         public string Name { get; set; }
 
-        [DisplayName("Supplier address")]
+        [DisplayName("Naslov dobavitelja")]
         [Required]
         public string Address { get; set; }
 
-        [DisplayName("Supplier email")]
+        [DisplayName("E-pošta dobavitelja")]
         [Required]
         public string Email { get; set; }
 
-        [DisplayName("Supplier phone number")]
+        [DisplayName("Telefonska številka dobavitelja")]
         [Required]
         public string Phone { get; set; }
     }
