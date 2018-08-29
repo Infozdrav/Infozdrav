@@ -1,31 +1,31 @@
 ﻿@model List<Infozdrav.Web.Models.Trbovlje.CatalogArticleViewModel>
 
 @{
-    ViewBag.Title = "Articles";
+    ViewBag.Title = "Katalog artiklov";
     Layout = "_Layout";
 }
 
 <h2>@ViewBag.Title</h2>
 
 <a href="@Url.Action("Add")"
-   class="btn btn-primary">Add article to catalog</a>
+   class="btn btn-primary">Dodaj artikel v katalog</a>
 <br/>
 
 <script id="actions" type="text/x-template">
     <a href="@Url.Action("CatalogArticle")/${Id}"
-       class="btn btn-primary">Edit</a>
+       class="btn btn-primary">Uredi</a>
     <a href="@Url.Action("Remove")/${Id}"
-       class="btn btn-primary">Delete</a>
+       class="btn btn-primary">Odstrani</a>
 </script>
 
 <ejs-grid id="grid" dataSource=@ViewBag.DataSource allowPaging="true">
     <e-grid-columns>
-        <e-grid-column field="Name" textAlign="Right" width="120"></e-grid-column>
-        <e-grid-column field="Catalog number" textAlign="Right" width="120"></e-grid-column>
-        <e-grid-column field="Price" textAlign="Right" width="100"></e-grid-column>
-        <e-grid-column field="Type" textAlign="Right" width="120"></e-grid-column>
-        <e-grid-column field="ManufacturerName" textAlign="Right" width="120"></e-grid-column>
-        <e-grid-column field="SupplierName" textAlign="Right" width="120"></e-grid-column>
+        <e-grid-column field="Name" headerText="Naziv" textAlign="Right" width="120"></e-grid-column>
+        <e-grid-column field="Catalog number" headerText="Kataloška številka" textAlign="Right" width="120"></e-grid-column>
+        <e-grid-column field="Price" headerText="Cena (€)" textAlign="Right" width="100"></e-grid-column>
+        <e-grid-column field="Type" headerText="Tip artikla" textAlign="Right" width="120"></e-grid-column>
+        <e-grid-column field="ManufacturerName" headerText="Proizvajalec" textAlign="Right" width="120"></e-grid-column>
+        <e-grid-column field="SupplierName" headerText="Dobavitelj" textAlign="Right" width="120"></e-grid-column>
         <e-grid-column field="Id" textAlign="Right" headerText="Actions" template="#actions" width="150"></e-grid-column>
     </e-grid-columns>
 </ejs-grid>

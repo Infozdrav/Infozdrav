@@ -1,7 +1,7 @@
 ﻿@model Infozdrav.Web.Models.Trbovlje.StorageTypeViewModel
 
 @{
-    ViewBag.Title = "Storage types";
+    ViewBag.Title = "Tipi shranjevanja";
     Layout = "_Layout";
 }
 
@@ -10,10 +10,10 @@
 <form asp-action="StorageType" method="post">
     <div class="form-group">
         <input type="hidden" asp-for="Id" />
-        <label asp-for="Name">Storage type</label>
+        <label asp-for="Name">Tip shranjevanja</label>
         <input asp-for="Name" type="text"
-               data-val-required="The storage type field is required."
-               class="form-control" id="name" placeholder="Enter storage type">
+               data-val-required="Potrebno je vnesti naziv tipa shranjevanja."
+               class="form-control" id="name" placeholder="Vnesi naziv tipa shranjevanja">
         <span class="form-text text-danger text-muted" asp-validation-for="Name"></span>
     </div>
     <button type="submit" class="btn btn-primary">Shrani</button>

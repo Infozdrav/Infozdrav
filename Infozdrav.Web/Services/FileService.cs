@@ -26,7 +26,7 @@ namespace Infozdrav.Web.Services
         }
 
 
-        public DataFile ShraniFile(IFormFile file)
+        public DataFile SaveFile(IFormFile file)
         {
             if (file == null)
                 return null;

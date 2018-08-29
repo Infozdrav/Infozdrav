@@ -1,7 +1,7 @@
 ﻿@model Infozdrav.Web.Models.Trbovlje.LaboratoryViewModel
 
 @{
-    ViewBag.Title = "Add laboratory";
+    ViewBag.Title = "Dodaj laboratorij";
     Layout = "_Layout";
 }
 
@@ -9,10 +9,10 @@
 
 <form asp-action="Add" method="post">
     <div class="form-group">
-        <label asp-for="Name">Laboratory name</label>
+        <label asp-for="Name">Naziv laboratorija</label>
         <input asp-for="Name" type="text"
-               data-val-required="The Laboratory name field is required."
-               class="form-control" id="name" placeholder="Enter laboratory name">
+               data-val-required="Potrebno je vnesti naziv laboratorija"
+               class="form-control" id="name" placeholder="Vnesi naziv laboratorija">
         <span class="form-text text-danger text-muted" asp-validation-for="Name"></span>
     </div>
     <button type="submit" class="btn btn-primary">Shrani</button>

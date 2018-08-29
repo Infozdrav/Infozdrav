@@ -3,7 +3,7 @@
 @model Infozdrav.Web.Models.Trbovlje.CatalogArticleViewModel
 
 @{
-    ViewBag.Title = "Add article in catalog";
+    ViewBag.Title = "Dodaj artikel v katalog";
     Layout = "_Layout";
 }
 
@@ -12,16 +12,16 @@
 <form asp-action="Add" method="post">
     <div class="form-group">
         <input type="hidden" asp-for="Id" />
-        <label asp-for="Name">Article name</label>
+        <label asp-for="Name">Naziv artikla</label>
         <input asp-for="Name" type="text"
-               data-val-required="The Article name field is required."
-               class="form-control" id="name" placeholder="Enter article name">
+               data-val-required="Potrebno je vnesti naziv artikla."
+               class="form-control" id="name" placeholder="Vnesi naziv artikla">
         <span class="form-text text-danger text-muted" asp-validation-for="Name"></span>
 
-        <label asp-for="CatalogNumber">Article catalog number</label>
+        <label asp-for="CatalogNumber">Kataloška številka artikla</label>
         <input asp-for="CatalogNumber" type="number"
-               data-val-required="The Article catalog number field is required."
-               class="form-control" id="catalogNumber" placeholder="Enter catalog number">
+               data-val-required="Potrebno je vnesti kataloško številko artikla"
+               class="form-control" id="catalogNumber" placeholder="Vnesi kataloško številko artikla">
         <span class="form-text text-danger text-muted" asp-validation-for="CatalogNumber"></span>
 
         <label asp-for="ArticleType">Tip artikla</label>
@@ -29,16 +29,16 @@
         @Html.DropDownListFor(m => m.ArticleType, @Html.GetEnumSelectList(typeof(ArticleType)), "Izberi tip artikla")
         <br />
 
-        <label asp-for="Price">Article price</label>
+        <label asp-for="Price">Cena artikla</label>
         <input asp-for="Price" type="text"
-               data-val-required="The Article price field is required."
-               class="form-control" id="price" placeholder="Enter article price">
+               data-val-required="Potrebno je vnesti ceno artikla."
+               class="form-control" id="price" placeholder="Vnesi ceno artikla">
         <span class="form-text text-danger text-muted" asp-validation-for="Price"></span>
         
-        <label asp-for="UseByDaysLimit">Opozori x dni pred pretekom</label>
+        <label asp-for="UseByDaysLimit">Opozori x dni pred pretekom roka uporabe</label>
         <input asp-for="UseByDaysLimit" type="number"
-               data-val-required="The UseByDaysLimit price field is required."
-               class="form-control" id="UseByDaysLimit" placeholder="Enter article price">
+               data-val-required="Potrebno je vnesti opozorilo pred pretekom roka uporabe."
+               class="form-control" id="UseByDaysLimit" placeholder="Vnesi opozorilo pred pretekom roka uporabe">
         <span class="form-text text-danger text-muted" asp-validation-for="UseByDaysLimit"></span>
 
 
@@ -57,5 +57,5 @@
     </div>
     <button type="submit" class="btn btn-primary">Shrani</button>
     <a href="@Url.Action("Index")"
-       class="btn btn-primary">Back</a>
+       class="btn btn-primary">Nazaj</a>
 </form>

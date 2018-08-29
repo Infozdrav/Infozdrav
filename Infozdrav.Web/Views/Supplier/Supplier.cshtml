@@ -1,7 +1,7 @@
 ﻿@model Infozdrav.Web.Models.Trbovlje.SupplierViewModel
 
 @{
-    ViewBag.Title = "Suppliers";
+    ViewBag.Title = "Dobavitelji";
     Layout = "_Layout";
 }
 
@@ -9,36 +9,32 @@
 
 <form asp-action="Supplier" method="post">
     <div class="form-group">
-        <input type="hidden" asp-for="Id" />
-        <label asp-for="Name">Supplier name</label>
+        <label asp-for="Name">Ime dobavitelja</label>
         <input asp-for="Name" type="text"
-               data-val-required="The Supplier name field is required."
-               class="form-control" id="name" placeholder="Enter supplier name">
+               data-val-required="Potrebno je vnesti ime dobavitelja."
+               class="form-control" id="name" placeholder="Vnesi ime dobavitelja">
         <span class="form-text text-danger text-muted" asp-validation-for="Name"></span>
     </div>
     <div class="form-group">
-        <input type="hidden" asp-for="Id" />
-        <label asp-for="Address">Supplier address</label>
+        <label asp-for="Address">Naslov</label>
         <input asp-for="Address" type="text"
-               data-val-required="The Supplier address field is required."
-               class="form-control" id="address" placeholder="Enter supplier address">
+               data-val-required="Potrebno je vnesti naslov dobavitelja."
+               class="form-control" id="address" placeholder="Vnesi naslov dobavitelja">
         <span class="form-text text-danger text-muted" asp-validation-for="Address"></span>
     </div>
     <div class="form-group">
-        <input type="hidden" asp-for="Id" />
-        <label asp-for="Email">Supplier email</label>
+        <label asp-for="Email">E-pošta</label>
         <input asp-for="Email" type="text"
                data-val-email="The Supplier email field is not a valid email address."
-               data-val-required="The Supplier email field is required."
-               class="form-control" id="email" placeholder="Enter supplier email">
+               data-val-required="Potrebno je vnesti e-poštni naslov dobavitelja."
+               class="form-control" id="email" placeholder="Vnesi e-poštni naslov dobavitelja">
         <span class="form-text text-danger text-muted" asp-validation-for="Email"></span>
     </div>
     <div class="form-group">
-        <input type="hidden" asp-for="Id" />
-        <label asp-for="Phone">Supplier phone</label>
+        <label asp-for="Phone">Telefonska številka</label>
         <input asp-for="Phone" type="text"
-               data-val-required="The Supplier phone field is required."
-               class="form-control" id="phone" placeholder="Enter supplier phone">
+               data-val-required="Potrebno je vnesti telefonsko številko dobavitelja."
+               class="form-control" id="phone" placeholder="Vnesi telefonsko številko dobavitelja">
         <span class="form-text text-danger text-muted" asp-validation-for="Phone"></span>
     </div>
     <button type="submit" class="btn btn-primary">Shrani</button>

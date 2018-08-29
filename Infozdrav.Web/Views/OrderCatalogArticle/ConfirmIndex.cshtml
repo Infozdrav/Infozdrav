@@ -2,7 +2,7 @@
 @model Infozdrav.Web.Models.Trbovlje.OrderCatalogArticleViewModel
 
 @{
-    ViewBag.Title = "Confirm orders";
+    ViewBag.Title = "Potrdi naročila";
     Layout = "_Layout";
 }
 
@@ -10,20 +10,20 @@
 
 <script id="actions" type="text/x-template">
     <a href="@Url.Action("Confirm")/${Id}"
-       class="btn btn-primary">Confirm</a>
+       class="btn btn-primary">Potrdi</a>
     <a href="@Url.Action("OrderCatalogArticle")/${Id}"
-       class="btn btn-primary">Edit</a>
+       class="btn btn-primary">Uredi</a>
     <a href="@Url.Action("Remove")/${Id}"
-       class="btn btn-primary">Delete</a>
+       class="btn btn-primary">Odstrani</a>
 
 </script>
 
 <ejs-grid id="grid" dataSource=@ViewBag.DataSource allowPaging="true">
     <e-grid-columns>
-        <e-grid-column field="Catalog article" textAlign="Right" width="120"></e-grid-column>
-        <e-grid-column field="Quantity" textAlign="Right" width="100"></e-grid-column>
-        <e-grid-column field="Urgency Degree" textAlign="Right" width="120"></e-grid-column>
-        <e-grid-column field="Note" textAlign="Right" width="120"></e-grid-column>
+        <e-grid-column field="Catalog article" headerText="Artikel" textAlign="Right" width="120"></e-grid-column>
+        <e-grid-column field="Quantity" headerText="Količina" textAlign="Right" width="100"></e-grid-column>
+        <e-grid-column field="Urgency Degree" headerText="Stopnja nujnosti" textAlign="Right" width="120"></e-grid-column>
+        <e-grid-column field="Note" headerText="Opomba" textAlign="Right" width="120"></e-grid-column>
         <e-grid-column field="Id" textAlign="Right" headerText="Actions" template="#actions" width="150"></e-grid-column>
     </e-grid-columns>
 </ejs-grid>

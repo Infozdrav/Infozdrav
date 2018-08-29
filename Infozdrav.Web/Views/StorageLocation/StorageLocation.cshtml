@@ -1,7 +1,7 @@
 ﻿@model Infozdrav.Web.Models.Trbovlje.StorageLocationViewModel
 
 @{
-    ViewBag.Title = "Storage locations";
+    ViewBag.Title = "Mesta shranjevanja";
     Layout = "_Layout";
 }
 
@@ -10,10 +10,10 @@
 <form asp-action="StorageLocation" method="post">
     <div class="form-group">
         <input type="hidden" asp-for="Id" />
-        <label asp-for="Name">Workplace name</label>
+        <label asp-for="Name">Mesto shranjevanja</label>
         <input asp-for="Name" type="text"
-               data-val-required="The storage name field is required."
-               class="form-control" id="name" placeholder="Enter storage location name">
+               data-val-required="Potrebno je vnesti naziv mesta shranjevanja."
+               class="form-control" id="name" placeholder="Vnesi naziv mesta shranjevanja">
         <span class="form-text text-danger text-muted" asp-validation-for="Name"></span>
     </div>
     <button type="submit" class="btn btn-primary">Shrani</button>
