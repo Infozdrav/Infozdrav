@@ -42,7 +42,7 @@ namespace Infozdrav.Web.Data
             InitStorageLocations();
             InitAnalysers();
             InitWorkLocations();
-            // InitArticle();
+            InitArticle();
             InitLaboratories();
             InitBuffer();
             InitOrderCatalogArticle();

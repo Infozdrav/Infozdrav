@@ -13,7 +13,7 @@ namespace Infozdrav.Web.Models.Trbovlje
     {
         public int Id { get; set; }
 
-        [DisplayName("Buffer name")]
+        [DisplayName("Ime pufra")]
         [Required]
         public string Name { get; set; }
 
