@@ -28,14 +28,14 @@ namespace Infozdrav.Web.Controllers
 
         public IActionResult Index()
         {
-            ViewBag.DataSource = _mapper.Map<ICollection<CatalogArticleViewModel>>(_dbContext.CatalogArticles);
+            ViewBag.DataSource = _mapper.Map<ICollection<CatalogArticleFullViewModel>>(_dbContext.CatalogArticles);
 
             var data = _dbContext.CatalogArticles
                 .Include(s => s.Manufacturer)
                 .Include(p => p.Supplier)
                 .ToList();
 
-            return View(_mapper.Map<List<Models.Trbovlje.CatalogArticleViewModel>>(data.ToList()));
+            return View(_mapper.Map<List<Models.Trbovlje.CatalogArticleFullViewModel>>(data.ToList()));
         }
 
         public IActionResult CatalogArticle(int id)
@@ -44,7 +44,7 @@ namespace Infozdrav.Web.Controllers
             if (catalogArticle == null)
                 return RedirectToAction("Index");
 
-            return base.View(_mapper.Map<Models.Trbovlje.CatalogArticleViewModel>(catalogArticle));
+            return base.View(_mapper.Map<Models.Trbovlje.CatalogArticleFullViewModel>(catalogArticle));
         }
 
         private IEnumerable<SelectListItem> GetManufacturers()
@@ -57,9 +57,9 @@ namespace Infozdrav.Web.Controllers
             return new SelectList(_dbContext.Suppliers, "Id", "Name");
         }
 
-        private CatalogArticleViewModel GetCatalogArticleViewModel()
+        private CatalogArticleAddViewModel GetCatalogArticleAddViewModel()
         {
-            return new CatalogArticleViewModel
+            return new CatalogArticleAddViewModel
             {
                 Manufacturers = GetManufacturers(),
                 Suppliers = GetSuppliers()
@@ -67,7 +67,7 @@ namespace Infozdrav.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult CatalogArticle([FromForm] Models.Trbovlje.CatalogArticleViewModel catalogArticle)
+        public IActionResult CatalogArticle([FromForm] Models.Trbovlje.CatalogArticleFullViewModel catalogArticle)
         {
             if (!ModelState.IsValid)
                 return View(catalogArticle);
@@ -85,11 +85,11 @@ namespace Infozdrav.Web.Controllers
 
         public IActionResult Add()
         {
-            return View(GetCatalogArticleViewModel());
+            return View(GetCatalogArticleAddViewModel());
         }
 
         [HttpPost]
-        public IActionResult Add([FromForm] Models.Trbovlje.CatalogArticleViewModel catalogArticle)
+        public IActionResult Add([FromForm] Models.Trbovlje.CatalogArticleAddViewModel catalogArticle)
         {
             if (!ModelState.IsValid)
                 return View(catalogArticle);
@@ -109,11 +109,11 @@ namespace Infozdrav.Web.Controllers
             if (dbCatalogArticle == null)
                 RedirectToAction("Index");
 
-            return View(_mapper.Map<CatalogArticleViewModel>(dbCatalogArticle));
+            return View(_mapper.Map<CatalogArticleFullViewModel>(dbCatalogArticle));
         }
 
         [HttpPost]
-        public IActionResult Remove([FromForm] CatalogArticleViewModel viewModel)
+        public IActionResult Remove([FromForm] CatalogArticleFullViewModel viewModel)
         {
             var dbCatalogArticle = _dbContext.CatalogArticles.FirstOrDefault(l => l.Id == viewModel.Id);
             if (dbCatalogArticle != null)
@@ -124,6 +124,40 @@ namespace Infozdrav.Web.Controllers
             return RedirectToAction("Index");
         }
 
+        [Authorize(Roles = Roles.Administrator)]
+        public IActionResult Edit(int id)
+        {
+            var dbCatalogArticle = _dbContext.CatalogArticles
+                .Include(s => s.Manufacturer)
+                .Include(s => s.Supplier)
+                .FirstOrDefault(l => l.Id == id);
+            if (dbCatalogArticle == null)
+                RedirectToAction("Index");
 
+            var viewModel = new CatalogArticleEditViewModel
+            {
+                Manufacturers = GetManufacturers(),
+                Suppliers = GetSuppliers()
+            };
+
+            return View(_mapper.Map(dbCatalogArticle, viewModel));
+        }
+
+        [Authorize(Roles = Roles.Administrator)]
+        [HttpPost]
+        public IActionResult Edit([FromForm] CatalogArticleEditViewModel viewModel)
+        {
+            var dbCatalogArticle = _dbContext.CatalogArticles.FirstOrDefault(l => l.Id == viewModel.Id);
+            if (dbCatalogArticle == null)
+                RedirectToAction("Index");
+
+            if (!ModelState.IsValid)
+                return View(viewModel);
+
+            _mapper.Map(viewModel, dbCatalogArticle);
+
+            _dbContext.SaveChanges();
+            return RedirectToAction("Index");
+        }
     }
 }

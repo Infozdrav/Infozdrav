@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
 using Infozdrav.Web.Data;
 using Infozdrav.Web.Data.Manage;
@@ -8,7 +10,9 @@ using Infozdrav.Web.Models.Manage;
 using Infozdrav.Web.Models.Trbovlje;
 using Infozdrav.Web.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,43 +23,50 @@ namespace Infozdrav.Web.Controllers
     public class OrderCatalogArticleController : Controller
     {
         private readonly AppDbContext _dbContext;
+        private readonly UserManager<User> _userManager;
         private readonly IMapper _mapper;
+        private readonly FileService _fileService;
 
-        public OrderCatalogArticleController(AppDbContext dbContext, IMapper mapper, UserService userService)
+        public OrderCatalogArticleController(AppDbContext dbContext, IMapper mapper, UserService userService,
+            UserManager<User> userManager, FileService fileService)
         {
             _dbContext = dbContext;
+            _userManager = userManager;
             _mapper = mapper;
+            _fileService = fileService;
         }
-
+        
+        [Authorize(Roles = Roles.Administrator + "," + Roles.CatalogArticleOrder)]
         public IActionResult Index()
         {
-
-            ViewBag.DataSource = _mapper.Map<ICollection<OrderCatalogArticleViewModel>>(_dbContext.OrderCatalogArticles);
-
             var data = _dbContext.OrderCatalogArticles
                 .Include(s => s.CatalogArticle)
                 .ToList();
-            
-            return View(_mapper.Map<List<Models.Trbovlje.OrderCatalogArticleViewModel>>(data));
+
+            return View(_mapper.Map<List<Models.Trbovlje.OrderCatalogArticleFullViewModel>>(data));
         }
 
-        public IActionResult OrderCatalogArticle(int id)
+        [Authorize(Roles = Roles.Administrator + "," + Roles.CatalogArticleOrder)]
+        public IActionResult Edit(int id)
         {
-            var orderCatalogArticle = _dbContext.OrderCatalogArticles.FirstOrDefault(u => u.Id == id);
-            if (orderCatalogArticle == null)
+            var article = _dbContext.OrderCatalogArticles
+                .Include(s => s.CatalogArticle)
+                .FirstOrDefault(u => u.Id == id);
+
+            if (article == null)
                 return RedirectToAction("Index");
 
-            return base.View(_mapper.Map<Models.Trbovlje.OrderCatalogArticleViewModel>(orderCatalogArticle));
+            return base.View(_mapper.Map<Models.Trbovlje.OrderCatalogArticleFullViewModel>(article));
         }
 
         private IEnumerable<SelectListItem> GetCatalogArticles()
         {
-            return new SelectList(_dbContext.CatalogArticles, "Id", "Name");
+            return new SelectList(_dbContext.CatalogArticles, "Id", "Name", "Price");
         }
 
-        private OrderCatalogArticleViewModel GetOrderCatalogArticleViewModel()
+        private OrderCatalogArticleFullViewModel GetOrderCatalogArticleFullViewModel()
         {
-            return new OrderCatalogArticleViewModel
+            return new OrderCatalogArticleFullViewModel
             {
                 CatalogArticles = GetCatalogArticles()
             };
@@ -63,33 +74,49 @@ namespace Infozdrav.Web.Controllers
 
         public IActionResult OrderCatalogArticle()
         {
-            return View(GetOrderCatalogArticleViewModel());
+            return View(GetOrderCatalogArticleFullViewModel());
         }
 
+        [Authorize(Roles = Roles.Administrator + "," + Roles.CatalogArticleOrder)]
         [HttpPost]
-        public IActionResult OrderCatalogArticle([FromForm] Models.Trbovlje.OrderCatalogArticleViewModel orderCatalogArticle)
-        {
+          public IActionResult OrderCatalogArticle([FromForm] Models.Trbovlje.OrderCatalogArticleFullViewModel orderCatalogArticle)
+          {
+            var dbOrderCatalogArticle = _dbContext.OrderCatalogArticles
+                .Include(s => s.CatalogArticle)
+                .Include(s => s.UrgencyDegree)
+                .Include(s => s.ReceptionUser)
+                .Include(s => s.ReceptionTime)
+                .Include(s => s.Quantity)
+                .FirstOrDefault(u => u.Id == orderCatalogArticle.Id);
+
             if (!ModelState.IsValid)
-                return View(orderCatalogArticle);
+                  return View(orderCatalogArticle);
 
-            var dbOrderCatalogArticle = _dbContext.OrderCatalogArticles.FirstOrDefault(u => u.Id == orderCatalogArticle.Id);
-            if (dbOrderCatalogArticle == null)
-                return RedirectToAction("Index");
+              if (dbOrderCatalogArticle == null)
+                  return RedirectToAction("Index");
 
-            _mapper.Map(orderCatalogArticle, dbOrderCatalogArticle);
-            _dbContext.OrderCatalogArticles.Update(dbOrderCatalogArticle);
-            _dbContext.SaveChanges();
+              _mapper.Map(orderCatalogArticle, dbOrderCatalogArticle);
+              _dbContext.OrderCatalogArticles.Update(dbOrderCatalogArticle);
+              _dbContext.SaveChanges();
 
-            return View(orderCatalogArticle);
+              return View(orderCatalogArticle);
+          }
+
+        private NewOrderCatalogArticleViewModel GetOrderCatalogArticleViewModel()
+        {
+            return new NewOrderCatalogArticleViewModel
+            {
+                CatalogArticles = GetCatalogArticles()
+            };
         }
 
-        public IActionResult Order()
+        public IActionResult NewOrder()
         {
             return View(GetOrderCatalogArticleViewModel());
         }
 
         [HttpPost]
-        public IActionResult Order([FromForm] Models.Trbovlje.OrderCatalogArticleViewModel orderCatalogArticle)
+        public IActionResult NewOrder([FromForm] Models.Trbovlje.NewOrderCatalogArticleViewModel orderCatalogArticle)
         {
             if (!ModelState.IsValid)
                 return View(orderCatalogArticle);
@@ -109,31 +136,62 @@ namespace Infozdrav.Web.Controllers
             if (dbOrderCatalogArticle == null)
                 RedirectToAction("Index");
 
-            return View(_mapper.Map<OrderCatalogArticleViewModel>(dbOrderCatalogArticle));
+            return View(_mapper.Map<OrderCatalogArticleFullViewModel>(dbOrderCatalogArticle));
         }
 
+        [Authorize(Roles = Roles.Administrator)]
         [HttpPost]
-        public IActionResult Remove([FromForm] OrderCatalogArticleViewModel viewModel)
+        public IActionResult Remove([FromForm] OrderCatalogArticleFullViewModel viewModel)
         {
-            var dbCatalogArticle = _dbContext.CatalogArticles.FirstOrDefault(l => l.Id == viewModel.Id);
-            if (dbCatalogArticle != null)
+            var dbOrderCatalogArticle = _dbContext.OrderCatalogArticles.FirstOrDefault(l => l.Id == viewModel.Id);
+            if (dbOrderCatalogArticle != null)
             {
-                _dbContext.CatalogArticles.Remove(dbCatalogArticle);
+                _dbContext.OrderCatalogArticles.Remove(dbOrderCatalogArticle);
                 _dbContext.SaveChanges();
             }
+            return RedirectToAction("Index");
+        }
+
+        private OrderCatalogArticleEditViewModel GetOrderCatalogArticleEditViewModel()
+        {
+            return new OrderCatalogArticleEditViewModel
+            {
+                CatalogArticles = GetCatalogArticles()
+            };
+        }
+
+        public IActionResult Edit()
+        {
+            return View(GetOrderCatalogArticleEditViewModel());
+        }
+
+        [Authorize(Roles = Roles.Administrator)]
+        [HttpPost]
+        public IActionResult Edit([FromForm] OrderCatalogArticleEditViewModel viewModel)
+        {
+            var dbOrderCatalogArticle= _dbContext.OrderCatalogArticles.FirstOrDefault(l => l.Id == viewModel.Id);
+            if (dbOrderCatalogArticle == null)
+                RedirectToAction("Index");
+
+            if (!ModelState.IsValid)
+                return View(viewModel);
+
+            _mapper.Map(viewModel, dbOrderCatalogArticle);
+
+            _dbContext.SaveChanges();
             return RedirectToAction("Index");
         }
 
         [Authorize(Roles = Roles.Administrator + "," + Roles.CatalogArticleConfirmOrder)]
         public IActionResult ConfirmIndex()
         {
-            ViewBag.DataSource = _mapper.Map<ICollection<OrderCatalogArticleViewModel>>(_dbContext.OrderCatalogArticles);
+            ViewBag.DataSource = _mapper.Map<ICollection<OrderCatalogArticleFullViewModel>>(_dbContext.OrderCatalogArticles);
 
             var data = _dbContext.OrderCatalogArticles
                 .Include(s => s.CatalogArticle)
                 .ToList();
 
-            return View(_mapper.Map<List<Models.Trbovlje.OrderCatalogArticleViewModel>>(data).First());
+            return View(_mapper.Map<List<Models.Trbovlje.OrderCatalogArticleFullViewModel>>(data).First());
         }
 
         [Authorize(Roles = Roles.Administrator + "," + Roles.CatalogArticleConfirmOrder)]
@@ -144,7 +202,7 @@ namespace Infozdrav.Web.Controllers
 
         [Authorize(Roles = Roles.Administrator + "," + Roles.CatalogArticleConfirmOrder)]
         [HttpPost]
-        public IActionResult Confirm([FromForm] Models.Trbovlje.OrderCatalogArticleViewModel orderCatalogArticle)
+        public IActionResult Confirm([FromForm] Models.Trbovlje.OrderCatalogArticleFullViewModel orderCatalogArticle)
         {
             if (!ModelState.IsValid)
                 return View(orderCatalogArticle);

@@ -8,8 +8,7 @@ namespace Infozdrav.Web.Data.Trbovlje
         public int? CatalogArticleId { get; set; }
         public CatalogArticle CatalogArticle { get; set; }
 
-        public int? UrgencyDegreeId { get; set; }
-        public UrgencyDegree UrgencyDegree { get; set; }
+        public UrgencyDegree? UrgencyDegree { get; set; }
 
         public string Note { get; set; }
 

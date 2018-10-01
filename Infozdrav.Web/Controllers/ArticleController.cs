@@ -138,7 +138,7 @@ namespace Infozdrav.Web.Controllers
                     if (!article.Rejected)
                     {
                         ModelState.AddModelError("UseByDate",
-                            "Izdelek ni več uporabne oz. ni v skladu s pogodbo. Prosim te, da izdelek zavrneš.");
+                            "Izdelek ni več uporaben oz. ni v skladu s pogodbo. Prosim te, da izdelek zavrneš.");
                     }
                 }
 

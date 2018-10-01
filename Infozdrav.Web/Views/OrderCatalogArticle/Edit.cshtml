@@ -1,0 +1,40 @@
+﻿@using Infozdrav.Web.Data
+@using Infozdrav.Web.Data.Trbovlje
+@model Infozdrav.Web.Models.Trbovlje.OrderCatalogArticleEditViewModel
+
+@{
+    ViewBag.Title = "Uredi naročilo";
+    Layout = "_Layout";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<form asp-action="Edit" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label asp-for="CatalogArticleId">Kataloška številka</label>
+        <br />
+        @Html.DropDownListFor(m => m.CatalogArticleId, Model.CatalogArticles, "Izberi artikel", new { @class = "form-control" })
+        <span class="form-text text-danger text-muted" asp-validation-for="CatalogArticleId"></span>
+        <br />
+
+        <input type="hidden" asp-for="Id" />
+        <label asp-for="Quantity">Količina</label>
+        <input asp-for="Quantity" type="text"
+               data-val-required="Potrebno je vnesti količino."
+               class="form-control" id="quantity" placeholder="Vnesi količino">
+        <span class="form-text text-danger text-muted" asp-validation-for="Quantity"></span>
+
+        <label asp-for="UrgencyDegree">Stopnja Nujnosti</label>
+        <br />
+        @Html.DropDownListFor(m => m.UrgencyDegree, @Html.GetEnumSelectList(typeof(UrgencyDegree)), "Izberi stopnjo nujnosti")
+        <br />
+
+        <label asp-for="Note">Opombe</label>
+        <input asp-for="Note" type="text"
+               class="form-control" id="Note">
+
+    </div>
+    <button type="submit" class="btn btn-primary">Shrani</button>
+    <a href="@Url.Action("Index")"
+       class="btn btn-primary">Prekliči</a>
+</form>

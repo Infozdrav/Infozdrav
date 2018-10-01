@@ -1,4 +1,4 @@
-﻿@model Infozdrav.Web.Models.Trbovlje.OrderCatalogArticleViewModel
+﻿@model Infozdrav.Web.Models.Trbovlje.OrderCatalogArticleFullViewModel
 
 @{
     ViewBag.Title = "Odstrani naročilo";
@@ -12,10 +12,10 @@
 <form asp-action="Remove" method="post">
     <div class="form-group">
         <input type="hidden" asp-for="Id" />
-        <label asp-for="CatalogArticleId">Article</label>
-        <input asp-for="CatalogArticleId" type="text" class="form-control" id="name" disabled>
+        <label asp-for="CatalogArticle.Name">Naročilo</label>
+        <input asp-for="CatalogArticle.Name" type="text" class="form-control" id="name" disabled>
     </div>
     <button type="submit" class="btn btn-primary">Odstrani</button>
-    <a href="@Url.Action("OrderCatalogArticle")"
+    <a href="@Url.Action("Index")"
        class="btn btn-primary">Prekliči</a>
 </form>

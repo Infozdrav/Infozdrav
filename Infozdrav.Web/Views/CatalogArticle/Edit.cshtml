@@ -1,15 +1,15 @@
 ﻿@using Infozdrav.Web.Data
 @using Infozdrav.Web.Data.Trbovlje
-@model Infozdrav.Web.Models.Trbovlje.CatalogArticleAddViewModel
+@model Infozdrav.Web.Models.Trbovlje.CatalogArticleEditViewModel
 
 @{
-    ViewBag.Title = "Dodaj artikel v katalog";
+    ViewBag.Title = "Uredi artikel v katalogu";
     Layout = "_Layout";
 }
 
 <h2>@ViewBag.Title</h2>
 
-<form asp-action="Add" method="post">
+<form asp-action="Edit" method="post" enctype="multipart/form-data">
     <div class="form-group">
         <input type="hidden" asp-for="Id" />
         <label asp-for="Name">Naziv artikla</label>
@@ -26,7 +26,7 @@
 
         <label asp-for="ArticleType">Tip artikla</label>
         <br />
-        @Html.DropDownListFor(m => m.ArticleType, @Html.GetEnumSelectList(typeof(ArticleType)), "Izberi tip artikla")
+        @Html.DropDownListFor(m => m.ArticleType, @Html.GetEnumSelectList(typeof(ArticleType)), "Izberi tip artikla", new { @class = "form-control" })
         <br />
 
         <label asp-for="Price">Cena artikla (€/enota)</label>
@@ -34,7 +34,7 @@
                data-val-required="Potrebno je vnesti ceno artikla."
                class="form-control" id="price" placeholder="Vnesi ceno artikla">
         <span class="form-text text-danger text-muted" asp-validation-for="Price"></span>
-        
+
         <label asp-for="UseByDaysLimit">Opozori x dni pred pretekom roka uporabe</label>
         <input asp-for="UseByDaysLimit" type="number"
                data-val-required="Potrebno je vnesti opozorilo pred pretekom roka uporabe."
@@ -44,18 +44,18 @@
 
         <label asp-for="ManufacturerId">Proizvajalec</label>
         <br />
-        @(Html.DropDownList("ManufacturerId", Model.Manufacturers))
+        @Html.DropDownListFor(m => m.ManufacturerId, Model.Manufacturers, "Izberi proizvajalca", new { @class = "form-control" })
         <span class="form-text text-danger text-muted" asp-validation-for="ManufacturerId"></span>
         <br />
-       
+
         <label asp-for="SupplierId">Dobavitelj</label>
         <br />
-        @(Html.DropDownList("SupplierId", Model.Suppliers))
+        @Html.DropDownListFor(m => m.SupplierId, Model.Suppliers, "Izberi dobavitelja", new { @class = "form-control" })
         <span class="form-text text-danger text-muted" asp-validation-for="SupplierId"></span>
         <br />
 
     </div>
     <button type="submit" class="btn btn-primary">Shrani</button>
     <a href="@Url.Action("Index")"
-       class="btn btn-primary">Nazaj</a>
+       class="btn btn-primary">Prekliči</a>
 </form>

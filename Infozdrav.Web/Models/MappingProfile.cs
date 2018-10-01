@@ -32,17 +32,26 @@ namespace Infozdrav.Web.Models
             CreateMap<Trbovlje.ArticleReceptionViewModel, Trbovlje.ArticleReceptionViewModel>()
                 .ForMember( x=> x.ShowIgnoreBadLot, opt => opt.Ignore());
 
-            CreateMap<Trbovlje.CatalogArticleViewModel, CatalogArticle>();
-            CreateMap<CatalogArticle, Trbovlje.CatalogArticleViewModel>(MemberList.Source);
+            CreateMap<Trbovlje.CatalogArticleFullViewModel, CatalogArticle>();
+            CreateMap<CatalogArticle, Trbovlje.CatalogArticleFullViewModel>(MemberList.Source);
+            CreateMap<Trbovlje.CatalogArticleAddViewModel, CatalogArticle>();
+            CreateMap<CatalogArticle, Trbovlje.CatalogArticleAddViewModel>(MemberList.Source);
+            CreateMap<Trbovlje.CatalogArticleEditViewModel, CatalogArticle>();
+            CreateMap<CatalogArticle, Trbovlje.CatalogArticleEditViewModel>(MemberList.Source);
+            CreateMap<Trbovlje.CatalogArticleTableViewModel, CatalogArticle>();
+            CreateMap<CatalogArticle, Trbovlje.CatalogArticleTableViewModel>(MemberList.Source);
 
-            CreateMap<Trbovlje.OrderCatalogArticleViewModel, OrderCatalogArticle>();
-            CreateMap<OrderCatalogArticle, Trbovlje.OrderCatalogArticleViewModel>(MemberList.Source);
+            CreateMap<Trbovlje.OrderCatalogArticleFullViewModel, OrderCatalogArticle>();
+            CreateMap<OrderCatalogArticle, Trbovlje.OrderCatalogArticleFullViewModel>(MemberList.Source);
+            CreateMap<OrderCatalogArticle, Trbovlje.OrderCatalogArticleTableViewModel>();
+            CreateMap<Trbovlje.OrderCatalogArticleFullViewModel, CatalogArticle>();
+            CreateMap<CatalogArticle, Trbovlje.OrderCatalogArticleFullViewModel>(MemberList.Source);
+            CreateMap<Trbovlje.NewOrderCatalogArticleViewModel, OrderCatalogArticle>();
+            CreateMap<OrderCatalogArticle, Trbovlje.OrderCatalogArticleEditViewModel>(MemberList.Source);
+            CreateMap<Trbovlje.OrderCatalogArticleEditViewModel, OrderCatalogArticle>(MemberList.Destination);
 
             CreateMap<Trbovlje.BufferViewModel, Buffer>();
             CreateMap<Buffer, Trbovlje.BufferViewModel>(MemberList.Source);
-
-            CreateMap<Trbovlje.OrderCatalogArticleViewModel, CatalogArticle>();
-            CreateMap<CatalogArticle, Trbovlje.OrderCatalogArticleViewModel>(MemberList.Source);
 
             
         }

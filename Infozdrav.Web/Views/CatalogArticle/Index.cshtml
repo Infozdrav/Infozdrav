@@ -1,31 +1,52 @@
-﻿@model List<Infozdrav.Web.Models.Trbovlje.CatalogArticleViewModel>
+﻿@model List<Infozdrav.Web.Models.Trbovlje.CatalogArticleFullViewModel>
+@using Infozdrav.Web.Data.Manage
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<User> UserManager
 
 @{
     ViewBag.Title = "Katalog artiklov";
     Layout = "_Layout";
+
+    string dateFormat = "short";
 }
 
 <h2>@ViewBag.Title</h2>
 
+<a href="@Url.Action("Trbovlje", "Dashboard")"
+   class="btn btn-primary">Nazaj na nadzorno ploščo</a>
+<br />
 <a href="@Url.Action("Add")"
    class="btn btn-primary">Dodaj artikel v katalog</a>
-<br/>
+<br />
 
 <script id="actions" type="text/x-template">
     <a href="@Url.Action("CatalogArticle")/${Id}"
-       class="btn btn-primary">Uredi</a>
-    <a href="@Url.Action("Remove")/${Id}"
-       class="btn btn-primary">Odstrani</a>
+       class="btn btn-primary">Info</a>
+
+    @if (User.IsInRole(Roles.Administrator) || User.IsInRole(Roles.ArticleCatalogEdit))
+    {
+        <a href="@Url.Action("Edit")/${Id}"
+           class="btn btn-primary">Uredi</a>
+        <a href="@Url.Action("Remove")/${Id}"
+           class="btn btn-primary">Odstrani</a>
+    }
 </script>
 
-<ejs-grid id="grid" dataSource=@ViewBag.DataSource allowPaging="true">
+<ejs-grid id="grid" dataSource="@Model" allowPaging="true" allowResizing="true" allowGrouping="true" allowFiltering="true" allowSorting="true" allowTextWrap="true" showColumnMenu="true" dataBound="dataBound">
     <e-grid-columns>
-        <e-grid-column field="Name" headerText="Naziv" textAlign="Right" width="120"></e-grid-column>
-        <e-grid-column field="Catalog number" headerText="Kataloška številka" textAlign="Right" width="120"></e-grid-column>
-        <e-grid-column field="Price" headerText="Cena (€)" textAlign="Right" width="100"></e-grid-column>
-        <e-grid-column field="Type" headerText="Tip artikla" textAlign="Right" width="120"></e-grid-column>
-        <e-grid-column field="ManufacturerName" headerText="Proizvajalec" textAlign="Right" width="120"></e-grid-column>
-        <e-grid-column field="SupplierName" headerText="Dobavitelj" textAlign="Right" width="120"></e-grid-column>
-        <e-grid-column field="Id" textAlign="Right" headerText="Actions" template="#actions" width="150"></e-grid-column>
+        <e-grid-column field="Id"></e-grid-column>
+        <e-grid-column field="Name" headerText="Ime" minWidth="100"></e-grid-column>
+        <e-grid-column field="CatalogNumber" headerText="Kataloška številka" minWidth="100"></e-grid-column>
+        <e-grid-column field="Price" headerText="Cena" minWidth="120"></e-grid-column>
+        <e-grid-column field="Manufacturer.Name" headerText="Proizvajalec" minWidth="150"></e-grid-column>
+        <e-grid-column field="Supplier.Name" headerText="Dobavitelj" minWidth="150"></e-grid-column>
+        <e-grid-column field="UseByDaysLimit" headerText="Opozorilo (x dni)" minWidth="120"></e-grid-column>
+        <e-grid-column headerText="Akcija" template="#actions"></e-grid-column>
     </e-grid-columns>
 </ejs-grid>
+
+<script>
+    function dataBound(args) {
+        this.autoFitColumns();
+    }
+</script>

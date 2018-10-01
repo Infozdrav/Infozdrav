@@ -1,6 +1,6 @@
 ﻿@using Infozdrav.Web.Data
 @using Infozdrav.Web.Data.Trbovlje
-@model Infozdrav.Web.Models.Trbovlje.OrderCatalogArticleViewModel
+@model Infozdrav.Web.Models.Trbovlje.NewOrderCatalogArticleViewModel
 
 @{
     ViewBag.Title = "Naroči artikel iz kataloga";
@@ -9,7 +9,7 @@
 
 <h2>@ViewBag.Title</h2>
 
-<form asp-action="Order" method="post">
+<form asp-action="NewOrder" method="post">
     <div class="form-group">
         <label asp-for="CatalogArticleId">Artikel</label>
         <br />

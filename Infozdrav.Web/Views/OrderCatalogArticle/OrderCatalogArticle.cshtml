@@ -1,40 +1,55 @@
-﻿@using Infozdrav.Web.Data
-@using Infozdrav.Web.Data.Trbovlje
-@model Infozdrav.Web.Models.Trbovlje.OrderCatalogArticleViewModel
+﻿@using Newtonsoft.Json
+@model Infozdrav.Web.Models.Trbovlje.OrderCatalogArticleFullViewModel
 
 @{
-    ViewBag.Title = "Naroči artikel";
+    ViewBag.Title = "Naročilo artikla";
     Layout = "_Layout";
+
+    string dateFormat = "short";
 }
 
 <h2>@ViewBag.Title</h2>
 
-<form asp-action="OrderCatalogArticle" method="post">
-    <div class="form-group">
-        <label asp-for="CatalogArticleId">Artikel</label>
-        <br />
-        @(Html.DropDownList("CatalogArticleId", Model.CatalogArticles))
-        <span class="form-text text-danger text-muted" asp-validation-for="CatalogArticleId"></span>
-        <br />
+<div class="">
+    <div class="row">
+        <div class="col-lg-6">
+            <label asp-for="@Model.Id">Id artikla</label>
+            <input asp-for="@Model.Id" class="form-control" type="text" readonly />
 
-        <input type="hidden" asp-for="Id" />
-        <label asp-for="Quantity">Količina</label>
-        <input asp-for="Quantity" type="text"
-               data-val-required="Potrebno je vnesti količino."
-               class="form-control" id="quantity" placeholder="Vnesi količino">
-        <span class="form-text text-danger text-muted" asp-validation-for="Quantity"></span>
+            <label asp-for="@Model.CatalogArticle.Name">Kataloško ime artikla</label>
+            <input asp-for="@Model.CatalogArticle.Name" class="form-control" type="text" readonly />
 
-        <label asp-for="UrgencyDegree">Stopnja Nujnosti</label>
-        <br />
-        @Html.DropDownListFor(m => m.UrgencyDegree, @Html.GetEnumSelectList(typeof(UrgencyDegree)), "Izberi stopnjo nujnosti")
-        <br />
+            <label asp-for="@Model.UrgencyDegree">Stopnja nujnosti</label>
+            <input asp-for="@Model.UrgencyDegree" class="form-control" type="text" readonly />
 
-        <label asp-for="Note">Opombe</label>
-        <input asp-for="Note" type="text"
-               class="form-control" id="Note">
+            <label asp-for="@Model.Quantity">Količina</label>
+            <input asp-for="@Model.Quantity" class="form-control" type="text" readonly />
 
+            <label asp-for="@Model.CatalogArticle.Price">Cena/enoto</label>
+            <input asp-for="@Model.CatalogArticle.Price" class="form-control" type="text" readonly />
+
+            @*<label asp-for="@Model.TotalPrice">Končna cena</label>
+                <input asp-for="@Model.TotalPrice" class="form-control" type="text" readonly />*@
+
+            <label asp-for="@Model.Note">Opomba</label>
+            <textarea asp-for="@Model.Note" class="form-control" type="text" readonly></textarea>
+        </div>
+        <div class="col-lg-6">
+            <label asp-for="@Model.ReceptionTime">Datum vpisa naročila</label>
+            <input asp-for="@Model.ReceptionTime" class="form-control" type="text" readonly />
+
+            <label asp-for="@Model.ReceptionUser.Email">Vpisal</label>
+            <input asp-for="@Model.ReceptionUser.Email" class="form-control" type="text" readonly />
+
+            @*<label asp-for="@Model.ConfirmedUser.Email">Potrdil</label>
+                <input asp-for="@Model.ConfirmedUser.Email" class="form-control" type="text" readonly />
+
+                <label asp-for="@Model.ConfirmedTime">Datum potrdila naročila</label>
+                <input asp-for="@Model.ConfirmedTime" class="form-control" type="text" readonly />*@
+
+        </div>
     </div>
-    <button type="submit" class="btn btn-primary">Shrani</button>
-    <a href="@Url.Action("Index")"
-       class="btn btn-primary">Prekliči</a>
-</form>
+</div>
+
+<br />
+<a href="@Url.Action("Index")" class="btn btn-primary">Nazaj</a>

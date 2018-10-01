@@ -1,6 +1,6 @@
 ﻿@using Infozdrav.Web.Data
 @using Infozdrav.Web.Data.Trbovlje
-@model Infozdrav.Web.Models.Trbovlje.CatalogArticleViewModel
+@model Infozdrav.Web.Models.Trbovlje.CatalogArticleFullViewModel
 
 @{
     ViewBag.Title = "Artikel v katalogu";
@@ -9,53 +9,32 @@
 
 <h2>@ViewBag.Title</h2>
 
-<form asp-action="CatalogArticle" method="post">
-    <div class="form-group">
-        <input type="hidden" asp-for="Id" />
-        <label asp-for="Name">Naziv artikla</label>
-        <input asp-for="Name" type="text"
-               data-val-required="Potrebno je vnesti naziv artikla."
-               class="form-control" id="name" placeholder="Vnesi naziv artikla">
-        <span class="form-text text-danger text-muted" asp-validation-for="Name"></span>
+<div class="">
+    <div class="row">
+        <div class="col-lg-6">
+            <label asp-for="@Model.Id">Id artikla</label>
+            <input asp-for="@Model.Id" class="form-control" type="text" readonly />
 
-        <label asp-for="CatalogNumber">Kataloška številka artikla</label>
-        <input asp-for="CatalogNumber" type="number"
-               data-val-required="Potrebno je vnesti kataloško številko artikla"
-               class="form-control" id="catalogNumber" placeholder="Vnesi kataloško številko artikla">
-        <span class="form-text text-danger text-muted" asp-validation-for="CatalogNumber"></span>
+            <label asp-for="@Model.Name">Ime artikla</label>
+            <input asp-for="@Model.Name" class="form-control" type="text" readonly />
 
-        <label asp-for="ArticleType">Tip artikla</label>
-        <br />
-        @Html.DropDownListFor(m => m.ArticleType, @Html.GetEnumSelectList(typeof(ArticleType)), "Izberi tip artikla")
-        <br />
+            <label asp-for="@Model.CatalogNumber">Kataloška številka</label>
+            <input asp-for="@Model.CatalogNumber" class="form-control" type="text" readonly />
 
-        <label asp-for="Price">Cena artikla</label>
-        <input asp-for="Price" type="text"
-               data-val-required="Potrebno je vnesti ceno artikla."
-               class="form-control" id="price" placeholder="Vnesi ceno artikla">
-        <span class="form-text text-danger text-muted" asp-validation-for="Price"></span>
+            <label asp-for="@Model.Price">Cena/enoto (€)</label>
+            <input asp-for="@Model.Price" class="form-control" type="text" readonly />
 
-        <label asp-for="UseByDaysLimit">Opozori x dni pred pretekom roka uporabe</label>
-        <input asp-for="UseByDaysLimit" type="number"
-               data-val-required="Potrebno je vnesti opozorilo pred pretekom roka uporabe."
-               class="form-control" id="UseByDaysLimit" placeholder="Vnesi opozorilo pred pretekom roka uporabe">
-        <span class="form-text text-danger text-muted" asp-validation-for="UseByDaysLimit"></span>
+            <label asp-for="@Model.Manufacturer">Proizvajalec</label>
+            <input asp-for="@Model.Manufacturer" class="form-control" type="text" readonly />
 
+            <label asp-for="@Model.Supplier">Dobavitelj</label>
+            <input asp-for="@Model.Supplier" class="form-control" type="text" readonly />
 
-        <label asp-for="ManufacturerId">Proizvajalec</label>
-        <br />
-        @(Html.DropDownList("ManufacturerId", Model.Manufacturers))
-        <span class="form-text text-danger text-muted" asp-validation-for="ManufacturerId"></span>
-        <br />
-
-        <label asp-for="SupplierId">Dobavitelj</label>
-        <br />
-        @(Html.DropDownList("SupplierId", Model.Suppliers))
-        <span class="form-text text-danger text-muted" asp-validation-for="SupplierId"></span>
-        <br />
-
+            <label asp-for="@Model.UseByDaysLimit">Opozorilo x dni pred potekom roka uporabe</label>
+            <input asp-for="@Model.UseByDaysLimit" class="form-control" type="text" readonly></textarea>
+        </div>
     </div>
-    <button type="submit" class="btn btn-primary">Shrani</button>
-    <a href="@Url.Action("Index")"
-       class="btn btn-primary">Nazaj</a>
-</form>
+</div>
+
+<br />
+<a href="@Url.Action("Index")" class="btn btn-primary">Nazaj</a>

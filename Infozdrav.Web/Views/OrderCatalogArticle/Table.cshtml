@@ -1,11 +1,6 @@
-﻿@using Infozdrav.Web.Data
-@using Infozdrav.Web.Data.Manage
-@model List<Infozdrav.Web.Models.Trbovlje.OrderCatalogArticleFullViewModel>
-@using Microsoft.AspNetCore.Identity
-@inject UserManager<User> UserManager
+﻿@model List<Infozdrav.Web.Models.Trbovlje.OrderCatalogArticleTableViewModel>
 
 @{
-    ViewBag.Title = "Naročila";
     Layout = "_Layout";
 
     string dateFormat = "short";
@@ -13,38 +8,9 @@
 
 <h2>@ViewBag.Title</h2>
 
-<a href="@Url.Action("Trbovlje", "Dashboard")"
-   class="btn btn-primary">Nazaj na nadzorno ploščo</a>
-<br />
-
-<a href="@Url.Action("ConfirmIndex")"
-   class="btn btn-primary">Potrdi naročila</a>
-<br />
-<a href="@Url.Action("NewOrder")"
-   class="btn btn-primary">Naroči artikel iz kataloga</a>
-<br />
-
 <script id="actions" type="text/x-template">
-    @if (User.IsInRole(Roles.Administrator) || User.IsInRole(Roles.CatalogArticleOrder))
-    {
-        <a href="@Url.Action("OrderCatalogArticle")/${Id}"
-           class="btn btn-primary">Info</a>
-        <a href="@Url.Action("Edit")/${Id}"
-           class="btn btn-primary">Uredi</a>
-        <a href="@Url.Action("Remove")/${Id}"
-           class="btn btn-primary">Odstrani</a>
-    }
-
-</script>
-
-<script id="confirm" type="text/x-template">
- 
-    @if (User.IsInRole(Roles.Administrator) || User.IsInRole(Roles.OrderConfirm))
-    {
-        <a href="@Url.Action("Confirm")/${Id}"
-           class="btn btn-primary">Potrdi</a>
-    }
-
+    <a href="@Url.Action((string)ViewBag.Action)/${Id}"
+       class="btn btn-primary">@ViewBag.ActionName</a>
 </script>
 
 <ejs-grid id="grid" dataSource="@Model" allowPaging="true" allowResizing="true" allowGrouping="true" allowFiltering="true" allowSorting="true" allowTextWrap="true" showColumnMenu="true" dataBound="dataBound">
